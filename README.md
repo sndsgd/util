@@ -1,5 +1,10 @@
 # sndsgd-util
 
+[![Latest Version](https://img.shields.io/github/release/sndsgd/sndsgd-util.svg?style=flat-square)](https://github.com/sndsgd/sndsgd-util/releases)
+[![Software License](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square)](https://github.com/sndsgd/sndsgd-util/LICENSE)
+[![Build Status](https://img.shields.io/travis/sndsgd/sndsgd-util/master.svg?style=flat-square)](https://travis-ci.org/sndsgd/sndsgd-util)
+
+
 ## Requirements
 
 You need **PHP >= 5.5.0** to use this library, however, the latest stable version of PHP is recommended.
@@ -7,7 +12,7 @@ You need **PHP >= 5.5.0** to use this library, however, the latest stable versio
 
 ## Install
 
-Install `sndsgd/sndsgd-util` using Composer.
+Install `sndsgd/sndsgd-util` using [Composer](https://getcomposer.org/).
 
 ```
 composer require sndsgd/sndsgd-util
@@ -15,17 +20,16 @@ composer require sndsgd/sndsgd-util
 
 ## Testing
 
-Run phpunit in the root directory of this repo.
+Use [PHPUnit](https://phpunit.de/) to run unit tests.
 
-Example: run tests and create an html coverage report
 ```
-vendor/bin/phpunit --coverage-html ~/Downloads/coverage-report
+vendor/bin/phpunit
 ```
 
 
 ## Documentation
 
-Use ApiGen to create docs. The included config file ```apigen.neon``` will create ```/docs``` in the root directory of this repository.
+Use [ApiGen](http://apigen.org/) to create docs.
 
 ```
 apigen generate
