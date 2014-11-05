@@ -12,10 +12,10 @@ You need **PHP >= 5.5.0** to use this library, however, the latest stable versio
 
 ## Install
 
-Install `sndsgd/sndsgd-util` using [Composer](https://getcomposer.org/).
+Install `sndsgd/util` using [Composer](https://getcomposer.org/).
 
 ```
-composer require sndsgd/sndsgd-util
+composer require sndsgd/util
 ```
 
 ## Testing
