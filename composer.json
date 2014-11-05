@@ -1,6 +1,6 @@
 {
    "name": "sndsgd/util",
-   "description": "A utility toolkit",
+   "description": "A utility toolkit for PHP",
    "type": "library",
    "homepage": "https://github.com/sndsgd/sndsgd-util",
    "license": "MIT",
