@@ -414,7 +414,7 @@ class Url
          $path = '/';
       }
 
-      $query = ($this->query !== null) 
+      $query = ($this->query)
          ? '?'.self::encodeQueryString($this->query)
          : '';
       $fragment = ($this->fragment !== null) ? '#'.$this->fragment : '';
