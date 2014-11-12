@@ -1,6 +1,4 @@
 title: sndsgd/util
 destination: docs
 source:
-	- src
-	
-skip-doc-prefix: PHP
+   - src

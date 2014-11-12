@@ -5,7 +5,7 @@ use \sndsgd\util\PriorityQueue;
 
 class PriorityQueueTest extends PHPUnit_Framework_TestCase
 {
-   public function testInsert()
+   public function setUp()
    {
       $values = [
          ['three', 1],
@@ -14,17 +14,28 @@ class PriorityQueueTest extends PHPUnit_Framework_TestCase
          ['one', 100]
       ];
 
-      $pq = new PriorityQueue();
+      $this->pq = new PriorityQueue();
       foreach ($values as list($value, $priority)) {
-         $pq->insert($value, $priority);
+         $this->pq->insert($value, $priority);
       }
+   }
 
+   public function testNext()
+   {
       $values = [];
-      while ($pq->valid()) {
-         $values[] = $pq->current();
-         $pq->next();
+      while ($this->pq->valid()) {
+         $values[] = $this->pq->current();
+         $this->pq->next();
       }
+      $this->assertEquals(['one', 'two', 'three', 'four'], $values);
+   }
 
+   public function testExtract()
+   {
+      $values = [];
+      while ($this->pq->valid()) {
+         $values[] = $this->pq->extract();
+      }
       $this->assertEquals(['one', 'two', 'three', 'four'], $values);
    }
 }
