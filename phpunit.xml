@@ -11,15 +11,19 @@
    stopOnFailure="false"
    syntaxCheck="false"
 >
-    <testsuites>
-        <testsuite name="sndsgd/util tests">
-            <directory suffix=".php">./tests/</directory>
-        </testsuite>
-    </testsuites>
+   <testsuites>
+      <testsuite name="sndsgd/util tests">
+         <directory suffix=".php">./tests/</directory>
+      </testsuite>
+   </testsuites>
 
-    <filter>
-        <blacklist>
-              <directory>./vendor</directory>
-        </blacklist>
-    </filter>
+   <logging>
+      <log type="coverage-text" target="php://stdout" showUncoveredFiles="false"/>
+   </logging>
+
+   <filter>
+      <blacklist>
+         <directory>./vendor</directory>
+      </blacklist>
+   </filter>
 </phpunit>
