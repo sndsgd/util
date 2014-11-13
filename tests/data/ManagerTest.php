@@ -29,6 +29,19 @@ class ManagerTest extends PHPUnit_Framework_TestCase
       # test overwrite
       $this->m->addData('one', 'one');
       $this->assertEquals('one', $this->m->getData('one'));
+
+      # test add array
+      $this->m->addData([ 'four' => 4, 'five' => 5 ]);
+      $this->assertEquals(4, $this->m->getData('four'));
+      $this->assertEquals(5, $this->m->getData('five'));
+   }
+
+   /**
+    * @expectedException InvalidArgumentException
+    */
+   public function testAddDataException()
+   {
+      $this->m->addData(42, '<- the key must be a string');
    }
 
    public function testRemoveData()

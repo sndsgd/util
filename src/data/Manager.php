@@ -2,6 +2,8 @@
 
 namespace sndsgd\util\data;
 
+use \InvalidArgumentException;
+
 
 /**
  * A trait for adding data storage to an object
@@ -29,15 +31,26 @@ trait Manager
    /**
     * Add data
     *
-    * Helpful when performing expensive operations during validation on data
-    * that will be required later in the script
-    * @param string $key The name to stash data under
+    * @param string|array.<string,mixed> $key The name to stash data under
     * @param mixed $value Whatever needs to be stashed
     * @return void
     */
-   public function addData($key, $value)
+   public function addData($key, $value = null)
    {
-      $this->data[$key] = $value;
+      if (is_array($key)) {
+         foreach ($key as $k => $v) {
+            $this->data[$k] = $v;
+         }
+      }
+      else if (is_string($key)) {
+         $this->data[$key] = $value;   
+      }
+      else {
+         throw new InvalidArgumentException(
+            "invalid value provided for 'key'; expecting a key as a string ".
+            "or an associative array"
+         );
+      }
    }
 
    /**
