@@ -1,6 +1,10 @@
 <?php
 
+use \org\bovigo\vfs\vfsStream;
+use \sndsgd\util\File;
+use \sndsgd\util\Path;
 use \sndsgd\util\Temp;
+
 
 
 class TempTest extends PHPUnit_Framework_TestCase
@@ -48,6 +52,24 @@ class TempTest extends PHPUnit_Framework_TestCase
    public function testCleanup()
    {
       $this->assertTrue(Temp::cleanup());
+
+      # make a file that cannot be removed and register it for cleanup
+      $root = vfsStream::setup('root');
+      $dir = vfsStream::newDirectory('test')
+         ->at($root)
+         ->chmod(0700)
+         ->chgrp(vfsStream::GROUP_ROOT)
+         ->chown(vfsStream::OWNER_ROOT);
+      $file = vfsStream::newFile('file.txt')
+         ->setContent('content...')
+         ->chmod(0600)
+         ->chgrp(vfsStream::GROUP_ROOT)
+         ->chown(vfsStream::OWNER_ROOT)
+         ->at($dir);
+
+      $path = vfsStream::url($file->path());
+      Temp::registerPath($path);
+      $this->assertFalse(Temp::cleanup());
    }
 }
 

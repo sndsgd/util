@@ -40,6 +40,7 @@ class PathTest extends PHPUnit_Framework_TestCase
          ['root/dir-none', $d | $r, false],
          ['root/dir-none', $d | $w, false],
          ['root/dir-none', $d | $r | $w, false],
+         ['root/dir-doesnt-exist', $e | $d | $r | $w, false],
          ['root/dir-all', $f, false],
 
          ['root/file-all', $e | $f | $r | $w | $x, true],
@@ -52,6 +53,8 @@ class PathTest extends PHPUnit_Framework_TestCase
          ['root/file-none', $f | $r, false],
          ['root/file-none', $f | $w, false],
          ['root/file-none', $f | $r | $w, false],
+         ['root/file-none', $x, false],
+         ['root/file-all', $d, false],
       ];
 
       foreach ($tests as list($path, $flags, $expect)) {
