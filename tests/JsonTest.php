@@ -47,7 +47,7 @@ class JsonTest extends PHPUnit_Framework_TestCase
       $this->assertEquals($test, $json);
 
       $path = '/__this__/path/better/not/exist.json';
-      $result = Json::encodeFile($path, $data);
+      $result = Json::encodeFile($path, $test);
       $this->assertTrue(is_string($result));
    }
 }
