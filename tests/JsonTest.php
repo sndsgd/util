@@ -33,26 +33,22 @@ class JsonTest extends PHPUnit_Framework_TestCase
    public function testEncodeFile()
    {
       $path = sys_get_temp_dir().'/test-json.json';
-      $data = [
-         '1' => 1,
-         '2' => 2
-      ];
+      
+      # json_encode fails due to recursion limit
+      $test = ['test'=>['test'=>['test'=>['test'=>['test'=>['hello']]]]]];
+      $result = Json::encodeFile($path, $test, 0, 2);
+      $this->assertTrue(is_string($result));
 
-      $result = Json::encodeFile($path, $data, Json::HUMAN);
-      $this->assertEquals($result, true);
-
+      $test = ['one' => 1, 'two' => 2];
+      $result = Json::encodeFile($path, $test, Json::HUMAN);
+      $this->assertTrue($result);
       $json = file_get_contents($path);
       $json = json_decode($json, true);      
-      $this->assertEquals($data, $json);
+      $this->assertEquals($test, $json);
 
       $path = '/__this__/path/better/not/exist.json';
       $result = Json::encodeFile($path, $data);
-      $expect = 
-         "failed to write JSON file; ".
-         "failed to create directory '/__this__/path/better/not'";
-      $this->assertEquals($expect, $result);
-
-
+      $this->assertTrue(is_string($result));
    }
 }
 
