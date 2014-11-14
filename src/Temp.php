@@ -52,16 +52,17 @@ class Temp
     * Create a temp directory
     * 
     * @param string $prefix A prefix for the directory name
+    * @param octal $mode The permissions for the directory
     * @return string The path to the newly created temp directory
     */
-   public static function dir($prefix = 'temp')
+   public static function dir($prefix = 'temp', $mode = 0775)
    {
       $tmpdir = sys_get_temp_dir();
       do {
          $rand = substr(md5(microtime(true)), 0, 6);
          $path = $tmpdir.DIRECTORY_SEPARATOR.$prefix.$rand;
       }
-      while (@mkdir($path) === false);
+      while (@mkdir($path, $mode) === false);
 
       self::registerPath($path, true);
       return $path;
