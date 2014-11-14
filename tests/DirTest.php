@@ -20,12 +20,31 @@ class DirTest extends PHPUnit_Framework_TestCase
             'emptydir' => [
             ]
          ],
-         'noreadwrite' => []
+         'noreadwrite' => [],
+         'empty' => [],
+         'rmfilefail' => [
+            'file.txt' => 'contents'
+         ],
+
+         # 
+         'rmdirfail' => [
+            'sub' => [],
+            'file.txt' => 'contents'
+         ]
       ]);
 
       chmod(vfsStream::url('root/noreadwrite'), 0700);
-
       $this->root->getChild('noreadwrite')
+         ->chown(vfsStream::OWNER_ROOT)
+         ->chgrp(vfsStream::GROUP_ROOT);
+
+      chmod(vfsStream::url('root/rmfilefail/file.txt'), 0700);
+      $this->root->getChild('rmfilefail')->getChild('file.txt')
+         ->chown(vfsStream::OWNER_ROOT)
+         ->chgrp(vfsStream::GROUP_ROOT);
+
+      chmod(vfsStream::url('root/rmdirfail/sub'), 0700);
+      $this->root->getChild('rmdirfail')->getChild('sub')
          ->chown(vfsStream::OWNER_ROOT)
          ->chgrp(vfsStream::GROUP_ROOT);
    }
@@ -135,33 +154,39 @@ class DirTest extends PHPUnit_Framework_TestCase
    }
 
    /**
-    * @covers \sndsgd\util\Dir::remove
+    * @covers \sndsgd\util\Dir::copy
     */
-   public function testRemove()
+   public function testCopy()
    {
-      $tests = [
-         [vfsStream::url('root/test'), true],
-      ];
+      $source = Path::normalize(__DIR__);
+      $dest = vfsStream::url('root/noreadwrite');
+      $this->assertTrue(is_string(Dir::copy($source, $dest)));
 
-      foreach ($tests as list($test, $expect)) {
-         $result = (Dir::remove($test) === true);
-         $this->assertEquals($expect, $result);
-      }
+      $dest = vfsStream::url('root/test');
+      $this->assertTrue(is_string(Dir::copy($source, $dest)));
+
+      $dest = vfsStream::url('root/empty');
+      $this->assertTrue(Dir::copy($source, $dest));
    }
 
    /**
     * @covers \sndsgd\util\Dir::remove
     */
-   // public function testRemoveFailure()
-   // {
-   //    $tests = [
-   //       [vfsStream::url('root/noreadwrite'), false]
-   //    ];
+   public function testRemove()
+   {
+      $dir = vfsStream::url('root/test');
+      $this->assertTrue(Dir::remove($dir));
 
-   //    foreach ($tests as list($test, $expect)) {
-   //       $result = (Dir::remove($test) === true);
-   //       $this->assertEquals($expect, $result);
-   //    }
-   // }
+      $dir = vfsStream::url('root/noreadwrite');
+      $this->assertTrue(is_string(Dir::remove($dir)));
+
+      # sub directory cannot be read or written
+      $dir = vfsStream::url('root/rmdirfail');
+      $this->assertTrue(is_string(Dir::remove($dir)));
+
+      # child file cannot be deleted
+      $dir = vfsStream::url('root/remove-fail');
+      $this->assertTrue(is_string(Dir::remove($dir)));
+   }
 }
 

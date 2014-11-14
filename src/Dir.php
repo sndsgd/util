@@ -3,6 +3,8 @@
 namespace sndsgd\util;
 
 use \InvalidArgumentException;
+use \RecursiveDirectoryIterator as RDI;
+use \RecursiveIteratorIterator as RII;
 
 
 /**
@@ -71,7 +73,7 @@ class Dir
     * 
     * @param string $path An absolute path to test
     * @return boolean
-    * @throws InvalidArgumentException If $path is not a string of does not exist
+    * @throws InvalidArgumentException If $path is not a string or doesn't exist
     */
    public static function isEmpty($path)
    {
@@ -91,6 +93,39 @@ class Dir
    }
 
    /**
+    * Recursively copy a directory
+    *
+    * @param string $source The absolute directory path to copy from
+    * @param string $dest The absolute directory path to copy to
+    * @param octal $mode Permissions for newly created directories
+    * @return boolean|string
+    * @return boolean:true The copy was successful
+    * @return string An error message describing the failure
+    */
+   public static function copy($source, $dest, $mode = 0775)
+   {
+      if (($test = Dir::prepare($dest, $mode)) !== true) {
+         return "failed to copy '$source' to '$dest'; $test";
+      }
+      else if (Dir::isEmpty($dest) === false) {
+         return "failed to copy '$source'; '$dest' is not empty";
+      }
+
+      $dirIterator = new RDI($source, RDI::SKIP_DOTS);
+      $iterator = new RII($dirIterator, RII::SELF_FIRST);
+      foreach ($iterator as $file) {
+         $destPath = $dest.DIRECTORY_SEPARATOR.$iterator->getSubPathName();
+         if ($file->isDir()) {
+            mkdir($destPath, $mode);
+         }
+         else {
+            copy($file, $destPath);
+         }
+      }
+      return true;
+   }
+
+   /**
     * Recursively remove a directory
     * 
     * @param string $dir An absolute path to a directory
@@ -100,6 +135,10 @@ class Dir
     */
    public static function remove($dir)
    { 
+      if (($test = Path::test($dir, Dir::READABLE_WRITABLE)) !== true) {
+         return "failed to remove directory '$dir'; $test";
+      }
+
       $files = array_diff(scandir($dir), ['.', '..']);
       foreach ($files as $file) {
          $path = $dir.DIRECTORY_SEPARATOR.$file;
