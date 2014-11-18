@@ -4,22 +4,13 @@ use \org\bovigo\vfs\vfsStream;
 use \sndsgd\util\File;
 use \sndsgd\util\Path;
 use \sndsgd\util\Str;
-use \sndsgd\util\Temp;
 
 
 class FileTest extends PHPUnit_Framework_TestCase
 {
-   public static $nonExistingFile;
-   public static $testFilePath;
-   public static $testFileSize;
-   public static $testFileLines;
-
-   /**
-    * @coversNothing
-    */
-   public static function setUpBeforeClass()
+   protected function setUp()
    {
-      $root = vfsStream::setup('root');
+      $this->root = vfsStream::setup('root');
       vfsStream::create([
          'test' => [
             'file.txt' => 'contents...',
@@ -30,25 +21,23 @@ class FileTest extends PHPUnit_Framework_TestCase
          'noreadwrite' => 'contents...'
       ]);
 
-      chmod(vfsStream::url('root/noreadwrite'), 0700);
+      $this->root->getChild('noreadwrite')
+         ->chmod(0700)
+         ->chgrp(vfsStream::GROUP_ROOT)
+         ->chown(vfsStream::OWNER_ROOT);
+   }
 
-      $root->getChild('noreadwrite')
-         ->chown(vfsStream::OWNER_ROOT)
-         ->chgrp(vfsStream::GROUP_ROOT);
-
-      self::$nonExistingFile = vfsStream::url('root/does-not-exist');
-      self::$testFilePath = vfsStream::url('root/test.txt');
-
-      $fp = fopen(self::$testFilePath, 'w');
+   protected function createTestFile()
+   {
+      $path = vfsStream::url('root/test.txt');
+      $fp = fopen($path, 'w');
       $bytes = 0;
       $len = rand(100, 200);
       for ($i=0; $i<$len; $i++) {
          $bytes += fwrite($fp, Str::random(rand(5000, 10000))."\n");
       }
       fclose($fp);
-
-      self::$testFileSize = $bytes;
-      self::$testFileLines = $len;
+      return [$path, $bytes, $len];
    }
 
    /**
@@ -78,16 +67,14 @@ class FileTest extends PHPUnit_Framework_TestCase
     */
    public function testIsReadable()
    {
-      $tests = [
-         [vfsStream::url('root/test/file.txt'), true],
-         [vfsStream::url('root/test/emptydir/file.txt'), false],
-         [vfsStream::url('root/noreadwrite'), false],
-      ];
+      $path = vfsStream::url('root/test/file.txt');
+      $this->assertTrue(File::isReadable($path));
 
-      foreach ($tests as list($test, $expect)) {
-         $result = File::isReadable($test) === true;
-         $this->assertEquals($expect, $result);
-      }
+      $path = vfsStream::url('root/test/emptydir/file.txt');
+      $this->assertTrue(is_string(File::isReadable($path)));
+
+      $path = vfsStream::url('root/noreadwrite');
+      $this->assertTrue(is_string(File::isReadable($path)));
    }
 
    /**
@@ -151,14 +138,15 @@ class FileTest extends PHPUnit_Framework_TestCase
     */
    public function testRename()
    {
-      $from = vfsStream::url('root/test/move-me.txt');
-      $to = vfsStream::url('root/test/newdir/ive-been-moved.txt');
-      file_put_contents($from, '123');
+      $content = Str::random(1000);
+      $from = vfsStream::url('root/move-me.txt');
+      file_put_contents($from, $content);
+      $to = vfsStream::url('root/ive-been-moved.txt');
 
       # this should work
       $result = File::rename($from, $to, 0664, 0775);
       $this->assertTrue(is_dir(dirname($to)));
-      $this->assertEquals('123', file_get_contents($to));
+      $this->assertEquals($content, file_get_contents($to));
 
       # this shouldnt work (file has been moved)
       $result = File::rename($from, $to, 0664, 0775);
@@ -167,11 +155,31 @@ class FileTest extends PHPUnit_Framework_TestCase
       $from = $to;
       $to = vfsStream::url('root/noreadwrite/newfile.txt');
       $result = File::rename($from, $to, 0664, 0775);
-      $this->assertFalse($result === true);
+      $this->assertTrue(is_string($result));
 
       $to = vfsStream::url('root/noreadwrite/newfile/some/dir.txt');
       $result = File::rename($from, $to, 0664, 0775);
       $this->assertFalse($result === true);
+   }
+
+   /**
+    * @covers \sndsgd\util\File::rename
+    */
+   public function testRenameWriteFail()
+   {
+      # create a file to copy to the vfs, and set a quota to prevent it
+      $source = tempnam(sys_get_temp_dir(), 'test-file-');
+      file_put_contents($source, Str::random(1000));
+      $dest = vfsStream::url('root/dest.txt');
+      vfsStream::setQuota(1);
+      $result = File::rename($source, $dest);
+      $this->assertTrue(is_string($result));
+
+      foreach ([$source, $dest] as $path) {
+         if (file_exists($path)) {
+            unlink($path);
+         }
+      }
    }
 
    /**
@@ -198,8 +206,9 @@ class FileTest extends PHPUnit_Framework_TestCase
     */
    public function testFormatSizeForPath()
    {
-      $expect = File::formatSize(self::$testFileSize, 2);
-      $this->assertEquals($expect, File::formatSize(self::$testFilePath, 2));
+      list($path, $bytes, $lines) = $this->createTestFile();
+      $expect = File::formatSize($bytes, 2);
+      $this->assertEquals($expect, File::formatSize($path, 2));
    }
 
    /**
@@ -217,7 +226,7 @@ class FileTest extends PHPUnit_Framework_TestCase
     */
    public function testFormatSizeInvalidPath()
    {
-      File::formatSize(self::$nonExistingFile);
+      File::formatSize(vfsStream::url('root/to/non/existing/file.txt'));
    }
 
    /**
@@ -225,8 +234,8 @@ class FileTest extends PHPUnit_Framework_TestCase
     */
    public function testCountLines()
    {
-      $lines = File::countLines(self::$testFilePath);
-      $this->assertEquals(self::$testFileLines, $lines);
+      list($path, $bytes, $lines) = $this->createTestFile();
+      $this->assertEquals($lines, File::countLines($path));
    }
 
    /**
@@ -235,7 +244,7 @@ class FileTest extends PHPUnit_Framework_TestCase
     */
    public function testCountLinesInvalidPath()
    {
-      File::countLines(self::$nonExistingFile);
+      File::countLines(vfsStream::url('root/to/non/existing/file.txt'));
    }
 }
 
