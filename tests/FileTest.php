@@ -86,7 +86,7 @@ class FileTest extends PHPUnit_Framework_TestCase
          [vfsStream::url('root/test/file.txt'), true],
          [vfsStream::url('root/test/emptydir/file.txt'), true],
          [vfsStream::url('root/noreadwrite/file.txt'), false],
-         [vfsStream::url('root/does-not-exist/file.txt'), false],
+         [vfsStream::url('root/does-not-exist/file.txt'), true]
       ];
 
       foreach ($tests as list($test, $expect)) {

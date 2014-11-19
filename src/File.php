@@ -38,7 +38,7 @@ class File
    /**
     * Determine if a file path can be written to
     * 
-    * NOTE: if the path does not exist, the parent directory will be analyzed
+    * NOTE: if the path does not exist, the parent directories will be analyzed
     * @param string $path An absolute path to the file to test
     * @return boolean:true The file is writable
     * @return string An error message indicating why the path test failed
@@ -47,7 +47,7 @@ class File
    {
       # if the file doesn't exist, ensure its parent dir is writable
       if (!file_exists($path)) {
-         return Path::test(dirname($path), Dir::WRITABLE);
+         return Dir::isWritable(dirname($path));
       }
       return Path::test($path, self::WRITABLE);
    }
