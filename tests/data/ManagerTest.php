@@ -4,6 +4,7 @@
 class TestManager
 {
    use \sndsgd\util\data\Manager;
+
 }
 
 
@@ -27,7 +28,8 @@ class ManagerTest extends PHPUnit_Framework_TestCase
       $this->assertEquals(['value'], $this->m->getData('test'));
 
       # test overwrite
-      $this->m->addData('one', 'one');
+      $result = $this->m->addData('one', 'one');
+      $this->assertInstanceOf('TestManager', $result);
       $this->assertEquals('one', $this->m->getData('one'));
 
       # test add array

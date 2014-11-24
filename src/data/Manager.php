@@ -21,11 +21,12 @@ trait Manager
     * Overwrite the current data
     *
     * @param array.<string,mixed> $data The data to replace current data with
-    * @return void
+    * @return object The parent class
     */
    public function setData(array $data = [])
    {
       $this->data = $data;
+      return $this;
    }
 
    /**
@@ -33,7 +34,7 @@ trait Manager
     *
     * @param string|array.<string,mixed> $key The name to stash data under
     * @param mixed $value Whatever needs to be stashed
-    * @return void
+    * @return object The parent class
     */
    public function addData($key, $value = null)
    {
@@ -51,6 +52,7 @@ trait Manager
             "or an associative array"
          );
       }
+      return $this;
    }
 
    /**
