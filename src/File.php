@@ -189,16 +189,14 @@ class File
     * 
     * @param string $path An absolute file path
     * @return integer The number of lines in the file
-    * @throws Exception the file is not readable or a read error occurs
     */
    public static function countLines($path)
    {
       $ret = 0;
-      if (!($fh = @fopen($path, 'r'))) {
-         throw new Exception('failed to open file');
-      }
-      while (fgets($fh) !== false) {
-         $ret++;
+      $fh = fopen($path, 'r');
+      while (!feof($fh)) {
+         $buffer = fread($fh, 8192);
+         $ret += substr_count($buffer, "\n");
       }
       fclose($fh);
       return $ret;

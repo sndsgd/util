@@ -237,14 +237,5 @@ class FileTest extends PHPUnit_Framework_TestCase
       list($path, $bytes, $lines) = $this->createTestFile();
       $this->assertEquals($lines, File::countLines($path));
    }
-
-   /**
-    * @covers \sndsgd\util\File::countLines
-    * @expectedException Exception
-    */
-   public function testCountLinesInvalidPath()
-   {
-      File::countLines(vfsStream::url('root/to/non/existing/file.txt'));
-   }
 }
 
