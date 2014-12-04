@@ -18,7 +18,7 @@ class Json
    /**
     * JSON error numbers and their relevant messages
     * 
-    * @var array.<integer => string>
+    * @var array.<integer,string>
     */
    private static $errors = [
       JSON_ERROR_NONE => 'no error occured',
@@ -59,19 +59,66 @@ class Json
       $options = 0,
       $depth = 512
    ) {
-      $test = File::prepare($path);
-      if ($test !== true) {
-         return "failed to write JSON file; $test";
+      if (($test = File::prepare($path)) !== true) {
+         $err = $test;
       }
-
-      $json = json_encode($data, $options, $depth);
-      if ($json === false) {
-         return "failed to encode JSON; ".self::getError();
+      else if (($json = json_encode($data, $options, $depth)) === false) {
+         $err = self::getError();
       }
       else if (@file_put_contents($path, $json) === false) {
-         return "failed to write JSON file; file write operation failed";
+         $err = "write operation failed on '$path'";
       }
-      return true;
+      else {
+         return true;   
+      }
+      return "failed to encode JSON file; $err";
+   }
+
+   /**
+    * Attempt to decode a file that contains JSON
+    *
+    * Note: only use this method on file that contains JSON arrays or objects;
+    * any other data type will result in an exception being thrown
+    *
+    * @param string $path The Absolute path to the json file to decode
+    * @param boolean $assoc Whether or not to return an associative array
+    * @param integer $opts Options to pass to json_decode
+    * @param integer $depth The max recursion depth to parse
+    * @return object|array|string
+    * @return object|array The read and decode were successful
+    * @return string An error message describing the failure
+    * @throws Exception If the resulting data is not an object or array
+    */
+   public static function decodeFile(
+      $path, 
+      $assoc = false, 
+      $opts = 0,
+      $depth = 512
+   )
+   {
+      if (($test = File::isReadable($path)) !== true) {
+         $err = $test;
+      }
+      else if (($json = @file_get_contents($path)) === false) {
+         $err = "read operation failed on '$path'";
+      }
+      else if (
+         ($ret = json_decode($json, $assoc, $depth, $opts)) === null &&
+         json_last_error() !== JSON_ERROR_NONE
+      ) {
+         $err = "decode operation failed on '$path'";
+      }
+      else if (!is_array($ret) && !is_object($ret)) {
+         throw new Exception(
+            "Invalid JSON value type in '$path'; ".
+            "only use sndsgd\\util\\Json::decodeFile() on files that ".
+            "contain an array or an object"
+         );
+      }
+      else {
+         return $ret;
+      }
+      return "failed to decode JSON file; $err";
    }
 }
 

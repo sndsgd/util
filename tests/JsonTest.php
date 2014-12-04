@@ -59,7 +59,7 @@ class JsonTest extends PHPUnit_Framework_TestCase
    /**
     * @covers \sndsgd\util\Json::encodeFile
     */
-   public function testEncodeJsonEncodeError()
+   public function testEncodeFileJsonEncodeError()
    {
       $path = $this->getVfsFilePath();
 
@@ -78,6 +78,71 @@ class JsonTest extends PHPUnit_Framework_TestCase
       vfsStream::setQuota(10);
       $data = [ Str::random(1000) ];
       $this->assertTrue(is_string(Json::encodeFile($path, $data)));
+   }
+
+   /**
+    * @covers nothing
+    */
+   private function writeTestJsonFile()
+   {
+      $data = [
+         'one' => 1,
+         'two' => 2,
+         'three' => [1,2,3]
+      ];
+
+      $path = $this->getVfsFilePath();
+      Json::encodeFile($path, $data);
+      return [$path, $data];
+   }
+
+   /**
+    * @covers \sndsgd\util\Json::decodeFile
+    */
+   public function testDecodeFileNotReadable()
+   {
+      $path = vfsStream::url('this/path/does/not/exist/json');
+      $result = Json::decodeFile($path, true);
+      $this->assertTrue(is_string($result));
+   }
+
+   // /**
+   //  * @covers \sndsgd\util\Json::decodeFile
+   //  */
+   // public function testDecodeFileReadFailure()
+   // {
+   // }
+
+   /**
+    * @covers \sndsgd\util\Json::decodeFile
+    */
+   public function testDecodeFileDecodeFailure()
+   {
+      $path = $this->getVfsFilePath();
+      file_put_contents($path, '{');
+      $result = Json::decodeFile($path, true);
+      $this->assertTrue(is_string($result));
+   }
+
+   /**
+    * @covers \sndsgd\util\Json::decodeFile
+    * @expectedException Exception
+    */
+   public function testDecodeFileBadTypeException()
+   {
+      $path = $this->getVfsFilePath();
+      file_put_contents($path, '"testing... 1,2,3"');
+      $result = Json::decodeFile($path, true);
+   }
+
+   /**
+    * @covers \sndsgd\util\Json::decodeFile
+    */
+   public function testDecodeFileSuccess()
+   {
+      list($path, $data) = $this->writeTestJsonFile();
+      $result = Json::decodeFile($path, true);
+      $this->assertEquals($data, $result);
    }
 }
 
