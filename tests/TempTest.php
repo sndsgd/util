@@ -27,14 +27,19 @@ class TempTest extends PHPUnit_Framework_TestCase
     */
    public function testFile()
    {
-      $path = Temp::file('test-');
+      $path = Temp::file('test');
       $this->assertTrue(file_exists($path));
       $this->assertEquals(0, filesize($path));
 
       $contents = 'hello world';
-      $path = Temp::file('test-', $contents);
+      $path = Temp::file('test', $contents);
       $this->assertTrue(file_exists($path));
       $this->assertEquals($contents, file_get_contents($path));
+
+      $path = Temp::file('test.txt');
+      var_dump($path);
+      list($name, $ext) = File::splitName($path);
+      $this->assertEquals('txt', $ext);
    }
 
    /**

@@ -34,13 +34,27 @@ class Temp
    /**
     * Create a temp file
     * 
-    * @param string $prefix A prefix for the file name
+    * @param string $name A name for the file name
     * @param string|null $contents Optional contents for the file
     * @return string The path to the newly created temp file
     */
-   public static function file($prefix = 'temp-', $contents = null) 
+   public static function file($name = 'temp', $contents = null) 
    {
-      $path = tempnam(sys_get_temp_dir(), $prefix);
+      $tmpdir = sys_get_temp_dir();
+      if (strpos($name, '.') !== false) {
+         list($name, $ext) = explode('.', $name, 2);
+         $ext = ".$ext";
+      }
+      else {
+         $ext = '';
+      }
+
+      do {
+         $rand = substr(md5(microtime(true).mt_rand()), 10, 10);
+         $path = $tmpdir.DIRECTORY_SEPARATOR."{$name}-{$rand}{$ext}";
+      }
+      while (file_exists($path));
+      touch($path);
       if ($contents) {
          file_put_contents($path, $contents);
       }
