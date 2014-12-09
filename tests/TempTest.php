@@ -37,7 +37,6 @@ class TempTest extends PHPUnit_Framework_TestCase
       $this->assertEquals($contents, file_get_contents($path));
 
       $path = Temp::file('test.txt');
-      var_dump($path);
       list($name, $ext) = File::splitName($path);
       $this->assertEquals('txt', $ext);
    }

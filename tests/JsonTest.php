@@ -22,7 +22,7 @@ class JsonTest extends PHPUnit_Framework_TestCase
     */
    public function testConstants()
    {
-      $expect = JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES;
+      $expect = JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE;
       $this->assertEquals($expect, Json::HUMAN);
    }
 

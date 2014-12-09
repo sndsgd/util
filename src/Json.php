@@ -12,8 +12,8 @@ use \sndsgd\util\Path;
  */
 class Json
 {
-   // JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES
-   const HUMAN = 192;
+   // JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE
+   const HUMAN = 448;
 
    /**
     * JSON error numbers and their relevant messages
