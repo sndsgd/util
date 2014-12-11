@@ -2,7 +2,6 @@
 
 namespace sndsgd\util;
 
-use \Exception;
 use \InvalidArgumentException;
 
 

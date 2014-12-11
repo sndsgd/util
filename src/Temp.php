@@ -2,8 +2,6 @@
 
 namespace sndsgd\util;
 
-use \Exception;
-
 
 /**
  * Temp file and directory utility methods

@@ -6,7 +6,6 @@ use \DirectoryIterator;
 use \InvalidArgumentException;
 use \RecursiveDirectoryIterator;
 use \RecursiveIteratorIterator;
-use \SeekableIterator;
 use \SplFileInfo;
 use \sndsgd\util\Dir;
 use \sndsgd\util\Path;

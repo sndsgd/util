@@ -4,7 +4,6 @@ namespace sndsgd\util;
 
 use \Exception;
 use \sndsgd\util\File;
-use \sndsgd\util\Path;
 
 
 /**

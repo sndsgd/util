@@ -2,13 +2,7 @@
 
 namespace sndsgd\util;
 
-use \Exception;
 use \InvalidArgumentException;
-use \ReflectionClass;
-use \ReflectionException;
-use \sndsgd\util\File;
-use \sndsgd\util\Path;
-use \sndsgd\util\Str;
 
 
 /**
