@@ -18,6 +18,10 @@ class StrTest extends PHPUnit_Framework_TestCase
       $this->assertFalse(Str::endsWith('hello there', ' '));
       $this->assertFalse(Str::endsWith('hello there', 'E', true));
       $this->assertTrue(Str::endsWith('hello therE', 'E', true));
+
+      $haystack = 'Wed, 10 Dec 2014 02:54:32 +0000';
+      $needle = '+0000';
+      $this->assertTrue(Str::endsWith($haystack, $needle));
    }
 
    public function testRandom()
