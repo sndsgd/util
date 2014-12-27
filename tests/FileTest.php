@@ -139,21 +139,105 @@ class FileTest extends PHPUnit_Framework_TestCase
    /**
     * @covers \sndsgd\util\File::splitName
     */
-   public function testSplitName()
+   public function testSplitNameFile()
    {
-      $tests = [
-         'file.txt' => ['file', 'txt'],
-         '.hidden' => ['.hidden', null],
-         '/tmp/test.file' => ['test', 'file'],
-         '../test/file.ext' => ['file', 'ext']
-      ];
-      foreach ($tests as $test => $expect) {
-         $this->assertEquals($expect, File::splitName($test));
-      }
-
-      $this->assertEquals('ext', File::splitName('/test/path/file.ext')[1]);
-      $this->assertNull(File::splitName('/test/path/file')[1]);
+      # with an extension
+      list($name, $ext) = File::splitName('file.txt');
+      $this->assertEquals('file', $name);
+      $this->assertEquals('txt', $ext);
+      # without extension
+      list($name, $ext) = File::splitName('file');
+      $this->assertEquals('file', $name);
+      $this->assertNull($ext);
+      # hidden file with extension
+      list($name, $ext) = File::splitName('.hidden.txt');
+      $this->assertEquals('.hidden', $name);
+      $this->assertEquals('txt', $ext);
+      # hidden file no extension
+      list($name, $ext) = File::splitName('.hidden');
+      $this->assertEquals('.hidden', $name);
+      $this->assertNull($ext);
    }
+
+   /**
+    * @covers \sndsgd\util\File::splitName
+    */
+   public function testSplitNameRootChild()
+   {
+      # with an extension
+      list($name, $ext) = File::splitName('/file.txt');
+      $this->assertEquals('file', $name);
+      $this->assertEquals('txt', $ext);
+      # without extension
+      list($name, $ext) = File::splitName('/file');
+      $this->assertEquals('file', $name);
+      $this->assertNull($ext);
+      # hidden file with extension
+      list($name, $ext) = File::splitName('/.hidden.txt');
+      $this->assertEquals('.hidden', $name);
+      $this->assertEquals('txt', $ext);
+      # hidden file no extension
+      list($name, $ext) = File::splitName('/.hidden');
+      $this->assertEquals('.hidden', $name);
+      $this->assertNull($ext);
+   }
+
+   /**
+    * @covers \sndsgd\util\File::splitName
+    */
+   public function testSplitNameAbsolutePath()
+   {
+      # with an extension
+      list($name, $ext) = File::splitName('/some/path/file.txt');
+      $this->assertEquals('file', $name);
+      $this->assertEquals('txt', $ext);
+      # without extension
+      list($name, $ext) = File::splitName('/some/path/file');
+      $this->assertEquals('file', $name);
+      $this->assertNull($ext);
+      # hidden file with extension
+      list($name, $ext) = File::splitName('/some/path/.hidden.txt');
+      $this->assertEquals('.hidden', $name);
+      $this->assertEquals('txt', $ext);
+      # hidden file no extension
+      list($name, $ext) = File::splitName('/some/path/.hidden');
+      $this->assertEquals('.hidden', $name);
+      $this->assertNull($ext);
+   }
+
+   /**
+    * @covers \sndsgd\util\File::splitName
+    */
+   public function testSplitNameRelativePath()
+   {
+      # with an extension
+      list($name, $ext) = File::splitName('../parent/dir/file.txt');
+      $this->assertEquals('file', $name);
+      $this->assertEquals('txt', $ext);
+      # without extension
+      list($name, $ext) = File::splitName('../parent/dir/file');
+      $this->assertEquals('file', $name);
+      $this->assertNull($ext);
+      # hidden file with extension
+      list($name, $ext) = File::splitName('../parent/dir/.hidden.txt');
+      $this->assertEquals('.hidden', $name);
+      $this->assertEquals('txt', $ext);
+      # hidden file no extension
+      list($name, $ext) = File::splitName('../parent/dir/.hidden');
+      $this->assertEquals('.hidden', $name);
+      $this->assertNull($ext);
+   }
+
+   /**
+    * @covers \sndsgd\util\File::splitName
+    */
+   public function testSplitNameMissingExtensionValue()
+   {
+      # provide an empty string as the default value for a missing extension
+      list($name, $ext) = File::splitName('filename', '');
+      $this->assertEquals('filename', $name);
+      $this->assertTrue($ext === '');
+   }   
 
 
    /**

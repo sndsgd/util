@@ -102,26 +102,26 @@ class File
     * </code>
     * 
     * @param string $path A file path or filename
+    * @param string|null The value to use when no extension is present
     * @return array
     * - [0] string basename
     * - [1] string|null extension
-    *
     */
-   public static function splitName($path)
+   public static function splitName($path, $missingExtensionValue = null)
    {
       $pos = strrpos($path, '/');
-      if ($pos !== false && $pos > 0) {
+      if ($pos !== false) {
          $path = substr($path, $pos + 1);
       }
 
       $extpos = strrpos($path, '.');
       if ($extpos === false) {
-         $name = substr($path, 0, $extpos);
-         $ext = null;
+         $name = $path;
+         $ext = $missingExtensionValue;
       }
       else if ($extpos === 0) {
          $name = $path;
-         $ext = null;
+         $ext = $missingExtensionValue;
       }
       else {
          $name = substr($path, 0, $extpos);
