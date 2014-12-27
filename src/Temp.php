@@ -39,12 +39,10 @@ class Temp
    public static function file($name = 'temp', $contents = null) 
    {
       $tmpdir = sys_get_temp_dir();
-      if (strpos($name, '.') !== false) {
-         list($name, $ext) = explode('.', $name, 2);
-         $ext = ".$ext";
-      }
-      else {
-         $ext = '';
+      $name = File::sanitizeName($name);
+      list($name, $ext) = File::splitName($name, '');
+      if ($ext !== '') {
+         $ext = ".{$ext}";
       }
 
       do {
@@ -70,6 +68,7 @@ class Temp
    public static function dir($prefix = 'temp', $mode = 0775)
    {
       $tmpdir = sys_get_temp_dir();
+      $prefix = Dir::sanitizeName($prefix);
       do {
          $rand = substr(md5(microtime(true)), 0, 6);
          $path = $tmpdir.DIRECTORY_SEPARATOR.$prefix.$rand;
