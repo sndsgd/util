@@ -69,6 +69,24 @@ class File
    }
 
    /**
+    * Remove wonky characters from a file name
+    *
+    * @param string $name The path or filename to sanitize
+    * @return string
+    */
+   public static function sanitizeName($name)
+   {
+      if (strpos($name, DIRECTORY_SEPARATOR) !== false) {
+         throw new InvalidArgumentException(
+            "invalid value provided for 'name'; ".
+            "expecting a filename that does not contain a path"
+         );
+      }
+      
+      return preg_replace('/[^A-Za-z0-9-_.]/', '_', $name);
+   }
+
+   /**
     * Separate a filename and extension
     * 
     * bug (??) with pathinfo(): 

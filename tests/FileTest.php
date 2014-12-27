@@ -114,6 +114,29 @@ class FileTest extends PHPUnit_Framework_TestCase
    }
 
    /**
+    * @covers \sndsgd\util\File::sanitizeName
+    */
+   public function testSanitizeName()
+   {
+      $test = __METHOD__.'.test';
+      $expect = 'FileTest__testSanitizeName.test';
+      $this->assertEquals($expect, File::sanitizeName($test));
+
+      $test = "!@#$%^&*(";
+      $expect = "_________";
+      $this->assertEquals($expect, File::sanitizeName($test));
+   }
+
+   /**
+    * @covers \sndsgd\util\File::sanitizeName
+    * @expectedException InvalidArgumentException
+    */
+   public function testSanitizeNameException()
+   {
+      File::sanitizeName(__FILE__);
+   }
+
+   /**
     * @covers \sndsgd\util\File::splitName
     */
    public function testSplitName()
