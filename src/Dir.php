@@ -69,6 +69,24 @@ class Dir
    }
 
    /**
+    * Remove wonky characters from a directory name
+    *
+    * @param string $name The basename to sanitize
+    * @return string
+    */
+   public static function sanitizeName($name)
+   {
+      if (strpos($name, DIRECTORY_SEPARATOR) !== false) {
+         throw new InvalidArgumentException(
+            "invalid value provided for 'name'; ".
+            "expecting a directory name that does not contain a path"
+         );
+      }
+
+      return preg_replace('/[^A-Za-z0-9-_]/', '_', $name);
+   }
+
+   /**
     * Determine if a directory is empty
     * 
     * @param string $path An absolute path to test

@@ -120,6 +120,29 @@ class DirTest extends PHPUnit_Framework_TestCase
    }
 
    /**
+    * @covers \sndsgd\util\Dir::sanitizeName
+    */
+   public function testSanitizeName()
+   {
+      $test = __METHOD__.'.test';
+      $expect = 'DirTest__testSanitizeName_test';
+      $this->assertEquals($expect, Dir::sanitizeName($test));
+
+      $test = "!@#$%^&*(";
+      $expect = "_________";
+      $this->assertEquals($expect, Dir::sanitizeName($test));
+   }
+
+   /**
+    * @covers \sndsgd\util\Dir::sanitizeName
+    * @expectedException InvalidArgumentException
+    */
+   public function testSanitizeNameException()
+   {
+      Dir::sanitizeName(__DIR__);
+   }
+
+   /**
     * @covers \sndsgd\util\Dir::isEmpty
     */
    public function testIsEmpty()
