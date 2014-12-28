@@ -4,6 +4,12 @@ php:
   - 5.5
   - 5.6
 
+before_install:
+   - sudo apt-get update
+
+install:
+  - sudo apt-get install memcached php5-memcached
+
 before_script:
   - travis_retry composer self-update
   - travis_retry composer install --no-interaction --prefer-source --dev
