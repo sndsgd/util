@@ -67,36 +67,33 @@ class FindTest extends PHPUnit_Framework_TestCase
       Dir::remove(self::$dir);
    }
 
-   private function getFilterFunction()
-   {
-      return function(SplFileInfo $file, &$ret) {
-         $ret[$file->getRealPath()] = 1;
-      };
-   }
-
    /**
-    * @covers \sndsgd\util\Find::__construct
+    * @covers \sndsgd\util\Find::getIterator
+    * @covers \sndsgd\util\Find::createIterator
     */
-   public function testConstructor()
+   public function testGetIterator()
    {
-      $f = new Find(self::$dir, $this->getFilterFunction());
-      $this->assertInstanceOf('sndsgd\\util\\Find', $f);
+      $iterator = Find::getIterator(self::$dir);
+      $this->assertInstanceOf('DirectoryIterator', $iterator);
+
+      $iterator = Find::getIterator(self::$dir, Find::RECURSIVE);
+      $this->assertInstanceOf('RecursiveIteratorIterator', $iterator);
    }
 
    /**
-    * @covers \sndsgd\util\Find::__construct
+    * @covers \sndsgd\util\Find::getIterator
     * @expectedException InvalidArgumentException
     */
-   public function testConstructorNonStringDir()
+   public function testGetIteratorNonStringDir()
    {
-      $f = new Find(42, $this->getFilterFunction());
+      $iterator = Find::getIterator(42);
    }
 
    /**
-    * @covers \sndsgd\util\Find::__construct
+    * @covers \sndsgd\util\Find::getIterator
     * @expectedException InvalidArgumentException
     */
-   public function testConstructorNonReadableDir()
+   public function testGetIteratorNonReadableDir()
    {
       $root = vfsStream::setup('root');
       vfsStream::newDirectory('test', 0700)
@@ -105,22 +102,17 @@ class FindTest extends PHPUnit_Framework_TestCase
          ->chown(vfsStream::OWNER_ROOT);
 
       $dir = vfsStream::url('root/test');
-      $f = new Find($dir, $this->getFilterFunction());
+      $iterator = Find::getIterator($dir);
    }
 
    /**
-    * @covers \sndsgd\util\Find::filter
+    * @covers \sndsgd\util\Find::getIterator
+    * @expectedException InvalidArgumentException
     */
-   public function testFilter()
+   public function testGetIteratorNonIntegerOptions()
    {
-      $f = new Find(self::$dir, $this->getFilterFunction());
-      $results = $f->filter();
-      $this->assertTrue(is_array($results));
-
-      $results = $f->filter(Find::RECURSIVE);
-      $this->assertTrue(is_array($results));
+      $iterator = Find::getIterator(self::$dir, 'asd');
    }
-
 
    /**
     * @covers \sndsgd\util\Find::directories
