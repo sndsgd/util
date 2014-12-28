@@ -142,7 +142,7 @@ class Find
          );
       }
 
-      //$dir = Path::normalize($dir);
+      $dir = Path::normalize($dir);
       if (($test = Dir::isReadable($dir)) !== true) {
          throw new InvalidArgumentException(
             "invalid value provided for 'dir'; $test"
