@@ -2,10 +2,10 @@
 
 namespace sndsgd\util;
 
-use \DirectoryIterator;
+use \DirectoryIterator as DI;
 use \InvalidArgumentException;
-use \RecursiveDirectoryIterator;
-use \RecursiveIteratorIterator;
+use \RecursiveDirectoryIterator as RDI;
+use \RecursiveIteratorIterator as RII;
 use \SplFileInfo;
 use \sndsgd\util\Dir;
 use \sndsgd\util\Path;
@@ -14,154 +14,169 @@ use \sndsgd\util\Path;
 class Find
 {
    const RECURSIVE = 1;
-   const RETURN_KEYS = 2;
-   const RETURN_VALUES = 4;
-   const CASE_SENSITIVE = 8;
-
+   
    /**
-    * filter a directory's contents
-    * @param string $dir - an absolute path to a directory
-    * @param callable $callback - a function to test the directory's children
-    * @param boolean $bitmask - filter options
+    * Find directories
+    * 
+    * @param string $dir The absolute path to a directory to search within
+    * @param integer $bitmask Filter options
     * @return array.<string>
-    * @throws InvalidArgumentException if $dir is not a readable directory
     */
-   public static function filter($dir, callable $callback, $bitmask = 0)
+   public static function directories($dir, $bitmask = 0)
    {
-      if (is_string($dir) === false) {
-         $err = "expecting a string value for 'dir'";
-         throw new InvalidArgumentException($err);
-      }
-      else if (is_int($bitmask) === false) {
-         $err = "expecting a integer value for 'bitmask'";
-         throw new InvalidArgumentException($err);
-      }
-      else if (($test = Path::test($dir, Dir::READABLE)) !== true) {
-         $err = "failed to find directories; $test";
-         throw new InvalidArgumentException($err);
-      }
-
-      if ($bitmask & self::RECURSIVE) {
-         $dirIterator = new RecursiveDirectoryIterator($dir);
-         $iterator = new RecursiveIteratorIterator($dirIterator);
-      }
-      else {
-         $iterator = new DirectoryIterator($dir);
-      }
-
-      $ret = [];
-      foreach ($iterator as $file) {
-         $result = $callback($file, $iterator, $ret);
-         if ($result !== null) {
-            $ret[$result] = true;
-         }
-      }
-
-      if ($bitmask & self::RETURN_KEYS) {
-         return array_keys($ret);
-      }
-      else if ($bitmask & self::RETURN_VALUES) {
-         return array_values($ret);
-      }
-      else {
-         return $ret;
-      }
-   }
-
-   /**
-    * find broken symbolic links within a given directory
-    * @param string $dir - the absolute path to a directory to search within
-    * @param boolean $bitmask - filter options
-    * @return array
-    */
-   public static function brokenLinks($path, $bitmask = 0)
-   {
-      $filter = function($file, $iterator, &$ret) {
-         if ($file->isLink()) {
-            $realPath = $file->getRealPath();
-            if (!file_exists($realPath)) {
-               $linkPath = $file->getPath()."/".$file->getFilename();
-               return $linkPath;
-            }
-         }
-         return null;
-      };
-      return self::filter($path, $filter, $bitmask);
-   }
-
-   /**
-    * find directories within a given directory
-    * @param string $dir - the absolute path to a directory to search within
-    * @param boolean $bitmask - filter options
-    * @return array
-    */
-   public static function directories($path, $bitmask = 0)
-   {
-      $filter = function($file, $iterator, &$ret) {
-         return (
+      $fn = function(SplFileInfo $file, &$ret) {
+         if (
             $file->isDir() &&
             ($path = $file->getRealPath()) &&
             !array_key_exists($path, $ret)
-         )
-            ? $path
-            : null;
+         ) {
+            $ret[$path] = 1;
+         }
       };
-      return self::filter($path, $filter, $bitmask);
+
+      $f = new self($dir, $fn);
+      $results = $f->filter($bitmask);
+      return array_keys($results);
    }
 
    /**
-    * find empty directories within a given directory
-    * @param string $dir - the absolute path to a directory to search within
-    * @param boolean $bitmask - filter options
-    * @return array
+    * Find empty directories
+    * 
+    * @param string $dir The absolute path to a directory to search within
+    * @param integer $bitmask Filter options
+    * @return array.<string>
     */
-   public static function emptyDirectories($path, $bitmask = 0)
+   public static function emptyDirectories($dir, $bitmask = 0)
    {
-      $filter = function(SplFileInfo $file, $iterator, &$ret) {
-         return (
+      $fn = function(SplFileInfo $file, &$ret) {
+         if (
             $file->isDir() &&
             ($path = $file->getRealPath()) &&
             !array_key_exists($path, $ret) &&
             Dir::isEmpty($path)
-         )
-            ? $path
-            : null;
+         ) {
+            $ret[$path] = 1;
+         }
       };
 
-      return self::filter($path, $filter, $bitmask);
+      $f = new self($dir, $fn);
+      $results = $f->filter($bitmask);
+      return array_keys($results);
    }
 
    /**
-    * find files with a given extension
-    * @param string $dir - the absolute path to a directory to search within
-    * @param string $extension - the extension to match
-    * @param boolean $bitmask - filter options
-    * @return array
+    * Find files with a given extension
+    * 
+    * @param string $dir The absolute path to a directory to search within
+    * @param string $extension The extension to match (case insensitive)
+    * @param integer $bitmask Filter options
+    * @return array.<string>
     */
    public static function filesByExtension($dir, $extension, $bitmask = 0)
    {
-      if ($bitmask & self::CASE_SENSITIVE) {
-         $filter = function($file, $iterator, &$ret) use ($extension) {
-            return (
-               $file->isFile() &&
-               strcmp($extension, $file->getExtension()) === 0
-            )
-               ? $file->getRealPath()
-               : null;
-         };
+      $fn = function(SplFileInfo $file, &$ret) use ($extension) {
+         if (
+            $file->isFile() &&
+            strcasecmp($extension, $file->getExtension()) === 0 &&
+            ($path = $file->getRealPath()) &&
+            array_key_exists($path, $ret) === false
+         ) {
+            $ret[$path] = 1;
+         }
+      };
+
+      $f = new self($dir, $fn);
+      $results = $f->filter($bitmask);
+      return array_keys($results);
+   }
+
+   /**
+    * Find broken symbolic links
+    * 
+    * @param string $dir The absolute path to a directory to search within
+    * @param integer $bitmask Filter options
+    * @return array.<string>
+    */
+   public static function brokenLinks($dir, $bitmask = 0)
+   {
+      $fn = function(SplFileInfo $file, &$ret) {
+         if (
+            $file->isLink() &&
+            ($realPath = $file->getRealPath()) === false
+         ) {
+            $link = $file->getPath().DIRECTORY_SEPARATOR.$file->getFilename();
+            $ret[$link] = 1;
+         }
+      };
+
+      $f = new self($dir, $fn);
+      $results = $f->filter($bitmask);
+      return array_keys($results);
+   }
+
+
+   /**
+    * An absolute path to the directory to search
+    * 
+    * @var string
+    */
+   protected $dir;
+
+   /**
+    * A function that adds valid paths to the result set
+    *
+    * @var callable
+    */
+   protected $filter;
+
+   /**
+    * @param string $dir The absolute directory to search
+    * @param callable $filter A unction to filter results
+    */
+   public function __construct($dir, callable $filter)
+   {
+      if (is_string($dir) === false) {
+         throw new InvalidArgumentException(
+            "invalid value provided for 'dir'; ".
+            "expecting an absolute directory path as string"
+         );
+      }
+
+      //$dir = Path::normalize($dir);
+      if (($test = Dir::isReadable($dir)) !== true) {
+         throw new InvalidArgumentException(
+            "invalid value provided for 'dir'; $test"
+         );
+      }
+
+      $this->dir = $dir;
+      $this->fn = $filter;
+   }
+
+   /**
+    * Read files in the directory and use the callback to
+    *
+    * @param $bitmask Filter options
+    * @return array
+    */
+   public function filter($bitmask = 0)
+   {
+      if ($bitmask & self::RECURSIVE) {
+         $di = new RDI($this->dir, RDI::SKIP_DOTS);
+         $iterator = new RII($di, RII::SELF_FIRST);
       }
       else {
-         $filter = function($file, $iterator, &$ret) use ($extension) {
-            return (
-               $file->isFile() &&
-               strcasecmp($extension, $file->getExtension()) === 0
-            )
-               ? $file->getRealPath()
-               : null;
-         };
+         $iterator = new DI($this->dir);
       }
-      
-      return self::filter($dir, $filter, $bitmask);
+
+      $fn = $this->fn;
+      $ret = [];
+      foreach ($iterator as $file) {
+         if ($iterator->isDot() === false) {
+            $fn($file, $ret);
+         }
+      }
+      return $ret;
    }
 }
 
