@@ -3,8 +3,6 @@
 namespace sndsgd\util;
 
 use \InvalidArgumentException;
-use \RecursiveDirectoryIterator as RDI;
-use \RecursiveIteratorIterator as RII;
 
 
 /**
@@ -129,8 +127,7 @@ class Dir
          return "failed to copy '$source'; '$dest' is not empty";
       }
 
-      $dirIterator = new RDI($source, RDI::SKIP_DOTS);
-      $iterator = new RII($dirIterator, RII::SELF_FIRST);
+      $iterator = Find::getIterator($source, Find::RECURSIVE);
       foreach ($iterator as $file) {
          $destPath = $dest.DIRECTORY_SEPARATOR.$iterator->getSubPathName();
          if ($file->isDir()) {
