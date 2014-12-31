@@ -7,7 +7,7 @@
 
 ## Requirements
 
-You need **PHP >= 5.5.0** to use this library, however, the latest stable version of PHP is recommended.
+You need **PHP >= 5.4.0** to use this library, however, the latest stable version of PHP is recommended.
 
 
 ## Install
