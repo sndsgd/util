@@ -77,7 +77,8 @@ class DirTest extends PHPUnit_Framework_TestCase
          [vfsStream::url('root/does/not/exist'), false],
       ];
 
-      foreach ($tests as list($path, $isReadable)) {
+      foreach ($tests as $test) {
+         list($path, $isReadable) = $test;
          $result = (Dir::isReadable($path) === true);
          $this->assertEquals($isReadable, $result);
       }
@@ -95,7 +96,8 @@ class DirTest extends PHPUnit_Framework_TestCase
          [vfsStream::url('root/test/does/not/exist'), true],
       ];
 
-      foreach ($tests as list($test, $expect)) {
+      foreach ($tests as $test) {
+         list($test, $expect) = $test;
          $result = (Dir::isWritable($test) === true);
          $this->assertEquals($expect, $result);
       }
@@ -113,7 +115,8 @@ class DirTest extends PHPUnit_Framework_TestCase
          [vfsStream::url('root/test/does/not/exist'), true],
       ];
 
-      foreach ($tests as list($test, $expect)) {
+      foreach ($tests as $test) {
+         list($test, $expect) = $test;
          $result = (Dir::prepare($test) === true);
          $this->assertEquals($expect, $result);
       }
@@ -152,7 +155,8 @@ class DirTest extends PHPUnit_Framework_TestCase
          [vfsStream::url('root/test'), false]
       ];
 
-      foreach ($tests as list($test, $expect)) {
+      foreach ($tests as $test) {
+         list($test, $expect) = $test;
          $result = (Dir::isEmpty($test) === true);
          $this->assertEquals($expect, $result);
       }

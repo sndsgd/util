@@ -57,7 +57,8 @@ class PathTest extends PHPUnit_Framework_TestCase
          ['root/file-all', $d, false],
       ];
 
-      foreach ($tests as list($path, $flags, $expect)) {
+      foreach ($tests as $test) {
+         list($path, $flags, $expect) = $test;
          $result = (Path::test(vfsStream::url($path), $flags) === true);
          $this->assertEquals($expect, $result);
       }

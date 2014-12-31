@@ -15,7 +15,8 @@ class PriorityQueueTest extends PHPUnit_Framework_TestCase
       ];
 
       $this->pq = new PriorityQueue();
-      foreach ($values as list($value, $priority)) {
+      foreach ($values as $value) {
+         list($value, $priority) = $value;
          $this->pq->insert($value, $priority);
       }
    }

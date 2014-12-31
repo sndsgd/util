@@ -89,7 +89,8 @@ class FileTest extends PHPUnit_Framework_TestCase
          [vfsStream::url('root/does-not-exist/file.txt'), true]
       ];
 
-      foreach ($tests as list($test, $expect)) {
+      foreach ($tests as $test) {
+         list($test, $expect) = $test;
          $result = File::isWritable($test) === true;
          $this->assertEquals($expect, $result);
       }
@@ -107,7 +108,8 @@ class FileTest extends PHPUnit_Framework_TestCase
          [vfsStream::url('root/does-not-exist/file.txt'), true],
       ];
 
-      foreach ($tests as list($test, $expect)) {
+      foreach ($tests as $test) {
+         list($test, $expect) = $test;
          $result = File::prepare($test) === true;
          $this->assertEquals($expect, $result);
       }
@@ -302,7 +304,8 @@ class FileTest extends PHPUnit_Framework_TestCase
          ['1.1498 GB', 1234567890, 4],
       ];
 
-      foreach ($tests as list($expect, $bytes, $precision)) {
+      foreach ($tests as $test) {
+         list($expect, $bytes, $precision) = $test;
          $result = File::formatSize($bytes, $precision);
          $this->assertEquals($expect, $result);
       }

@@ -103,7 +103,8 @@ class UrlTest extends PHPUnit_Framework_TestCase
       ];
 
       $url = new Url;
-      foreach ($tests as list($test, $expect)) {
+      foreach ($tests as $test) {
+         list($test, $expect) = $test;
          $url->setPort($test);
          $this->assertEquals($expect, $url->getPort());
       }
@@ -128,7 +129,8 @@ class UrlTest extends PHPUnit_Framework_TestCase
 
       $url = new Url;
 
-      foreach ($tests as list($test, $expect)) {
+     foreach ($tests as $test) {
+         list($test, $expect) = $test;
          $url->setPath($test);
          $this->assertEquals($expect, $url->getPath());
       }
@@ -174,7 +176,8 @@ class UrlTest extends PHPUnit_Framework_TestCase
       ];
 
       $url = new Url;
-      foreach ($tests as list($test, $expect)) {
+      foreach ($tests as $test) {
+         list($test, $expect) = $test;
          $url->setFragment($test);
          $this->assertEquals($expect, $url->getFragment());
       }

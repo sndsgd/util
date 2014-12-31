@@ -69,7 +69,8 @@ class StrTest extends PHPUnit_Framework_TestCase
          [-100, 'assertNull']
       ];
 
-      foreach ($tests as list($test, $method)) {
+      foreach ($tests as $test) {
+         list($test, $method) = $test;
          $result = Str::toBoolean($test);
          $err = 
             "test: ".var_export($test, true).
@@ -87,7 +88,8 @@ class StrTest extends PHPUnit_Framework_TestCase
          [' camel case_long', 'camelCaseLong'],
       ];
 
-      foreach ($tests as list($test, $expect)) {
+      foreach ($tests as $test) {
+         list($test, $expect) = $test;
          $this->assertEquals($expect, Str::toCamelCase($test)); 
       }
    }
@@ -103,7 +105,8 @@ class StrTest extends PHPUnit_Framework_TestCase
          ['snakeCaseLong', 'snake_case_long']
       ];
       
-      foreach ($tests as list($test, $expect)) {
+      foreach ($tests as $test) {
+         list($test, $expect) = $test;
          $this->assertEquals($expect, Str::toSnakeCase($test));   
       }
 

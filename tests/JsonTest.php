@@ -59,19 +59,6 @@ class JsonTest extends PHPUnit_Framework_TestCase
    /**
     * @covers \sndsgd\util\Json::encodeFile
     */
-   public function testEncodeFileJsonEncodeError()
-   {
-      $path = $this->getVfsFilePath();
-
-      # json_encode fails due to recursion limit
-      $test = ['test'=>['test'=>['test'=>['test'=>['test'=>['hello']]]]]];
-      $result = Json::encodeFile($path, $test, 0, 2);
-      $this->assertTrue(is_string($result));
-   }
-
-   /**
-    * @covers \sndsgd\util\Json::encodeFile
-    */
    public function testEncodeFileFileWriteFailure()
    {
       $path = $this->getVfsFilePath();

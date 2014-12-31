@@ -47,7 +47,6 @@ class Json
     * @param string $path An absolute path to the file to write
     * @param mixed $data The variable to encode
     * @param bitmask $options json_encode options
-    * @param integer $depth The maxmium depth
     * @return boolean|string
     * @return boolean:true The variable was encoded and written successfully
     * @return string An error message describing the failure
@@ -55,13 +54,12 @@ class Json
    public static function encodeFile(
       $path,
       $data,
-      $options = 0,
-      $depth = 512
+      $options = 0
    ) {
       if (($test = File::prepare($path)) !== true) {
          $err = $test;
       }
-      else if (($json = json_encode($data, $options, $depth)) === false) {
+      else if (($json = json_encode($data, $options)) === false) {
          $err = self::getError();
       }
       else if (@file_put_contents($path, $json) === false) {
