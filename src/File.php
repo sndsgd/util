@@ -69,6 +69,28 @@ class File
    }
 
    /**
+    * Convience method to prepare a file, and then write to it
+    *
+    * @param string $path The absolute file path
+    * @param string $contents The contents to write to the file
+    * @param integer $opts Options to pass to file_put_contents
+    * @param octal $dirPerms Permissions for new directories
+    * @return boolean|string
+    * @return boolean:true The write operation was successfull
+    * @return string An error message indicating a failure
+    */
+   public static function write($path, $contents, $opts = 0, $dirPerms = 0775)
+   {
+      if (($result = self::prepare($path, $dirPerms)) !== true) {
+         return "file write operation failed; $result";
+      }
+      else if (@file_put_contents($path, $contents, $opts) === false) {
+         return "file write operation failed";
+      }
+      return true;
+   }
+
+   /**
     * Remove wonky characters from a file name
     *
     * @param string $name The path or filename to sanitize
@@ -85,6 +107,8 @@ class File
       
       return preg_replace('/[^A-Za-z0-9-_.]/', '_', $name);
    }
+
+
 
    /**
     * Separate a filename and extension

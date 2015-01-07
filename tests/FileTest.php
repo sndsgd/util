@@ -6,6 +6,9 @@ use \sndsgd\util\Path;
 use \sndsgd\util\Str;
 
 
+/**
+ * @coversDefaultClass \sndsgd\util\File
+ */
 class FileTest extends PHPUnit_Framework_TestCase
 {
    protected function setUp()
@@ -63,7 +66,7 @@ class FileTest extends PHPUnit_Framework_TestCase
    }
 
    /**
-    * @covers \sndsgd\util\File::isReadable
+    * @covers ::isReadable
     */
    public function testIsReadable()
    {
@@ -78,7 +81,7 @@ class FileTest extends PHPUnit_Framework_TestCase
    }
 
    /**
-    * @covers \sndsgd\util\File::isWritable
+    * @covers ::isWritable
     */
    public function testIsWritable()
    {
@@ -97,7 +100,7 @@ class FileTest extends PHPUnit_Framework_TestCase
    }
 
    /**
-    * @covers \sndsgd\util\File::prepare
+    * @covers ::prepare
     */
    public function testPrepare()
    {
@@ -116,7 +119,23 @@ class FileTest extends PHPUnit_Framework_TestCase
    }
 
    /**
-    * @covers \sndsgd\util\File::sanitizeName
+    * @covers ::write
+    */
+   public function testWrite()
+   {
+      # success
+      $path = vfsStream::url('root/test/a-new-dir/file.txt');
+      $contents = 'test';
+      $this->assertTrue(File::write($path, $contents, 0));
+
+      # prepare failure
+      $path = vfsStream::url('root/noreadwrite/new-file.txt');
+      $contents = 'test';
+      $this->assertFalse(File::write($path, $contents, 0) === true);
+   }
+
+   /**
+    * @covers ::sanitizeName
     */
    public function testSanitizeName()
    {
@@ -130,7 +149,7 @@ class FileTest extends PHPUnit_Framework_TestCase
    }
 
    /**
-    * @covers \sndsgd\util\File::sanitizeName
+    * @covers ::sanitizeName
     * @expectedException InvalidArgumentException
     */
    public function testSanitizeNameException()
@@ -139,7 +158,7 @@ class FileTest extends PHPUnit_Framework_TestCase
    }
 
    /**
-    * @covers \sndsgd\util\File::splitName
+    * @covers ::splitName
     */
    public function testSplitNameFile()
    {
@@ -162,7 +181,7 @@ class FileTest extends PHPUnit_Framework_TestCase
    }
 
    /**
-    * @covers \sndsgd\util\File::splitName
+    * @covers ::splitName
     */
    public function testSplitNameRootChild()
    {
@@ -185,7 +204,7 @@ class FileTest extends PHPUnit_Framework_TestCase
    }
 
    /**
-    * @covers \sndsgd\util\File::splitName
+    * @covers ::splitName
     */
    public function testSplitNameAbsolutePath()
    {
@@ -208,7 +227,7 @@ class FileTest extends PHPUnit_Framework_TestCase
    }
 
    /**
-    * @covers \sndsgd\util\File::splitName
+    * @covers ::splitName
     */
    public function testSplitNameRelativePath()
    {
@@ -231,7 +250,7 @@ class FileTest extends PHPUnit_Framework_TestCase
    }
 
    /**
-    * @covers \sndsgd\util\File::splitName
+    * @covers ::splitName
     */
    public function testSplitNameMissingExtensionValue()
    {
@@ -243,7 +262,7 @@ class FileTest extends PHPUnit_Framework_TestCase
 
 
    /**
-    * @covers \sndsgd\util\File::rename
+    * @covers ::rename
     */
    public function testRename()
    {
@@ -272,7 +291,7 @@ class FileTest extends PHPUnit_Framework_TestCase
    }
 
    /**
-    * @covers \sndsgd\util\File::rename
+    * @covers ::rename
     */
    public function testRenameWriteFail()
    {
@@ -292,7 +311,7 @@ class FileTest extends PHPUnit_Framework_TestCase
    }
 
    /**
-    * @covers \sndsgd\util\File::formatSize
+    * @covers ::formatSize
     */
    public function testFormatSize()
    {
@@ -312,7 +331,7 @@ class FileTest extends PHPUnit_Framework_TestCase
    }
 
    /**
-    * @covers \sndsgd\util\File::formatSize
+    * @covers ::formatSize
     */
    public function testFormatSizeForPath()
    {
@@ -322,7 +341,7 @@ class FileTest extends PHPUnit_Framework_TestCase
    }
 
    /**
-    * @covers \sndsgd\util\File::formatSize
+    * @covers ::formatSize
     * @expectedException InvalidArgumentException
     */
    public function testFormatSizeInvalidBytes()
@@ -331,7 +350,7 @@ class FileTest extends PHPUnit_Framework_TestCase
    }
 
    /**
-    * @covers \sndsgd\util\File::formatSize
+    * @covers ::formatSize
     * @expectedException InvalidArgumentException
     */
    public function testFormatSizeInvalidPath()
@@ -340,7 +359,7 @@ class FileTest extends PHPUnit_Framework_TestCase
    }
 
    /**
-    * @covers \sndsgd\util\File::countLines
+    * @covers ::countLines
     */
    public function testCountLines()
    {
