@@ -82,7 +82,7 @@ class File
    public static function write($path, $contents, $opts = 0, $dirPerms = 0775)
    {
       if (($result = self::prepare($path, $dirPerms)) !== true) {
-         return "file write operation failed; $result";
+         return "file write operation prevented; $result";
       }
       else if (@file_put_contents($path, $contents, $opts) === false) {
          return "file write operation failed";
@@ -107,8 +107,6 @@ class File
       
       return preg_replace('/[^A-Za-z0-9-_.]/', '_', $name);
    }
-
-
 
    /**
     * Separate a filename and extension
@@ -167,12 +165,10 @@ class File
     */
    public static function rename($from, $to, $fperm = 0664, $dperm = 0775)
    {
-      $test = Path::test($from, self::READABLE_WRITABLE);
-      if ($test !== true) {
+      if (($test = Path::test($from, self::READABLE_WRITABLE)) !== true) {
          return $test;
       }
-      $test = self::prepare($to, $dperm);
-      if ($test !== true) {
+      else if (($test = self::prepare($to, $dperm)) !== true) {
          return $test;
       }
       else if (@rename($from, $to) === false) {
