@@ -1,5 +1,8 @@
 language: php
 
+env:
+  - COVERALLS_PHP_VERSION="5.5"
+
 php:
   - 5.4
   - 5.5
@@ -17,7 +20,6 @@ before_install:
 
 install:
   - composer install --no-interaction --prefer-source --dev
-  - composer require satooshi/php-coveralls:dev-master
 
 before_script:
   - echo "extension = memcached.so" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini
@@ -26,4 +28,4 @@ script:
   - phpunit --coverage-clover tests/coverage-clover.xml
 
 after_script:
-  - vendor/bin/coveralls -v
+  - bin/aftertest

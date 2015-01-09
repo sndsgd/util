@@ -5,6 +5,7 @@
 /apigen.neon                        export-ignore
 /phpunit.xml                        export-ignore
 /tests                              export-ignore
+/bin/aftertest                      export-ignore
 
 # these files are used to update private properties in sndsgd\util\Mime
 /bin/mime-updater.php               export-ignore
