@@ -15,7 +15,8 @@ class Memcached extends \Memcached
    public function __construct($persistentId = '-')
    {
       parent::__construct($persistentId);
-      if (empty($this->getServerList())) {
+      $serverList = $this->getServerList();
+      if (empty($serverList)) {
          $this->setOption(\Memcached::OPT_PREFIX_KEY, 'sndsgd-');
          $this->setOption(\Memcached::OPT_RECV_TIMEOUT, 1000);
          $this->setOption(\Memcached::OPT_SEND_TIMEOUT, 1000);
