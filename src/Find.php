@@ -147,10 +147,7 @@ class Find
       $ret = [];
       $iterator = self::getIterator($dir, $options);
       foreach ($iterator as $file) {
-         if (
-            $file->isLink() &&
-            ($realPath = $file->getRealPath()) === false
-         ) {
+         if ($file->isLink() && $file->getRealPath() === false) {
             $link = $file->getPath().DIRECTORY_SEPARATOR.$file->getFilename();
             $ret[$link] = 1;
          }

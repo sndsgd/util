@@ -1,7 +1,4 @@
-.DS_Store
 docs
 vendor
 composer.lock
-.fuse_hidden*
 bin/dev.php
-tests/report

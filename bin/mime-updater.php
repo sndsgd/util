@@ -1,7 +1,5 @@
 <?php
 
-use \sndsgd\util\File;
-use \sndsgd\util\Mime;
 use \sndsgd\util\Path;
 
 

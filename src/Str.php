@@ -131,9 +131,8 @@ class Str
       $input = trim($input);
       $input = preg_replace('/[^a-z0-9]+/i', '_', $input);
       $fn = function($arg) {
-         // list($match, $char) = $arg;
-         // return $match[0].'_'.$match[1];
-         return $arg[0][0].'_'.$arg[0][1];
+         list($match, $char) = $arg;
+         return $match[0].'_'.$match[1];
       };
       $ret = preg_replace_callback('/([a-z])[A-Z]/', $fn, $input);
       return ($uppercase) 
