@@ -13,13 +13,14 @@ matrix:
     - php: hhvm-nightly
 
 before_install:
-  - sudo apt-get update
   - composer self-update
 
 install:
-  - sudo apt-get install memcached php5-memcached
   - composer install --no-interaction --prefer-source --dev
   - composer require satooshi/php-coveralls:dev-master
+
+before_script:
+  - echo "extension = memcached.so" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini
 
 script:
   - phpunit --coverage-clover tests/coverage-clover.xml
