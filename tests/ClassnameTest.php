@@ -1,6 +1,6 @@
 <?php
 
-use \sndsgd\util\Classname;
+use \sndsgd\Classname;
 
 
 class ClassnameTest extends PHPUnit_Framework_TestCase
@@ -38,6 +38,23 @@ class ClassnameTest extends PHPUnit_Framework_TestCase
 
       $res = Classname::toMethod(['some','namespace','method']);
       $this->assertEquals('some\\namespace::method', $res);      
+   }
+
+   public function testFromContents()
+   {
+      $contents = file_get_contents(__FILE__);
+
+      $this->assertEquals('some\ns\Classname', Classname::fromContents(
+         "<?php\nnamespace some\\ns;\n\nclass Classname {\n\n}\n"
+      ));
+
+      $this->assertEquals('TestClass', Classname::fromContents(
+         "<?php\nclass TestClass{\n\n}\n\n?>"
+      ));
+
+      $this->assertNull(Classname::fromContents(
+         "<?php\nnamespace test\\this;\n\n?>"
+      ));
    }
 }
 

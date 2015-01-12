@@ -1,6 +1,6 @@
 <?php
 
-use \sndsgd\util\Memcached;
+use \sndsgd\Memcached;
 
 
 class MemcachedTest extends PHPUnit_Framework_TestCase

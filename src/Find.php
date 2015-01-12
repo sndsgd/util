@@ -1,13 +1,13 @@
 <?php
 
-namespace sndsgd\util;
+namespace sndsgd;
 
 use \DirectoryIterator as DI;
 use \InvalidArgumentException;
 use \RecursiveDirectoryIterator as RDI;
 use \RecursiveIteratorIterator as RII;
-use \sndsgd\util\Dir;
-use \sndsgd\util\Path;
+use \sndsgd\Dir;
+use \sndsgd\Path;
 
 
 /**

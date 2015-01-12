@@ -1,6 +1,6 @@
 <?php
 
-namespace sndsgd\util;
+namespace sndsgd;
 
 use \InvalidArgumentException;
 
@@ -61,7 +61,7 @@ class Url
     * Parse a url string into an object
     * 
     * @param string $url
-    * @return sndsgd\util\Url
+    * @return sndsgd\Url
     */
    public static function createFromString($url)
    {
@@ -87,7 +87,7 @@ class Url
     * Create a url instance given an array of url properties and values
     * 
     * @param array $arr
-    * @return sndsgd\util\Url
+    * @return sndsgd\Url
     */
    public static function createFromArray(array $arr)
    {
@@ -301,7 +301,7 @@ class Url
     * Set the query data
     * 
     * @param string|array|null $query
-    * @return sndsgd\util\Url
+    * @return sndsgd\Url
     */
    public function setQuery($query = null)
    {
@@ -315,7 +315,7 @@ class Url
     * Add more data to the query
     * 
     * @param string|array $data
-    * @return sndsgd\util\Url
+    * @return sndsgd\Url
     */
    public function addQueryData($data)
    {
@@ -352,7 +352,7 @@ class Url
     * Set the fragment
     * 
     * @param string|null $fragment
-    * @return sndsgd\util\Url
+    * @return sndsgd\Url
     */
    public function setFragment($fragment = null)
    {
@@ -425,8 +425,8 @@ class Url
    /**
     * Update missing properties in the url with those of another url
     * 
-    * @param string|sndsgd\util\Url $to
-    * @return sndsgd\util\Url
+    * @param string|sndsgd\Url $to
+    * @return sndsgd\Url
     * @throws InvalidArgumentException If an invalid argument is passed
     */
    public function merge($to)
@@ -440,7 +440,7 @@ class Url
       else if (!($to instanceof Url)) {
          throw new InvalidArgumentException(
             "invalid value provided for 'to'; expecting a url as string, ".
-            "an instance of sndsgd\\util\\Url, or an array of url properties"
+            "an instance of sndsgd\\Url, or an array of url properties"
          );
       }
 

@@ -3,7 +3,7 @@
 
 class TestManager
 {
-   use \sndsgd\util\data\Manager;
+   use \sndsgd\data\Manager;
 
 }
 

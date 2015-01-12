@@ -1,6 +1,6 @@
 <?php
 
-namespace sndsgd\util;
+namespace sndsgd;
 
 
 /**

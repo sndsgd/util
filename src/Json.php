@@ -1,9 +1,9 @@
 <?php
 
-namespace sndsgd\util;
+namespace sndsgd;
 
 use \Exception;
-use \sndsgd\util\File;
+use \sndsgd\File;
 
 
 /**
@@ -108,7 +108,7 @@ class Json
       else if (!is_array($ret) && !is_object($ret)) {
          throw new Exception(
             "Invalid JSON value type in '$path'; ".
-            "only use sndsgd\\util\\Json::decodeFile() on files that ".
+            "only use sndsgd\\Json::decodeFile() on files that ".
             "contain an array or an object"
          );
       }

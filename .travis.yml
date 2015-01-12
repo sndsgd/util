@@ -1,8 +1,5 @@
 language: php
 
-env:
-  - COVERALLS_PHP_VERSION="5.5"
-
 php:
   - 5.4
   - 5.5

@@ -1,9 +1,9 @@
 <?php
 
 use \org\bovigo\vfs\vfsStream;
-use \sndsgd\util\Dir;
-use \sndsgd\util\Path;
-use \sndsgd\util\Temp;
+use \sndsgd\Dir;
+use \sndsgd\Path;
+use \sndsgd\Temp;
 
 
 class DirTest extends PHPUnit_Framework_TestCase
@@ -67,7 +67,7 @@ class DirTest extends PHPUnit_Framework_TestCase
    }
 
    /**
-    * @covers \sndsgd\util\Dir::isReadable
+    * @covers \sndsgd\Dir::isReadable
     */
    public function testIsReadable()
    {
@@ -85,7 +85,7 @@ class DirTest extends PHPUnit_Framework_TestCase
    }
 
    /**
-    * @covers \sndsgd\util\Dir::isWritable
+    * @covers \sndsgd\Dir::isWritable
     */
    public function testIsWritable()
    {
@@ -104,7 +104,7 @@ class DirTest extends PHPUnit_Framework_TestCase
    }
 
    /**
-    * @covers \sndsgd\util\Dir::prepare
+    * @covers \sndsgd\Dir::prepare
     */
    public function testPrepare()
    {
@@ -123,7 +123,7 @@ class DirTest extends PHPUnit_Framework_TestCase
    }
 
    /**
-    * @covers \sndsgd\util\Dir::sanitizeName
+    * @covers \sndsgd\Dir::sanitizeName
     */
    public function testSanitizeName()
    {
@@ -137,7 +137,7 @@ class DirTest extends PHPUnit_Framework_TestCase
    }
 
    /**
-    * @covers \sndsgd\util\Dir::sanitizeName
+    * @covers \sndsgd\Dir::sanitizeName
     * @expectedException InvalidArgumentException
     */
    public function testSanitizeNameException()
@@ -146,7 +146,7 @@ class DirTest extends PHPUnit_Framework_TestCase
    }
 
    /**
-    * @covers \sndsgd\util\Dir::isEmpty
+    * @covers \sndsgd\Dir::isEmpty
     */
    public function testIsEmpty()
    {
@@ -163,7 +163,7 @@ class DirTest extends PHPUnit_Framework_TestCase
    }
 
    /**
-    * @covers \sndsgd\util\Dir::isEmpty
+    * @covers \sndsgd\Dir::isEmpty
     * @expectedException InvalidArgumentException
     */
    public function testIsEmptyException()
@@ -172,7 +172,7 @@ class DirTest extends PHPUnit_Framework_TestCase
    }
 
    /**
-    * @covers \sndsgd\util\Dir::isEmpty
+    * @covers \sndsgd\Dir::isEmpty
     * @expectedException InvalidArgumentException
     */
    public function testIsEmptyNonDirException()
@@ -181,7 +181,7 @@ class DirTest extends PHPUnit_Framework_TestCase
    }
 
    /**
-    * @covers \sndsgd\util\Dir::copy
+    * @covers \sndsgd\Dir::copy
     */
    public function testCopy()
    {
@@ -197,7 +197,7 @@ class DirTest extends PHPUnit_Framework_TestCase
    }
 
    /**
-    * @covers \sndsgd\util\Dir::remove
+    * @covers \sndsgd\Dir::remove
     */
    public function testRemove()
    {

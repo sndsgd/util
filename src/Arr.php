@@ -1,6 +1,6 @@
 <?php
 
-namespace sndsgd\util;
+namespace sndsgd;
 
 
 /**
@@ -209,8 +209,8 @@ class Arr
    )
    {
       $fn = ($strict === false)
-         ? 'sndsgd\\util\\Compare::equal'
-         : 'sndsgd\\util\\Compare::strictEqual';
+         ? 'sndsgd\\Compare::equal'
+         : 'sndsgd\\Compare::strictEqual';
 
       $len = count($arr);
       while ($len > 0 && call_user_func($fn, end($arr), $match)) {
@@ -235,8 +235,8 @@ class Arr
    )
    {
       $fn = ($strict === false)
-         ? 'sndsgd\\util\\Compare::equal'
-         : 'sndsgd\\util\\Compare::strictEqual';
+         ? 'sndsgd\\Compare::equal'
+         : 'sndsgd\\Compare::strictEqual';
 
       $len = count($arr);
       while ($len > 0 && call_user_func($fn, reset($arr), $match)) {

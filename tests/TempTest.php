@@ -1,16 +1,16 @@
 <?php
 
 use \org\bovigo\vfs\vfsStream;
-use \sndsgd\util\File;
-use \sndsgd\util\Path;
-use \sndsgd\util\Temp;
+use \sndsgd\File;
+use \sndsgd\Path;
+use \sndsgd\Temp;
 
 
 
 class TempTest extends PHPUnit_Framework_TestCase
 {
    /**
-    * @covers sndsgd\util\Temp::registerPath
+    * @covers sndsgd\Temp::registerPath
     */
    public function testRegisterPath()
    {
@@ -23,7 +23,7 @@ class TempTest extends PHPUnit_Framework_TestCase
    }
 
    /**
-    * @covers sndsgd\util\Temp::file
+    * @covers sndsgd\Temp::file
     */
    public function testFile()
    {
@@ -42,7 +42,7 @@ class TempTest extends PHPUnit_Framework_TestCase
    }
 
    /**
-    * @covers sndsgd\util\Temp::dir
+    * @covers sndsgd\Temp::dir
     */
    public function testDir()
    {
@@ -51,7 +51,7 @@ class TempTest extends PHPUnit_Framework_TestCase
    }
 
    /**
-    * @covers sndsgd\util\Temp::cleanup
+    * @covers sndsgd\Temp::cleanup
     */
    public function testCleanup()
    {

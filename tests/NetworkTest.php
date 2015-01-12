@@ -1,6 +1,6 @@
 <?php
 
-use \sndsgd\util\Network;
+use \sndsgd\Network;
 
 
 class NetworkTest extends PHPUnit_Framework_TestCase

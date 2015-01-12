@@ -1,6 +1,6 @@
 <?php
 
-use \sndsgd\util\Fn;
+use \sndsgd\Fn;
 
 
 class FnTest extends PHPUnit_Framework_TestCase
@@ -12,7 +12,7 @@ class FnTest extends PHPUnit_Framework_TestCase
       $this->assertFalse(Fn::exists('_____________nope') !== null);
 
       $this->assertTrue(Fn::exists('DateTime::createFromFormat') !== null);
-      $this->assertTrue(Fn::exists('sndsgd\\util\\Fn::exists') !== null);
+      $this->assertTrue(Fn::exists('sndsgd\\Fn::exists') !== null);
       $this->assertFalse(Fn::exists('This\\Class\\Doesnt\\Exist::test') !== null);
    }
 }

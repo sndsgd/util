@@ -2,10 +2,10 @@
 
 use \SplFileInfo;
 use \org\bovigo\vfs\vfsStream;
-use \sndsgd\util\Dir;
-use \sndsgd\util\Find;
-use \sndsgd\util\Path;
-use \sndsgd\util\Temp;
+use \sndsgd\Dir;
+use \sndsgd\Find;
+use \sndsgd\Path;
+use \sndsgd\Temp;
 
 
 class FindTest extends PHPUnit_Framework_TestCase
@@ -68,8 +68,8 @@ class FindTest extends PHPUnit_Framework_TestCase
    }
 
    /**
-    * @covers \sndsgd\util\Find::getIterator
-    * @covers \sndsgd\util\Find::createIterator
+    * @covers \sndsgd\Find::getIterator
+    * @covers \sndsgd\Find::createIterator
     */
    public function testGetIterator()
    {
@@ -81,7 +81,7 @@ class FindTest extends PHPUnit_Framework_TestCase
    }
 
    /**
-    * @covers \sndsgd\util\Find::getIterator
+    * @covers \sndsgd\Find::getIterator
     * @expectedException InvalidArgumentException
     */
    public function testGetIteratorNonStringDir()
@@ -90,7 +90,7 @@ class FindTest extends PHPUnit_Framework_TestCase
    }
 
    /**
-    * @covers \sndsgd\util\Find::getIterator
+    * @covers \sndsgd\Find::getIterator
     * @expectedException InvalidArgumentException
     */
    public function testGetIteratorNonReadableDir()
@@ -106,7 +106,7 @@ class FindTest extends PHPUnit_Framework_TestCase
    }
 
    /**
-    * @covers \sndsgd\util\Find::getIterator
+    * @covers \sndsgd\Find::getIterator
     * @expectedException InvalidArgumentException
     */
    public function testGetIteratorNonIntegerOptions()
@@ -115,7 +115,7 @@ class FindTest extends PHPUnit_Framework_TestCase
    }
 
    /**
-    * @covers \sndsgd\util\Find::directories
+    * @covers \sndsgd\Find::directories
     */
    public function testDirectories()
    {
@@ -127,7 +127,7 @@ class FindTest extends PHPUnit_Framework_TestCase
    }
 
    /**
-    * @covers \sndsgd\util\Find::emptyDirectories
+    * @covers \sndsgd\Find::emptyDirectories
     */
    public function testEmptyDirectories()
    {
@@ -139,7 +139,7 @@ class FindTest extends PHPUnit_Framework_TestCase
    }
 
    /**
-    * @covers \sndsgd\util\Find::filesByExtension
+    * @covers \sndsgd\Find::filesByExtension
     */
    public function testFilesByExtension()
    {
@@ -151,7 +151,7 @@ class FindTest extends PHPUnit_Framework_TestCase
    }
 
    /**
-    * @covers \sndsgd\util\Find::brokenLinks
+    * @covers \sndsgd\Find::brokenLinks
     */
    public function testBrokenLinks()
    {

@@ -1,13 +1,13 @@
 <?php
 
 use \org\bovigo\vfs\vfsStream;
-use \sndsgd\util\File;
-use \sndsgd\util\Path;
-use \sndsgd\util\Str;
+use \sndsgd\File;
+use \sndsgd\Path;
+use \sndsgd\Str;
 
 
 /**
- * @coversDefaultClass \sndsgd\util\File
+ * @coversDefaultClass \sndsgd\File
  */
 class FileTest extends PHPUnit_Framework_TestCase
 {

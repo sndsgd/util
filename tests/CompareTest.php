@@ -1,6 +1,6 @@
 <?php
 
-use \sndsgd\util\Compare;
+use \sndsgd\Compare;
 
 
 class CompareTest extends PHPUnit_Framework_TestCase

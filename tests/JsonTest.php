@@ -1,15 +1,18 @@
 <?php
 
 use \org\bovigo\vfs\vfsStream;
-use \sndsgd\util\Json;
-use \sndsgd\util\Str;
-use \sndsgd\util\Temp;
+use \sndsgd\Json;
+use \sndsgd\Str;
+use \sndsgd\Temp;
 
-
+/**
+ * @coversDefaultClass sndsgd\Json
+ */
 class JsonTest extends PHPUnit_Framework_TestCase
 {
-   protected $invalidJSON = '{"missingTrailingQuote: "some value"}';
-
+   /**
+    * @coversNothing
+    */
    private function getVfsFilePath()
    {
       $root = vfsStream::setup('root');
@@ -27,17 +30,18 @@ class JsonTest extends PHPUnit_Framework_TestCase
    }
 
    /**
-    * @covers \sndsgd\util\Json::getError
+    * @covers ::getError
     */
    public function testGetError()
    {
-      $res = json_decode($this->invalidJSON, true);
+      $invalidJSON = '{"missingTrailingQuote: "some value"}';
+      $res = json_decode($invalidJSON, true);
       $error = Json::getError();
       $this->assertEquals($error, 'syntax error');
    }
 
    /**
-    * @covers \sndsgd\util\Json::encodeFile
+    * @covers ::encodeFile
     */
    public function testEncodeFile()
    {
@@ -57,7 +61,7 @@ class JsonTest extends PHPUnit_Framework_TestCase
    }
 
    /**
-    * @covers \sndsgd\util\Json::encodeFile
+    * @covers ::encodeFile
     */
    public function testEncodeFileFileWriteFailure()
    {
@@ -68,7 +72,7 @@ class JsonTest extends PHPUnit_Framework_TestCase
    }
 
    /**
-    * @covers nothing
+    * @covers ::encodeFile
     */
    private function writeTestJsonFile()
    {
@@ -84,7 +88,7 @@ class JsonTest extends PHPUnit_Framework_TestCase
    }
 
    /**
-    * @covers \sndsgd\util\Json::decodeFile
+    * @covers ::decodeFile
     */
    public function testDecodeFileNotReadable()
    {
@@ -93,15 +97,8 @@ class JsonTest extends PHPUnit_Framework_TestCase
       $this->assertTrue(is_string($result));
    }
 
-   // /**
-   //  * @covers \sndsgd\util\Json::decodeFile
-   //  */
-   // public function testDecodeFileReadFailure()
-   // {
-   // }
-
    /**
-    * @covers \sndsgd\util\Json::decodeFile
+    * @covers ::decodeFile
     */
    public function testDecodeFileDecodeFailure()
    {
@@ -112,7 +109,7 @@ class JsonTest extends PHPUnit_Framework_TestCase
    }
 
    /**
-    * @covers \sndsgd\util\Json::decodeFile
+    * @covers ::decodeFile
     * @expectedException Exception
     */
    public function testDecodeFileBadTypeException()
@@ -123,7 +120,7 @@ class JsonTest extends PHPUnit_Framework_TestCase
    }
 
    /**
-    * @covers \sndsgd\util\Json::decodeFile
+    * @covers ::decodeFile
     */
    public function testDecodeFileSuccess()
    {

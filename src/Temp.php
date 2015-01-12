@@ -1,6 +1,6 @@
 <?php
 
-namespace sndsgd\util;
+namespace sndsgd;
 
 
 /**
@@ -24,7 +24,7 @@ class Temp
    public static function registerPath($path, $isDir = null)
    {
       if (count(self::$files) === 0) {
-         register_shutdown_function('sndsgd\\util\\Temp::cleanup');
+         register_shutdown_function('sndsgd\\Temp::cleanup');
       }
       self::$files[$path] = $isDir;
    }

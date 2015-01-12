@@ -1,6 +1,6 @@
 <?php
 
-use \sndsgd\util\Str;
+use \sndsgd\Str;
 
 
 class StrTest extends PHPUnit_Framework_TestCase

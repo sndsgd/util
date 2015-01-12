@@ -1,6 +1,6 @@
 <?php
 
-use \sndsgd\util\Mime;
+use \sndsgd\Mime;
 
 
 class MimeTest extends PHPUnit_Framework_TestCase
@@ -31,7 +31,7 @@ class MimeTest extends PHPUnit_Framework_TestCase
 
    public function testGetExtension()
    {
-      $fn = 'sndsgd\\util\\Mime::getExtension';
+      $fn = 'sndsgd\\Mime::getExtension';
       $tests = [
          'gif' => 'image/gif',
          'jpg' => 'image/jpeg',

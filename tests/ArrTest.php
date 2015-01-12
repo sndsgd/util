@@ -1,6 +1,6 @@
 <?php
 
-use \sndsgd\util\Arr;
+use \sndsgd\Arr;
 
 
 class ArrTest extends PHPUnit_Framework_TestCase

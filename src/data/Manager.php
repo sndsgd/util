@@ -1,6 +1,6 @@
 <?php
 
-namespace sndsgd\util\data;
+namespace sndsgd\data;
 
 use \InvalidArgumentException;
 
@@ -77,17 +77,17 @@ trait Manager
    /**
     * Retrieve data
     *
-    * @param string $key The name to stash data under
-    * @param mixed $value Whatever needs to be stashed
+    * @param string $key The key of the data to return
+    * @param mixed $default A value to return if the key doesn't exist
     * @return void
     */
-   public function getData($key = null)
+   public function getData($key = null, $default = null)
    {
       if ($key === null) {
          return $this->data;
       }
       else if (!array_key_exists($key, $this->data)) {
-         return null;
+         return $default;
       }
       return $this->data[$key];
    }

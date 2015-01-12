@@ -1,7 +1,7 @@
 <?php
 
-use \sndsgd\util\Arr;
-use \sndsgd\util\Url;
+use \sndsgd\Arr;
+use \sndsgd\Url;
 
 
 class UrlTest extends PHPUnit_Framework_TestCase

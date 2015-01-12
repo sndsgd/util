@@ -1,6 +1,6 @@
 <?php
 
-use \sndsgd\util\PriorityQueue;
+use \sndsgd\PriorityQueue;
 
 
 class PriorityQueueTest extends PHPUnit_Framework_TestCase

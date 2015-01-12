@@ -1,6 +1,6 @@
 <?php
 
-use \sndsgd\util\Config;
+use \sndsgd\Config;
 
 
 class ConfigTest extends PHPUnit_Framework_TestCase

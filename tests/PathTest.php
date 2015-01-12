@@ -3,13 +3,13 @@
 use \org\bovigo\vfs\vfsStream;
 use \org\bovigo\vfs\vfsStreamDirectory;
 use \org\bovigo\vfs\vfsStreamFile;
-use \sndsgd\util\Path;
+use \sndsgd\Path;
 
 
 class PathTest extends PHPUnit_Framework_TestCase
 {
    /**
-    * @covers \sndsgd\util\Path::test
+    * @covers \sndsgd\Path::test
     */
    public function testTest()
    {
@@ -65,7 +65,7 @@ class PathTest extends PHPUnit_Framework_TestCase
    }
 
    /**
-    * @covers \sndsgd\util\Path::test
+    * @covers \sndsgd\Path::test
     * @expectedException InvalidArgumentException
     */
    public function testTestException()
@@ -74,7 +74,7 @@ class PathTest extends PHPUnit_Framework_TestCase
    }
 
    /**
-    * @covers \sndsgd\util\Path::normalize
+    * @covers \sndsgd\Path::normalize
     */
    public function testNormalize()
    {
@@ -100,7 +100,7 @@ class PathTest extends PHPUnit_Framework_TestCase
    }
 
    /**
-    * @covers \sndsgd\util\Path::relative
+    * @covers \sndsgd\Path::relative
     */
    public function testRelative()
    {
