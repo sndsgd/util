@@ -138,5 +138,11 @@ class StrTest extends PHPUnit_Framework_TestCase
          $this->assertEquals($expect, $result);
       }
    }
+
+   public function testReplace()
+   {
+      $values = ['1' => 'one', '2' => 'two', '3' => 'three'];
+      $this->assertEquals('one two three', Str::replace('1 2 3', $values));
+   }
 }
 

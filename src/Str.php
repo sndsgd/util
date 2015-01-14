@@ -163,5 +163,18 @@ class Str
       $regex = "/(^[\r\n]*|[\r\n]+)[\s\t]*[\r\n]+/";
       return preg_replace($regex, PHP_EOL, $str);
    }
+
+   /**
+    * Handle string replacements given an array of find => replace values
+    *
+    * This was added to keep sndsgd\field\Error::getMessage() DRY
+    * @param string $str The string to replace within
+    * @param array.<string,string> $values
+    * @return string
+    */
+   public static function replace($str, array $values)
+   {
+      return str_replace(array_keys($values), array_values($values), $str);
+   }
 }
 
