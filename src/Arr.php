@@ -90,7 +90,7 @@ class Arr
     * @param array $defaults The values to fill $arr with
     * @return array
     */
-   public static function defaults(array $arr = null, array $defaults = null)
+   public static function defaults(array $arr = null, array $defaults)
    {
       if ($arr === null) {
          return $defaults;
