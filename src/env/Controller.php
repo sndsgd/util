@@ -2,7 +2,6 @@
 
 namespace sndsgd\env;
 
-use \InvalidArgumentException;
 use \sndsgd\Env;
 use \sndsgd\Str;
 

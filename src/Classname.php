@@ -76,7 +76,7 @@ class Classname
       $tokens = token_get_all($contents);
       for ($i=0, $len=count($tokens); $i<$len; $i++) {
          if ($tokens[$i][0] === T_NAMESPACE) {
-            for ($j=$i+1;$j<count($tokens); $j++) {
+            for ($j=$i+1, $jlen=count($tokens); $j<$jlen; $j++) {
                if ($tokens[$j][0] === T_STRING) {
                   $namespace .= '\\'.$tokens[$j][1];
                } 
