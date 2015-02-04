@@ -2,6 +2,8 @@
 
 namespace sndsgd;
 
+use InvalidArgumentException;
+
 
 /**
  * Temp file and directory utility methods
@@ -9,11 +11,57 @@ namespace sndsgd;
 class Temp
 {
    /**
+    * The directory to use as the temp directory
+    * 
+    * @var string|null
+    */
+   private static $dir = null;
+
+   /**
     * All created paths are added here for easy removal at script exit
     * 
-    * @var array.<string => boolean|null>
+    * @var array<string,boolean|null>
     */
    private static $files = [];
+
+   /**
+    * Set the root temp directory (overrides use of the system temp directory)
+    * 
+    * @param string|null $path
+    * @return void
+    * @throws InvalidArgumentException If the provided path isn't usable
+    */
+   public static function setDir($path)
+   {
+      if ($path === null) {
+         self::$dir = null;
+         return;
+      }
+
+      if (!is_string($path)) {
+         throw new InvalidArgumentException(
+            "invalid value provided for 'path'; ".
+            "expecting an absolute directory path as string"
+         );
+      }
+      else if (($test = Path::test($path, Dir::READABLE_WRITABLE)) !== true) {
+         throw new InvalidArgumentException(
+            "invalid value provided for 'path'; $test"
+         );
+      }
+
+      self::$dir = $path;
+   }
+
+   /**
+    * Get the root temp directory
+    * 
+    * @return string
+    */
+   public static function getDir()
+   {
+      return (self::$dir !== null) ? self::$dir : sys_get_temp_dir();
+   }
 
    /**
     * Register a temp path to be deleted when the script exists
@@ -24,9 +72,29 @@ class Temp
    public static function registerPath($path, $isDir = null)
    {
       if (count(self::$files) === 0) {
-         register_shutdown_function('sndsgd\\Temp::cleanup');
+         register_shutdown_function("sndsgd\\Temp::cleanup");
       }
       self::$files[$path] = $isDir;
+   }
+
+   /**
+    * Deregister a path from the files/dirs to remove when the script exits
+    * 
+    * @param string $path The path to remove
+    * @param boolean $remove Whether or not to remove the file/directory
+    * @return boolean Whether or not the path was deregistered
+    */
+   public static function deregisterPath($path, $remove = false)
+   {
+      if (array_key_exists($path, self::$files)) {
+         $isDir = self::$files[$path];
+         unset(self::$files[$path]);
+         if ($remove === true) {
+            return self::removePath($path, $isDir);
+         }
+         return true;
+      }
+      return false;
    }
 
    /**
@@ -36,12 +104,12 @@ class Temp
     * @param string|null $contents Optional contents for the file
     * @return string The path to the newly created temp file
     */
-   public static function file($name = 'temp', $contents = null) 
+   public static function file($name = "temp", $contents = null) 
    {
-      $tmpdir = sys_get_temp_dir();
+      $tmpdir = self::getDir();
       $name = File::sanitizeName($name);
-      list($name, $ext) = File::splitName($name, '');
-      if ($ext !== '') {
+      list($name, $ext) = File::splitName($name, "");
+      if ($ext !== "") {
          $ext = ".{$ext}";
       }
 
@@ -65,9 +133,9 @@ class Temp
     * @param octal $mode The permissions for the directory
     * @return string The path to the newly created temp directory
     */
-   public static function dir($prefix = 'temp', $mode = 0775)
+   public static function dir($prefix = "temp", $mode = 0775)
    {
-      $tmpdir = sys_get_temp_dir();
+      $tmpdir = self::getDir();
       $prefix = Dir::sanitizeName($prefix);
       do {
          $rand = substr(md5(microtime(true)), 0, 6);
@@ -88,15 +156,26 @@ class Temp
    {
       $ret = true;
       foreach (self::$files as $path => $isDir) {
-         if (file_exists($path)) {
-            $isDir = ($isDir === null) ? is_dir($path) : $isDir;
-            $result = ($isDir === true) ? Dir::remove($path) : @unlink($path);
-            if ($result !== true) {
-               $ret = false;
-            }
+         if (self::removePath($path, $isDir) === false) {
+            $ret = false;
          }
       }
       return $ret;
+   }
+
+   /**
+    * @param string $path Absolute filesystem path to remove
+    * @param boolean|null
+    * @return boolean True if the path no longer exists, false if it does
+    */
+   private static function removePath($path, $isDir = null)
+   {
+      if (file_exists($path)) {
+         $isDir = ($isDir === null) ? is_dir($path) : $isDir;
+         $result = ($isDir === true) ? Dir::remove($path) : @unlink($path);
+         return $result === true;
+      }
+      return true;
    }
 }
 
