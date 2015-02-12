@@ -1,8 +1,0 @@
-#!/bin/bash
-
-# report coverage to coveralls
-if [ "5.5" = "$(phpenv version-name)" ]; then
-   composer require satooshi/php-coveralls:dev-master
-   vendor/bin/coveralls -v
-fi
-
