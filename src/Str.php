@@ -11,14 +11,14 @@ use \InvalidArgumentException;
 class Str
 {
    /**
-    * Determine if a string starts with another
+    * Determine if a string begins with another
     * 
     * @param string $haystack
     * @param string $needle
     * @param boolean $caseSensitive
     * @return boolean
     */
-   public static function startsWith($haystack, $needle, $caseSensitive = false)
+   public static function beginsWith($haystack, $needle, $caseSensitive = false)
    {
       return ($caseSensitive === false)
          ? strncasecmp($haystack, $needle, strlen($needle)) === 0

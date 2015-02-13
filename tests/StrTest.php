@@ -5,11 +5,11 @@ use \sndsgd\Str;
 
 class StrTest extends PHPUnit_Framework_TestCase
 {
-   public function testStartsWith()
+   public function testBeginsWith()
    {
-      $this->assertTrue(Str::startsWith('hello there', 'he'));
-      $this->assertFalse(Str::startsWith('hello there', ' '));
-      $this->assertFalse(Str::startsWith('hello there', 'H', true));
+      $this->assertTrue(Str::beginsWith('hello there', 'he'));
+      $this->assertFalse(Str::beginsWith('hello there', ' '));
+      $this->assertFalse(Str::beginsWith('hello there', 'H', true));
    }
 
    public function testEndsWith()
