@@ -127,6 +127,16 @@ class ArrTest extends PHPUnit_Framework_TestCase
       $this->assertEquals($expect, Arr::filter($arr, $filter));
    }
 
+   public function testToAttributeString()
+   {
+      $test = ["one" => 1, "two" => "two", "three" => 3.3];
+      $expect = ' one="1" two="two" three="3.3"';
+      $this->assertEquals($expect, Arr::toAttributeString($test));
+
+      $this->assertEquals("", Arr::toAttributeString(null));
+   }
+
+
    public function testPopValues()
    {
       $test = [1,2,null,false,null];

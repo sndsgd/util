@@ -247,6 +247,23 @@ class Arr
    }
 
    /**
+    * Create an attribute string from an associative array
+    * 
+    * @param array<string,string|integer|float>|null $arr
+    * @return string
+    */
+   public static function toAttributeString(array $arr = null)
+   {
+      $ret = "";
+      if ($arr !== null) {
+         foreach ($arr as $k => $v) {
+            $ret .= " $k=\"$v\"";
+         }   
+      }
+      return $ret;
+   }
+
+   /**
     * Test that a given key exists, and its value passes a test function
     * 
     * @param array $arr The array to search
