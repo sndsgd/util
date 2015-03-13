@@ -208,12 +208,9 @@ class Arr
       $strict = false
    )
    {
-      $fn = ($strict === false)
-         ? 'sndsgd\\Compare::equal'
-         : 'sndsgd\\Compare::strictEqual';
-
+      $func = Compare::getMethod($strict);
       $len = count($arr);
-      while ($len > 0 && call_user_func($fn, end($arr), $match)) {
+      while ($len > 0 && call_user_func($func, end($arr), $match)) {
          array_pop($arr);
          $len--;
       }
@@ -234,12 +231,9 @@ class Arr
       $strict = false
    )
    {
-      $fn = ($strict === false)
-         ? 'sndsgd\\Compare::equal'
-         : 'sndsgd\\Compare::strictEqual';
-
+      $func = Compare::getMethod($strict);
       $len = count($arr);
-      while ($len > 0 && call_user_func($fn, reset($arr), $match)) {
+      while ($len > 0 && call_user_func($func, reset($arr), $match)) {
          array_shift($arr);
          $len--;
       }
