@@ -70,7 +70,7 @@ class Arr
     * @param array $arr The array to test
     * @param array $keys Keys to check for in $test
     * @return boolean|string
-    * @return boolean:true All required keys exist
+    * @return boolean TRUE if all required keys exist
     * @return string An error message indicating a key does NOT exist
     */
    public static function requireKeys(array $arr, array $keys)
@@ -262,7 +262,7 @@ class Arr
     * 
     * @param array $arr The array to search
     * @param string $key The key of the array value to test
-    * @param callable $typeTest A function to test the value
+    * @param callable $test A function to test the value
     * @return boolean
     */
    public static function testValueByKey(array $arr, $key, callable $test)
