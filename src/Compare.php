@@ -31,5 +31,18 @@ class Compare
    {
       return ($a === $b);
    }
+
+   /**
+    * Get comparison method name
+    * 
+    * @param boolean $strict
+    * @return string
+    */
+   public static function getMethod($strict = false)
+   {
+      return ($strict === false)
+         ? "sndsgd\\Compare::equal"
+         : "sndsgd\\Compare::strictEqual";
+   }
 }
 
