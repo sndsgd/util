@@ -13,7 +13,7 @@ class Config
    /**
     * Config value storage
     * 
-    * @var array<string,mixed>
+    * @var array<string|integer,mixed>
     */
    private static $values = [];
 

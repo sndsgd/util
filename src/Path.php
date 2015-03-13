@@ -24,7 +24,7 @@ class Path
     * @param string $path An absolute file or directory path
     * @param bitmask $flags Tests to perform
     * @return boolean|string
-    * @return boolean:true The test was successful
+    * @return boolean TRUE if the test was successful
     * @return string A message describing the test that failed
     */
    public static function test($path, $flags)

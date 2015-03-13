@@ -130,8 +130,14 @@ class Str
    {
       $input = trim($input);
       $input = preg_replace('/[^a-z0-9]+/i', '_', $input);
+
+      /**
+       * @param array<string> $arg
+       *  [0] the match
+       *  [1] the character
+       */
       $fn = function($arg) {
-         list($match, $char) = $arg;
+         $match = $arg[0];
          return $match[0].'_'.$match[1];
       };
       $ret = preg_replace_callback('/([a-z])[A-Z]/', $fn, $input);

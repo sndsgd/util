@@ -19,7 +19,7 @@ class Env
    /**
     * The current controller instance
     *
-    * @var sndsgd\env\Controller
+    * @var \sndsgd\env\Controller
     */
    private static $controller = null;
 
@@ -92,7 +92,7 @@ class Env
     *
     * @param string|callable $message
     * @return string
-    * @throws InvalidArgumentException If the message is not a string
+    * @throws \InvalidArgumentException If the message is not a string
     */
    private static function validateMessage($message)
    {
@@ -115,7 +115,7 @@ class Env
     *
     * Info message are only written in a controller instance has been defined
     * @param string $message The message to write
-    * @param integer $verboseLevel
+    * @param integer $level The verbose level for the message
     * @return void
     */
    public static function log($message, $level = self::NORMAL)

@@ -61,7 +61,7 @@ class Url
     * Parse a url string into an object
     * 
     * @param string $url
-    * @return sndsgd\Url
+    * @return \sndsgd\Url
     */
    public static function createFromString($url)
    {
@@ -76,7 +76,14 @@ class Url
          return $ret;
       }
 
-      foreach (parse_url($url) as $k => $v) {
+      if (($url = parse_url($url)) === false) {
+         throw new InvalidArgumentException(
+            "invalid value provided for 'url'; ".
+            "url parsing failed"
+         );
+      }
+
+      foreach ($url as $k => $v) {
          $fn = 'set'.ucfirst($k);
          call_user_func([$ret, $fn], $v);
       }
@@ -87,7 +94,7 @@ class Url
     * Create a url instance given an array of url properties and values
     * 
     * @param array $arr
-    * @return sndsgd\Url
+    * @return \sndsgd\Url
     */
    public static function createFromArray(array $arr)
    {
@@ -191,12 +198,7 @@ class Url
     */
    public function setPass($password = null)
    {
-      if (!is_string($password) && !is_null($password)) {
-         throw new InvalidArgumentException(
-            "invalid value provided for 'password'; expecting a string or null"
-         );
-      }
-      $this->pass = $password;
+      $this->pass = TypeTest::nullableString($password, "password");
    }
 
    /**
@@ -216,12 +218,7 @@ class Url
     */
    public function setHost($host = null)
    {
-      if (!is_string($host) && !is_null($host)) {
-         throw new InvalidArgumentException(
-            "invalid value provided for 'host'; expecting a string or null"
-         );
-      }
-      $this->host = $host;
+      $this->host = TypeTest::nullableString($host, "host");
    }
 
    /**
@@ -301,7 +298,7 @@ class Url
     * Set the query data
     * 
     * @param string|array|null $query
-    * @return sndsgd\Url
+    * @return \sndsgd\Url
     */
    public function setQuery($query = null)
    {
@@ -315,7 +312,7 @@ class Url
     * Add more data to the query
     * 
     * @param string|array $data
-    * @return sndsgd\Url
+    * @return \sndsgd\Url
     */
    public function addQueryData($data)
    {
@@ -352,7 +349,7 @@ class Url
     * Set the fragment
     * 
     * @param string|null $fragment
-    * @return sndsgd\Url
+    * @return \sndsgd\Url
     */
    public function setFragment($fragment = null)
    {
@@ -426,7 +423,7 @@ class Url
     * Update missing properties in the url with those of another url
     * 
     * @param string|sndsgd\Url $to
-    * @return sndsgd\Url
+    * @return \sndsgd\Url
     * @throws InvalidArgumentException If an invalid argument is passed
     */
    public function merge($to)
@@ -437,7 +434,7 @@ class Url
       else if (is_string($to)) {
          $to = self::createFromString($to);
       }
-      else if (!($to instanceof Url)) {
+      else if (($to instanceof Url) === false) {
          throw new InvalidArgumentException(
             "invalid value provided for 'to'; expecting a url as string, ".
             "an instance of sndsgd\\Url, or an array of url properties"
