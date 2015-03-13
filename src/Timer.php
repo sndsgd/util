@@ -28,10 +28,10 @@ class Timer
    /**
     * Get all durations for named timers
     * 
-    * @param integer|null $precision 
+    * @param integer $precision 
     * @return array.<string|float|integer>
     */
-   public static function exportDurations($precision = null)
+   public static function exportDurations($precision = -1)
    {
       $ret = [];
       foreach (self::$timers as $timer) {
@@ -185,15 +185,15 @@ class Timer
    /**
     * Get the current duration
     * 
-    * @param integer|null $precision 
+    * @param integer $precision
     * @return string|float|integer 
     */
-   public function getDuration($precision = null)
+   public function getDuration($precision = -1)
    {
-      if ($precision !== null && !is_int($precision)) {
+      if (!is_int($precision)) {
          throw new InvalidArgumentException(
             "invalid value provided for 'precision'; expecting the number ".
-            "of decimal places, or null to return a float"
+            "of decimal places (use -1 to return the float value)"
          );
       }
 
@@ -201,9 +201,9 @@ class Timer
          ? microtime(true) - $this->startTime
          : $this->duration;
 
-      return ($precision !== null)
-         ? number_format($time, $precision)
-         : $time;
+      return ($precision === -1)
+         ? $time
+         : number_format($time, $precision);
    }
 }
 
