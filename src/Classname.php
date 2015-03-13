@@ -19,7 +19,7 @@ class Classname
     * Split a string into namespace and classname sections
     * 
     * @param string $class
-    * @return array.<string>
+    * @return array<string>
     */
    public static function split($class)
    {
@@ -35,7 +35,7 @@ class Classname
    /**
     * Convert a string into a namespaced classname
     * 
-    * @param string|array.<string> $class
+    * @param string|array<string> $class
     * @return string
     */
    public static function toString($class, $separator = '\\')
@@ -49,9 +49,9 @@ class Classname
    /**
     * Convert a string into a namespaced method name
     * 
-    * @param string|array.<string> $class
+    * @param string|array<string> $class
     * @param boolean $asArray Whether or not to return as an array
-    * @return string|array.<string>
+    * @return string|array<string>
     */
    public static function toMethod($class, $asArray = false)
    {

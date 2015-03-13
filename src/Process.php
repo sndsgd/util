@@ -33,14 +33,14 @@ class Process
    /**
     * An array of environment variables or null to use the parent script env
     *
-    * @var array.<string,string>|null
+    * @var array<string,string>|null
     */
    private $env = null;
 
    /**
     * The descriptorspec to pass to proc_open
     *
-    * @var array.<integer,array>
+    * @var array<integer,array>
     */
    private $spec = [
       self::STDIN => ['pipe', 'r'],
@@ -77,7 +77,7 @@ class Process
    private $exitcode;
 
    /**
-    * @param array.<string>|string $command The command to execute
+    * @param array<string>|string $command The command to execute
     * @param string|null $cwd The current working directory for the command
     */
    public function __construct($command, $cwd = null)
@@ -225,7 +225,7 @@ class Process
    /**
     * Export data for logging of debugging
     *
-    * @return array.<string,mixed>
+    * @return array<string,mixed>
     */
    public function export()
    {

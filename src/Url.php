@@ -16,7 +16,7 @@ class Url
     * php's `parse_url` requires brackets to indicate an array; this function
     * will parse values of the same name into an array if brackets don't exist
     * @param string $source
-    * @return array.<string => mixed>
+    * @return array<string => mixed>
     */
    public static function decodeQueryString($source)
    {
@@ -134,7 +134,7 @@ class Url
    protected $path;
 
    /**
-    * @var array.<string => mixed>|null
+    * @var array<string => mixed>|null
     */
    protected $query = [];
 
@@ -385,7 +385,7 @@ class Url
    /**
     * Get the url as an array
     * 
-    * @return array.<string,string|integer>
+    * @return array<string,string|integer>
     */
    public function __toArray()
    {

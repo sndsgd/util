@@ -47,7 +47,7 @@ class Mime
    /**
     * File extensions and their respective content types
     * 
-    * @var array.<string,string>
+    * @var array<string,string>
     */
    private static $extensions = [
       '3dml' => 'text/vnd.in3d.3dml',
@@ -1043,7 +1043,7 @@ class Mime
    /**
     * Content types and their respective file extensions
     * 
-    * @var array.<string,string>|null
+    * @var array<string,string>|null
     */
    private static $types = [
       'application/andrew-inset' => 'ez',

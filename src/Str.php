@@ -169,7 +169,7 @@ class Str
     *
     * This was added to keep sndsgd\field\Error::getMessage() DRY
     * @param string $str The string to replace within
-    * @param array.<string,string> $values
+    * @param array<string,string> $values
     * @return string
     */
    public static function replace($str, array $values)

@@ -24,7 +24,7 @@ class Controller
     *
     * The values should be replaced with values that are relevant to the 
     * controller environment
-    * @var array.<string,mixed>
+    * @var array<string,mixed>
     */
    protected $styleCodes = [
 
@@ -119,7 +119,7 @@ class Controller
     * Find all style definition blocks
     * 
     * @param string $message The message content
-    * @return array.<string,array.<string>>
+    * @return array<string,array<string>>
     */
    protected function extractStyles($message)
    {
@@ -137,7 +137,7 @@ class Controller
    /**
     * Given the results of extractStyles(), apply styles
     *
-    * @param array.<string,mixed> $map
+    * @param array<string,mixed> $map
     * @param string $message The message contents
     * @return string
     */

@@ -66,7 +66,7 @@ class Find
     * 
     * @param string $dir An absolute path to the directory to search
     * @param integer $options Iterator options
-    * @return array.<string>
+    * @return array<string>
     */
    public static function directories($dir, $options = 0)
    {
@@ -90,7 +90,7 @@ class Find
     * 
     * @param string $dir An absolute path to the directory to search
     * @param integer $options Iterator options
-    * @return array.<string>
+    * @return array<string>
     */
    public static function emptyDirectories($dir, $options = 0)
    {
@@ -116,7 +116,7 @@ class Find
     * @param string $dir An absolute path to the directory to search
     * @param string $ext The extension to match (case insensitive)
     * @param integer $options Iterator options
-    * @return array.<string>
+    * @return array<string>
     */
    public static function filesByExtension($dir, $ext, $options = 0)
    {
@@ -140,7 +140,7 @@ class Find
     * 
     * @param string $dir An absolute path to the directory to search
     * @param integer $options Iterator options
-    * @return array.<string>
+    * @return array<string>
     */
    public static function brokenLinks($dir, $options = 0)
    {

@@ -13,14 +13,14 @@ trait Manager
    /**
     * Data storage
     *
-    * @var array.<string,mixed>
+    * @var array<string,mixed>
     */
    protected $data = [];
 
    /**
     * Overwrite the current data
     *
-    * @param array.<string,mixed> $data The data to replace current data with
+    * @param array<string,mixed> $data The data to replace current data with
     * @return object The parent class
     */
    public function setData(array $data = [])
@@ -32,7 +32,7 @@ trait Manager
    /**
     * Add data
     *
-    * @param string|array.<string,mixed> $key The name to stash data under
+    * @param string|array<string,mixed> $key The name to stash data under
     * @param mixed $value Whatever needs to be stashed
     * @return object The parent class
     */

@@ -17,7 +17,7 @@ class Json
    /**
     * JSON error numbers and their relevant messages
     * 
-    * @var array.<integer,string>
+    * @var array<integer,string>
     */
    private static $errors = [
       JSON_ERROR_NONE => 'no error occured',

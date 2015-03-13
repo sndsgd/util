@@ -11,7 +11,7 @@ class Timer
    /**
     * All timers that are given a name are referenced here
     * 
-    * @var array.<string,Timer>
+    * @var array<string,Timer>
     */
    private static $timers = [];
 
@@ -29,7 +29,7 @@ class Timer
     * Get all durations for named timers
     * 
     * @param integer $precision 
-    * @return array.<string|float|integer>
+    * @return array<string|float|integer>
     */
    public static function exportDurations($precision = -1)
    {

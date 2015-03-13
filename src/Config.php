@@ -13,14 +13,14 @@ class Config
    /**
     * Config value storage
     * 
-    * @var array.<string,mixed>
+    * @var array<string,mixed>
     */
    private static $values = [];
 
    /**
     * Set initial config values
     * 
-    * @param array.<string,mixed> $values
+    * @param array<string,mixed> $values
     */
    public static function init(array $values = [])
    {
@@ -75,8 +75,8 @@ class Config
    /**
     * Get multiple values with specific keys as array
     * 
-    * @param array.<string,string> $map configName => returnName
-    * @return array.<string,mixed> All values are found
+    * @param array<string,string> $map configName => returnName
+    * @return array<string,mixed> All values are found
     * @return string An error message indicating a missing config value
     */
    public static function getAs(array $map)
@@ -94,7 +94,7 @@ class Config
    /**
     * Get the entire config array
     * 
-    * @return array.<string,mixed>
+    * @return array<string,mixed>
     */
    public static function getAll()
    {
