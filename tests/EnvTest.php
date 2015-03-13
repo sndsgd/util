@@ -80,6 +80,7 @@ class EnvTest extends \PHPUnit_Framework_TestCase
    /**
     * @covers ::setVerboseLevel
     * @covers ::getVerboseLevel
+    * @covers ::validateVerboseLevel
     */
    public function testSetVerboseLevel()
    {
@@ -101,6 +102,7 @@ class EnvTest extends \PHPUnit_Framework_TestCase
 
    /**
     * @covers ::setVerboseLevel
+    * @covers ::validateVerboseLevel
     * @expectedException InvalidArgumentException
     */
    public function testSetVerboseLevelException()

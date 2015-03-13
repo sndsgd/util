@@ -33,7 +33,7 @@ class Env
    /**
     * Set the current controller instance
     *
-    * @param sndsgd\env\Controller|null $controller
+    * @param \sndsgd\env\Controller|null $controller
     * @return void
     */
    public static function setController(Controller $controller = null)
@@ -44,11 +44,25 @@ class Env
    /**
     * Get the current controller instance
     *
-    * @return sndsgd\env\Controller|null
+    * @return \sndsgd\env\Controller|null
     */
    public static function getController()
    {
       return self::$controller;
+   }
+
+   private static function validateVerboseLevel($level, $min = self::QUIET)
+   {
+      if (
+         !is_int($level) ||
+         $level < $min ||
+         $level > self::VVV
+      ) {
+         throw new InvalidArgumentException(
+            "invalid value provided for 'level'; expecting Env::NORMAL, ".
+            "Env::V, Env::VV, or Env::VVV"
+         );
+      }
    }
 
    /**
@@ -59,16 +73,7 @@ class Env
     */
    public static function setVerboseLevel($level)
    {
-      if (
-         !is_int($level) ||
-         $level < self::QUIET ||
-         $level > self::VVV
-      ) {
-         throw new InvalidArgumentException(
-            "invalid value provided for 'level'; ".
-            "expecting a valid verbose level as an integer"
-         );
-      }
+      self::validateVerboseLevel($level);
       self::$verboseLevel = $level;
    }
 
@@ -113,18 +118,9 @@ class Env
     * @param integer $verboseLevel
     * @return void
     */
-   public static function log($message, $level = 0)
+   public static function log($message, $level = self::NORMAL)
    {
-      if (
-         !is_int($level) ||
-         $level < self::NORMAL ||
-         $level > self::VVV
-      ) {
-         throw new InvalidArgumentException(
-            "invalid value provided for 'level'; expecting Env::NORMAL, ".
-            "Env::V, Env::VV, or Env::VVV"
-         );
-      }
+      self::validateVerboseLevel($level, self::NORMAL);
 
       if (
          self::$controller !== null &&
