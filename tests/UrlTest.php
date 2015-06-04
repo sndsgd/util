@@ -36,8 +36,27 @@ class UrlTest extends PHPUnit_Framework_TestCase
       foreach ($tests as $test) {
          $encoded = Url::encodeQueryString($test);
          $decoded = Url::decodeQueryString($encoded);
-         $this->assertEquals($test, $decoded);   
+         $this->assertEquals($test, $decoded);
+         $encoded = Url::encodeQueryString($test, Url::RFC_1866);
+         $decoded = Url::decodeQueryString($encoded, Url::RFC_1866);
+         $this->assertEquals($test, $decoded);
       }      
+   }
+
+   /**
+    * @expectedException InvalidArgumentException
+    */
+   public function testEncodeQueryStringException()
+   {
+      Url::encodeQueryString([ "forty-two" => 42 ], null);
+   }
+
+   /**
+    * @expectedException InvalidArgumentException
+    */
+   public function testDecodeQueryStringException()
+   {
+      Url::decodeQueryString("forty-two=42", null);
    }
 
    public function testCreateFromString()
@@ -63,18 +82,26 @@ class UrlTest extends PHPUnit_Framework_TestCase
       }
    }
 
-   public function testCreateFromArray()
-   {
-      $url = Url::createFromArray(self::$urlArray);
-      $this->assertEquals(self::$urlString, $url->__toString());
-   }
-
    /**
     * @expectedException InvalidArgumentException
     */
    public function testCreateFromStringException()
    {
       Url::createFromString(123);
+   }
+
+   /**
+    * @expectedException InvalidArgumentException
+    */
+   public function testCreateFromStringParseFailException()
+   {
+      Url::createFromString("nope:///");
+   }
+
+   public function testCreateFromArray()
+   {
+      $url = Url::createFromArray(self::$urlArray);
+      $this->assertEquals(self::$urlString, $url->__toString());
    }
 
    /**

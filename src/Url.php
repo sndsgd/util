@@ -10,6 +10,49 @@ use \InvalidArgumentException;
  */
 class Url
 {
+   const RFC_1866 = 1866;
+   const RFC_3986 = 3986;
+   
+   /**
+    * @param integer $rfc
+    * @return string
+    * @throws \InvalidArgumentException
+    */
+   private static function getQueryStringEncoder($rfc)
+   {
+      switch ($rfc) {
+         case self::RFC_1866:
+            return "urlencode";
+         case self::RFC_3986:
+            return "rawurlencode";
+         default:
+            throw new InvalidArgumentException(
+               "invalid value provided for 'rfc'; ".
+               "expecting a query string related RFC as an integer"
+            );
+      }
+   }
+
+   /**
+    * @param integer $rfc
+    * @return string
+    * @throws \InvalidArgumentException
+    */
+   private static function getQueryStringDecoder($rfc)
+   {
+      switch ($rfc) {
+         case self::RFC_1866:
+            return "urldecode";
+         case self::RFC_3986:
+            return "rawurldecode";
+         default:
+            throw new InvalidArgumentException(
+               "invalid value provided for 'rfc'; ".
+               "expecting a query string related RFC as an integer"
+            );
+      }
+   }
+
    /**
     * Parse a url encoded string into an array of values
     *
@@ -18,15 +61,16 @@ class Url
     * @param string $source
     * @return array<string,mixed>
     */
-   public static function decodeQueryString($source)
+   public static function decodeQueryString($source, $rfc = self::RFC_3986)
    {
       $ret = [];
       if ($source !== '') {
+         $decode = self::getQueryStringDecoder($rfc);
          $queryPairs = explode('&', $source);
          foreach ($queryPairs as $pair) {
             $parts = explode('=', $pair, 2);
-            $key = rawurldecode($parts[0]);
-            $value = (count($parts) === 1) ? true : rawurldecode($parts[1]);
+            $key = $decode($parts[0]);
+            $value = (count($parts) === 1) ? true : $decode($parts[1]);
             Arr::addValue($ret, $key, $value);
          }
       }
@@ -41,17 +85,18 @@ class Url
     * @param array $query 
     * @return string
     */
-   public static function encodeQueryString(array $query)
+   public static function encodeQueryString(array $query, $rfc = self::RFC_3986)
    {
       $ret = [];
+      $encode = self::getQueryStringEncoder($rfc);
       foreach ($query as $name => $value) {
          if (is_array($value)) {
             foreach ($value as $v) {
-               $ret[] = $name.'='.rawurlencode($v);
+               $ret[] = $name.'='.$encode($v);
             }
          }
          else {
-            $ret[] = $name.'='.rawurlencode($value);
+            $ret[] = $name.'='.$encode($value);
          }
       }
       return implode('&', $ret);
