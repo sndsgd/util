@@ -10,43 +10,42 @@ namespace sndsgd;
  */
 class Singleton
 {
-   /**
-    * Returns the *Singleton* instance of this class.
-    *
-    * @return object
-    */
-   public static function getInstance()
-   {
-      static $instance = null;
-      if (null === $instance) {
-         $instance = new static();
-      }
-      return $instance;
-   }
+    /**
+     * Returns the *Singleton* instance of this class.
+     *
+     * @return object
+     */
+    public static function getInstance()
+    {
+        static $instance = null;
+        if (null === $instance) {
+            $instance = new static();
+        }
+        return $instance;
+    }
 
-   /**
-    * Prevent the creation of a new instance outside the class
-    */
-   protected function __construct()
-   {
-   }
+    /**
+     * Prevent the creation of a new instance outside the class
+     */
+    protected function __construct()
+    {
+    }
 
-   /**
-    * Prevent cloning of the singleton instance
-    *
-    * @return void
-    */
-   private function __clone()
-   {
-   }
+    /**
+     * Prevent cloning of the singleton instance
+     *
+     * @return void
+     */
+    private function __clone()
+    {
+    }
 
-   /**
-    * Prevent unserializing of the singleton instance
-    * 
-    * @return void
-    */
-   private function __wakeup()
-   {
-   }
+    /**
+     * Prevent unserializing of the singleton instance
+     *
+     * @return void
+     */
+    private function __wakeup()
+    {
+    }
 }
-

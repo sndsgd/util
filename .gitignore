@@ -1,6 +1,5 @@
 docs
 vendor
-tests/results
 composer.lock
 bin/dev.php
 tests/coverage-clover.xml

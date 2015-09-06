@@ -4,11 +4,13 @@ php:
   - 5.4
   - 5.5
   - 5.6
+  - 7.0
   - hhvm
   - hhvm-nightly
 
 matrix:
   allow_failures:
+    - php: 7.0
     - php: hhvm
     - php: hhvm-nightly
 
@@ -25,4 +27,4 @@ script:
   - phpunit --coverage-clover tests/coverage-clover.xml
 
 after_script:
-  - bin/aftertest
+  - '[ "5.5" = "$(phpenv version-name)" ] && composer require satooshi/php-coveralls:dev-master && vendor/bin/coveralls -v'
