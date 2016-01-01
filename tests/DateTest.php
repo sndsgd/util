@@ -18,13 +18,54 @@ class DateTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($week, Date::WEEK);
     }
 
-    public function testCreate()
+    /**
+     * @dataProvider providerFormat
+     */
+    public function testFormat($test, $format, $expect = null)
     {
-        $dt1 = Date::create();
-        $this->assertInstanceOf("DateTime", $dt1);
+        if ($expect !== null) {
+            $this->assertEquals($expect, Date::format($test, $format));    
+        } else {
+            $this->assertTrue(is_string(Date::format($test, $format)));
+        }
+    }
 
-        $ts = microtime(true);
-        $dt2 = Date::create($ts);
-        $this->assertInstanceOf("DateTime", $dt2);
+    public function providerFormat()
+    {
+        $ret = [];
+        $fmt = "Y-m-d H:i:s.u";
+        $dfmt = "Y-m-d H:i:s";
+        $time = time();
+
+        $ret[] = [null, $dfmt];
+
+        # no microtime
+        $ret[] = [$time, $fmt, date($dfmt, $time).".000000"];
+
+        # only the microtime
+        $ret[] = [.123456, "u", "123456"];
+
+        # should limit precision to six digits
+        $mtime = $time + .1234567890;
+        $ret[] = [$mtime, $fmt, date($dfmt, $time).".123456"];
+
+        return $ret;
+    }
+
+    /**
+     * @dataProvider providerCreate
+     */
+    public function testCreate($test)
+    {
+        $this->assertInstanceOf("\\DateTime", Date::create($test));
+    }
+
+    public function providerCreate()
+    {
+        return [
+            [null],
+            [time()],
+            [microtime(true)],
+        ];
     }
 }
