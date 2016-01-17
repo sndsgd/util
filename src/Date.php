@@ -57,7 +57,7 @@ class Date
      * @param float|null $timestamp
      * @return \DateTime
      */
-    public static function create(float $timestamp = null): \DateTime
+    public static function create($timestamp = null)
     {
         $date = static::format($timestamp);
         return new \DateTime($date);
