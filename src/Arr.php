@@ -45,14 +45,6 @@ class Arr
      */
     public static function addValue(array &$values, $key, $value)
     {
-        # if a key contains array brackets, force the value to an array
-        if (substr($key, -2) === "[]") {
-            $key = substr($key, 0, -2);
-            if (!array_key_exists($key, $values)) {
-                $values[$key] = [];
-            }
-        }
-
         if (array_key_exists($key, $values)) {
             if (!is_array($values[$key])) {
                 $values[$key] = [$values[$key]];

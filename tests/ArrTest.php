@@ -30,13 +30,6 @@ class ArrTest extends PHPUnit_Framework_TestCase
         $this->assertEquals($arr, ["odd" => 1, "even" => 2]);
         Arr::addValue($arr, "odd", 3);
         $this->assertEquals($arr, ["odd" => [1, 3], "even" => 2]);
-
-        Arr::addValue($arr, "brackets[]", "value");
-        $this->assertEquals($arr, [
-            "odd" => [1, 3], 
-            "even" => 2,
-            "brackets" => ["value"]
-        ]);
     }
 
     public function testGetValue()
