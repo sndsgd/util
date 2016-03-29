@@ -2,20 +2,12 @@ language: php
 
 php:
   - 7.0
-  - hhvm
-
-matrix:
-  allow_failures:
-    - php: hhvm
-
-before_install:
-  - composer self-update
 
 install:
   - composer install --no-interaction --prefer-source --dev
 
 script:
-  - phpunit --coverage-clover tests/coverage-clover.xml
+  - phpunit --coverage-clover build/coverage/clover.xml
 
 after_script:
-  - '[ "7.0" = "$(phpenv version-name)" ] && composer require satooshi/php-coveralls:dev-master && vendor/bin/coveralls -v'
+  - vendor/bin/coveralls -v

@@ -23,21 +23,3 @@ Install `sndsgd/util` using [Composer](https://getcomposer.org/).
 ```
 composer require sndsgd/util
 ```
-
-
-## Testing
-
-Use [PHPUnit](https://phpunit.de/) to run unit tests.
-
-```
-phpunit
-```
-
-
-## Documentation
-
-Use [ApiGen](http://apigen.org/) to create docs.
-
-```
-apigen generate
-```
