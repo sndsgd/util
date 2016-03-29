@@ -2,7 +2,6 @@
 
 namespace sndsgd;
 
-
 /**
  * Array utility methods
  */
@@ -31,7 +30,7 @@ class Arr
      * @param mixed $value The value to convert to an array
      * @return array
      */
-    public static function cast($value)
+    public static function cast($value): array
     {
         return (is_array($value)) ? $value : [$value];
     }
@@ -39,20 +38,20 @@ class Arr
     /**
      * Add a value to an array
      *
-     * @param array $values The array to add values to
+     * @param array $arr The array to add values to
      * @param string|number $key The index/key to add the value under
      * @param string|number $value The value to add
      */
-    public static function addValue(array &$values, $key, $value)
+    public static function addValue(array &$arr, $key, $value)
     {
-        if (array_key_exists($key, $values)) {
-            if (!is_array($values[$key])) {
-                $values[$key] = [$values[$key]];
+        if (isset($arr[$key])) {
+            if (!is_array($arr[$key])) {
+                $arr[$key] = [$arr[$key]];
             }
-            $values[$key][] = $value;
+            $arr[$key][] = $value;
         }
         else {
-            $values[$key] = $value;
+            $arr[$key] = $value;
         }
     }
 
@@ -66,11 +65,12 @@ class Arr
      */
     public static function getValue(array $arr, $key, $default = null)
     {
-        return array_key_exists($key, $arr) ? $arr[$key] : $default;
+        return isset($arr[$key]) ? $arr[$key] : $default;
     }
 
     /**
      * Ensure that keys exist in an array
+     * @todo this 'bool|string' return is wonky
      *
      * @param array $arr The array to test
      * @param array $keys Keys to check for in $test
@@ -81,7 +81,7 @@ class Arr
     public static function requireKeys(array $arr, array $keys)
     {
         foreach ($keys as $key) {
-            if (!array_key_exists($key, $arr)) {
+            if (!isset($arr[$key])) {
                 return "missing required key '$key'";
             }
         }
@@ -95,13 +95,13 @@ class Arr
      * @param array $defaults The values to fill $arr with
      * @return array
      */
-    public static function defaults(array $arr = null, array $defaults)
+    public static function defaults(array $arr = null, array $defaults): array
     {
         if ($arr === null) {
             return $defaults;
         }
         foreach ($defaults as $key => $value) {
-            if (!array_key_exists($key, $arr)) {
+            if (!isset($arr[$key])) {
                 $arr[$key] = $value;
             }
         }
@@ -114,7 +114,7 @@ class Arr
      * @param array $arr The array to flatten
      * @return array
      */
-    public static function flatten(array $arr)
+    public static function flatten(array $arr): array
     {
         $i = 0;
         $len = count($arr);
@@ -135,7 +135,7 @@ class Arr
      * @param string|null $beforeLast A string to prepend to the last element
      * @return string
      */
-    public static function implode($delim, array $arr, $beforeLast = null)
+    public static function implode($delim, array $arr, $beforeLast = null): string
     {
         if (count($arr) > 1 && $beforeLast !== null) {
             $arr[] = $beforeLast.array_pop($arr);
@@ -148,14 +148,12 @@ class Arr
      *
      * @param array $arr The array to operate on
      * @param string $key A key to remove from the array
-     * @param string $key,... A key to remove from the array
      * @return array
      */
-    public static function without(array $arr, $key)
+    public static function without(array $arr, string ...$keys): array
     {
-        for ($i=1, $len=func_num_args(); $i<$len; $i++) {
-            $key = func_get_arg($i);
-            if (array_key_exists($key, $arr)) {
+        foreach ($keys as $key) {
+            if (isset($arr[$key])) {
                 unset($arr[$key]);
             }
         }
@@ -166,15 +164,14 @@ class Arr
      * Selectively keep values in an array based on their keys
      *
      * @param array $arr The array to operate on
-     * @param string ...$key The key(s) to remove from the array
+     * @param string ...$keys The key(s) to remove from the array
      * @return array
      */
-    public static function only(array $arr, $key)
+    public static function only(array $arr, string ...$keys): array
     {
         $ret = [];
-        for ($i=1, $len=func_num_args(); $i<$len; $i++) {
-            $key = func_get_arg($i);
-            if (array_key_exists($key, $arr)) {
+        foreach ($keys as $key) {
+            if (isset($arr[$key])) {
                 $ret[$key] = $arr[$key];
             }
         }
@@ -188,15 +185,9 @@ class Arr
      * @param callable $fn The callback function
      * @return array
      */
-    public static function filter(array $arr, callable $fn)
+    public static function filter(array $arr, callable $fn): array
     {
-        $ret = [];
-        foreach ($arr as $key => $value) {
-            if ($fn($value, $key)) {
-                $ret[$key] = $value;
-            }
-        }
-        return $ret;
+        return array_filter($arr, $fn, ARRAY_FILTER_USE_BOTH);
     }
 
     /**
@@ -210,9 +201,8 @@ class Arr
     public static function popValues(
         array $arr,
         $match = false,
-        $strict = false
-    )
-    {
+        bool $strict = false
+    ): array {
         $func = Compare::getMethod($strict);
         $len = count($arr);
         while ($len > 0 && call_user_func($func, end($arr), $match)) {
@@ -233,9 +223,8 @@ class Arr
     public static function shiftValues(
         array $arr,
         $match = false,
-        $strict = false
-    )
-    {
+        bool $strict = false
+    ): array {
         $func = Compare::getMethod($strict);
         $len = count($arr);
         while ($len > 0 && call_user_func($func, reset($arr), $match)) {
@@ -251,7 +240,7 @@ class Arr
      * @param array<string,string|integer|float>|null $arr
      * @return string
      */
-    public static function toAttributeString(array $arr = null)
+    public static function toAttributeString(array $arr = null): string
     {
         $ret = "";
         if ($arr !== null) {
@@ -270,8 +259,11 @@ class Arr
      * @param callable $test A function to test the value
      * @return boolean
      */
-    public static function testValueByKey(array $arr, $key, callable $test)
-    {
+    public static function testValueByKey(
+        array $arr, 
+        string $key, 
+        callable $test
+    ): bool {
         return (array_key_exists($key, $arr) && $test($arr[$key]));
     }
 
@@ -281,7 +273,7 @@ class Arr
      * @param array $arr The array to export
      * @return string
      */
-    public static function export(array $arr)
+    public static function export(array $arr): string
     {
         $str = var_export($arr, true);
         $str = str_replace("array (", "array(", $str);

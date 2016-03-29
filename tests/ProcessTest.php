@@ -23,7 +23,7 @@ class ProcessTest extends \PHPUnit_Framework_TestCase
         $cmd = "ls -l";
         $cwd = sys_get_temp_dir();
         $p = new Process($cmd, $cwd);
-        $this->assertEquals(0, $p->exec());
+        $this->assertEquals(true, $p->exec());
         $this->assertTrue(is_string($p->getStdout()));
         $this->assertTrue(is_string($p->getStderr()));
         $this->assertEquals("", $p->getStderr());
@@ -66,7 +66,7 @@ class ProcessTest extends \PHPUnit_Framework_TestCase
         $cmd = ["ls", "-l"];
         $cwd = sys_get_temp_dir();
         $p = new Process($cmd, $cwd);
-        $this->assertEquals(0, $p->exec());
+        $this->assertEquals(true, $p->exec());
         $this->assertTrue(is_string($p->getStdout()));
         $this->assertTrue(is_string($p->getStderr()));
         $this->assertEquals("", $p->getStderr());
@@ -145,14 +145,14 @@ class ProcessTest extends \PHPUnit_Framework_TestCase
     {
         $cmd = "pwd";
         $p = new Process($cmd);
-        $exitcode = $p->exec();
-        $this->assertEquals($exitcode, $p->getExitcode());
+        $this->assertTrue($p->exec());
+        $this->assertEquals(0, $p->getExitcode());
     }
 
     public function testExport()
     {
         $p = new Process("pwd");
-        $p->exec();
+        $this->assertTrue($p->exec());
 
         $data = $p->export();
         $this->assertEquals($data["command"], "pwd");

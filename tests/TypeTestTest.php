@@ -10,19 +10,56 @@ class TypeTestTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * @covers ::nullableString
+     * @dataProvider providerNullableString
      */
-    public function testNullableString()
+    public function testNullableString($test)
     {
-        $this->assertNull(TypeTest::nullableString(null, "name"));
-        $this->assertEquals("test", TypeTest::nullableString("test", "name"));
+        $this->assertSame($test, TypeTest::nullableString($test, "name"));
+    }
+
+    public function providerNullableString()
+    {
+        return [
+            [null],
+            ["string"],
+            [Str::random(100)],
+        ];
     }
 
     /**
-     * @covers ::nullableString
+     * @covers ::nullableInt
      * @expectedException InvalidArgumentException
      */
     public function testNullableStringException()
     {
         TypeTest::nullableString(42, "name");
+    }
+
+    /**
+     * @covers ::nullableInt
+     * @dataProvider providernullableInt
+     */
+    public function testNullableInt($test)
+    {
+        $this->assertSame($test, TypeTest::nullableInt($test, "name"));
+    }
+
+    public function providerNullableInt()
+    {
+        return [
+            [null],
+            [0],
+            [-1],
+            [PHP_INT_MAX],
+        ];
+    }
+
+    /**
+     * @covers ::nullableInt
+     * @expectedException InvalidArgumentException
+     */
+    public function testnullableIntException()
+    {
+        TypeTest::nullableInt("string", "name");
     }
 }

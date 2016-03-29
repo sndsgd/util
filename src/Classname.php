@@ -2,9 +2,6 @@
 
 namespace sndsgd;
 
-use \InvalidArgumentException;
-
-
 /**
  * Classname utility methods
  */
@@ -21,13 +18,8 @@ class Classname
      * @param string $class
      * @return array<string>
      */
-    public static function split($class)
+    public static function split(string $class): array
     {
-        if (!is_string($class)) {
-            throw new InvalidArgumentException(
-                "invalid value provided for 'class'; expecting a string"
-            );
-        }
         $class = preg_replace(self::REGEX_TRIM, "", $class);
         return preg_split(self::REGEX_SPLIT, $class);
     }
@@ -38,7 +30,7 @@ class Classname
      * @param string|array<string> $class
      * @return string
      */
-    public static function toString($class, $separator = "\\")
+    public static function toString($class, $separator = "\\"): string
     {
         if (is_string($class)) {
             $class = self::split($class);
@@ -69,7 +61,7 @@ class Classname
      * @param string $contents
      * @return string|null
      */
-    public static function fromContents($contents)
+    public static function fromContents(string $contents)
     {
         $class = null;
         $namespace = null;

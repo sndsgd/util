@@ -11,14 +11,6 @@ class ClassnameTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(["one", "two", "three"], $res);
     }
 
-    /**
-     * @expectedException InvalidArgumentException
-     */
-    public function testSplitException()
-    {
-        Classname::split([]);
-    }
-
     public function testToString()
     {
         $res = Classname::toString("one.two.three");

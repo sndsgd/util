@@ -1,28 +1,28 @@
 {
-   "name": "sndsgd/util",
-   "description": "A utility toolkit for PHP",
-   "type": "library",
-   "homepage": "https://github.com/sndsgd/sndsgd-util",
-   "license": "MIT",
-   "authors": [
-      {
-         "name": "Russell B",
-         "homepage": "http://snds.gd/"
-      }
-   ],
-   "support": {
-      "issues": "https://github.com/sndsgd/sndsgd-util/issues",
-      "source": "https://github.com/sndsgd/sndsgd-util/tree/master"
-   },
-   "require": {
-      "php": ">=5.4.0"
-   },
-   "require-dev": {
-      "mikey179/vfsStream": "~1.4.0"
-   },
-   "autoload": {
-      "psr-4": {
-         "sndsgd\\": "src/"
-      }
-   }
+    "name": "sndsgd/util",
+    "description": "A utility toolkit for PHP",
+    "type": "library",
+    "homepage": "https://github.com/sndsgd/sndsgd-util",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Russell B",
+            "homepage": "http://snds.gd/"
+        }
+    ],
+    "support": {
+        "issues": "https://github.com/sndsgd/sndsgd-util/issues",
+        "source": "https://github.com/sndsgd/sndsgd-util/tree/master"
+    },
+    "require": {
+        "php": ">=7.0.0"
+    },
+    "require-dev": {
+        "mikey179/vfsStream": "~1.6.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "sndsgd\\": "src/"
+        }
+    }
 }

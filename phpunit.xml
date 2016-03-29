@@ -19,6 +19,7 @@
 
    <logging>
       <log type="coverage-text" target="php://stdout" showUncoveredFiles="false"/>
+      <log type="coverage-html" target="build/coverage" showUncoveredFiles="true"/>
    </logging>
 
    <filter>

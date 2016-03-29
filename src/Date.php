@@ -2,9 +2,9 @@
 
 namespace sndsgd;
 
-use \DateTime;
-
-
+/**
+ * Date constants and helpers
+ */
 class Date
 {
     /**
@@ -33,8 +33,10 @@ class Date
      * @param float|null $timestamp 
      * @return string
      */
-    public static function format($timestamp = null, $format = "Y-m-d H:i:s.u")
-    {
+    public static function format(
+        float $timestamp = null,
+        string $format = "Y-m-d H:i:s.u"
+    ): string {
         if ($timestamp === null) {
             $timestamp = microtime(true);
         }
@@ -57,7 +59,7 @@ class Date
      * @param float|null $timestamp
      * @return \DateTime
      */
-    public static function create($timestamp = null)
+    public static function create(float $timestamp = null): \DateTime
     {
         $date = static::format($timestamp);
         return new \DateTime($date);

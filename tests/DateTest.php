@@ -2,7 +2,6 @@
 
 namespace sndsgd;
 
-
 class DateTest extends \PHPUnit_Framework_TestCase
 {
     public function testConstants()

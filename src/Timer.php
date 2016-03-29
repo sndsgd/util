@@ -2,10 +2,9 @@
 
 namespace sndsgd;
 
-use \Exception;
-use \InvalidArgumentException;
-
-
+/**
+ * A utility for tracking code execution durations
+ */
 class Timer
 {
     /**
@@ -28,29 +27,16 @@ class Timer
     /**
      * Get all durations for named timers
      *
-     * @param integer $precision
-     * @return array<string|float|integer>
+     * @param int $precision
+     * @return array<string,string|float|integer>
      */
-    public static function exportDurations($precision = -1)
+    public static function getDurations(int $precision = -1): array
     {
         $ret = [];
-        foreach (self::$timers as $timer) {
-            $ret[$timer->getName()] = $timer->getDuration($precision);
+        foreach (self::$timers as $t) {
+            Arr::addValue($ret, $t->getName(), $t->getDuration($precision));
         }
         return $ret;
-    }
-
-    /**
-     * Create a timer, give it a name, and start it
-     *
-     * @param string $name A name to reference the timer
-     */
-    public static function create($name)
-    {
-        $timer = new Timer;
-        $timer->setName($name);
-        $timer->start();
-        return $timer;
     }
 
     /**
@@ -82,6 +68,19 @@ class Timer
     protected $duration;
 
     /**
+     * @param string|null $name A handle to give the timer instance
+     * @param bool $wait Whether to start the timer
+     */
+    public function __construct(string $name = null, float $startTime = 0.0)
+    {
+        if ($name !== null) {
+            self::$timers[] = $this; 
+        }
+        $this->name = $name;
+        $this->startTime = ($startTime !== 0.0) ? $startTime : microtime(true);
+    }
+
+    /**
      * Convert the object into a string
      *
      * @return string
@@ -89,10 +88,6 @@ class Timer
     public function __toString()
     {
         $name = $this->getName();
-        if ($name === null) {
-            $name = "task";
-        }
-
         $time = $this->getDuration(5);
         return ($this->getStopTime() === null)
             ? "{$name} has consumed {$time} seconds so far"
@@ -100,33 +95,13 @@ class Timer
     }
 
     /**
-     * Start the timer
+     * Get the name
      *
-     * @return void
+     * @return string
      */
-    public function start()
+    public function getName(): string
     {
-        $this->startTime = microtime(true);
-    }
-
-    /**
-     * Stop the timer and calculate the duration
-     *
-     * @return float The timer duration
-     */
-    public function stop()
-    {
-        $time = microtime(true);
-        if ($this->startTime === null) {
-            throw new Exception(
-                "failed to stop timer; the timer was never started"
-            );
-        }
-        else if ($this->stopTime === null) {
-            $this->stopTime = $time;
-            $this->duration = $this->stopTime - $this->startTime;
-        }
-        return $this->duration;
+        return $this->name ?? "unknown";
     }
 
     /**
@@ -134,42 +109,34 @@ class Timer
      *
      * @return float
      */
-    public function getStartTime()
+    public function getStartTime(): float
     {
         return $this->startTime;
     }
 
     /**
-     * Set a name for the timer
+     * Start the timer
      *
-     * @param string $name
      * @return void
      */
-    public function setName($name)
+    public function restart()
     {
-        if ($this->name !== null) {
-            unset(self::$timers[$name]);
-        }
-
-        if (array_key_exists($name, self::$timers)) {
-            throw new InvalidArgumentException(
-                "invalid value provided for 'name'; expecting a unique".
-                "name as string ('$name' is already in use)"
-            );
-        }
-
-        $this->name = $name;
-        self::$timers[$name] = $this;
+        $this->startTime = microtime(true);
     }
 
     /**
-     * Get the name
+     * Stop the timer and calculate the duration
      *
-     * @return string|null
+     * @return float|string The timer duration
      */
-    public function getName()
+    public function stop(int $precision = -1)
     {
-        return $this->name;
+        $time = microtime(true);
+        if ($this->stopTime === null) {
+            $this->stopTime = $time;
+            $this->duration = $this->stopTime - $this->startTime;
+        }
+        return $this->fmtDuration($this->duration, $precision);
     }
 
     /**
@@ -186,23 +153,22 @@ class Timer
      * Get the current duration
      *
      * @param integer $precision
-     * @return string|float|integer
+     * @return string|float
      */
-    public function getDuration($precision = -1)
+    public function getDuration(int $precision = -1)
     {
-        if (!is_int($precision)) {
-            throw new InvalidArgumentException(
-                "invalid value provided for 'precision'; expecting the ".
-                "number of decimal places (use -1 to return the float value)"
-            );
-        }
+        //var_dump($this->duration);
+        $duration = $this->duration ?? microtime(true) - $this->startTime;
+        return $this->fmtDuration($duration, $precision);
+    }
 
-        $time = ($this->duration === null)
-            ? microtime(true) - $this->startTime
-            : $this->duration;
-
-        return ($precision === -1)
-            ? $time
-            : number_format($time, $precision);
+    /**
+     * @return string|float
+     */
+    private function fmtDuration(float $duration, int $precision)
+    {
+        return ($precision < 0) 
+            ? $duration
+            : number_format($duration, $precision);
     }
 }

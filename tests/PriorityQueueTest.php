@@ -1,9 +1,8 @@
 <?php
 
-use \sndsgd\PriorityQueue;
+namespace sndsgd;
 
-
-class PriorityQueueTest extends PHPUnit_Framework_TestCase
+class PriorityQueueTest extends \PHPUnit_Framework_TestCase
 {
     public function setUp()
     {

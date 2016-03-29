@@ -2,9 +2,6 @@
 
 namespace sndsgd;
 
-use \ReflectionClass;
-
-
 /**
  * @coversDefaultClass \sndsgd\Storage
  */
@@ -12,7 +9,7 @@ class StorageTest extends \PHPUnit_Framework_TestCase
 {
     public static function getInaccessibleProperty($object, $property)
     {
-        $rc = new ReflectionClass($object);
+        $rc = new \ReflectionClass($object);
         $prop = $rc->getProperty($property);
         $prop->setAccessible(true);
         return $prop;

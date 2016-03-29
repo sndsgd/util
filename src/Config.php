@@ -2,9 +2,6 @@
 
 namespace sndsgd;
 
-use \Exception;
-
-
 /**
  * Config storage and retrieval
  */
@@ -50,7 +47,7 @@ class Config
      * @param string|null $default A value to return if the key does not exist
      * @return mixed
      */
-    public static function get($key, $default = null)
+    public static function get(string $key, $default = null)
     {
         return (array_key_exists($key, self::$values))
             ? self::$values[$key]
@@ -62,14 +59,14 @@ class Config
      *
      * @param string $key The unique key for the value to fetch
      * @return mixed
-     * @throws Exception if $key is not set
+     * @throws \Exception if $key is not set
      */
-    public static function getRequired($key)
+    public static function getRequired(string $key)
     {
         if (array_key_exists($key, self::$values)) {
             return self::$values[$key];
         }
-        throw new Exception("the required config value '$key' was not found");
+        throw new \Exception("the required config value '$key' was not found");
     }
 
     /**
@@ -96,7 +93,7 @@ class Config
      *
      * @return array<string,mixed>
      */
-    public static function getAll()
+    public static function getAll(): array
     {
         return self::$values;
     }

@@ -2,7 +2,6 @@
 
 namespace sndsgd;
 
-
 /**
  * MIME and content type utility methods
  */
@@ -16,18 +15,35 @@ class Mime
      * @return string
      */
     public static function getTypeFromExtension(
-        $ext,
-        $default = "application/octet-stream"
-    )
+        string $ext,
+        string $default = "application/octet-stream"
+    ): string
     {
         $ext = strtolower($ext);
         if (array_key_exists($ext, self::$extensions)) {
-            $type = self::$extensions[$ext];
-            return is_array($type)
-                ? $type[0]
-                : $type;
+            return self::$extensions[$ext];
         }
         return $default;
+    }
+
+    /**
+     * Get a content type from file contents
+     *
+     * @param string $path The absolute patht the file to examine
+     * @return string
+     */
+    public static function getTypeFromFile(string $path): string
+    {
+        if (!is_file($path) || !is_readable($path)) {
+            throw new \InvalidArgumentException(
+                "invalid value provided for 'path'; ".
+                "expecting an absolute path to a readable file"
+            );
+        }
+
+        $finfo = new \finfo(FILEINFO_MIME_TYPE);
+        $type = @$finfo->file($path);
+        return ($type === false) ? "application/octet-stream" : $type;
     }
 
     /**
@@ -37,7 +53,10 @@ class Mime
      * @param string $default A fallback to extension return
      * @return string
      */
-    public static function getExtension($type, $default = "unknown")
+    public static function getExtension(
+        string $type,
+        string $default = "unknown"
+    ): string
     {
         return array_key_exists($type, self::$types)
             ? self::$types[$type]

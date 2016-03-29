@@ -2,7 +2,6 @@
 
 namespace sndsgd;
 
-
 /**
  * Comparison utility methods
  */
@@ -15,7 +14,7 @@ class Compare
      * @param mixed $b
      * @return boolean
      */
-    public static function equal($a, $b)
+    public static function equal($a, $b): bool
     {
         return ($a == $b);
     }
@@ -27,7 +26,7 @@ class Compare
      * @param mixed $b
      * @return boolean
      */
-    public static function strictEqual($a, $b)
+    public static function strictEqual($a, $b): bool
     {
         return ($a === $b);
     }
@@ -38,7 +37,7 @@ class Compare
      * @param boolean $strict
      * @return string
      */
-    public static function getMethod($strict = false)
+    public static function getMethod(bool $strict = false): string
     {
         return ($strict === false)
             ? "sndsgd\\Compare::equal"

@@ -1,18 +1,12 @@
 language: php
 
 php:
-  - 5.4
-  - 5.5
-  - 5.6
   - 7.0
   - hhvm
-  - hhvm-nightly
 
 matrix:
   allow_failures:
-    - php: 7.0
     - php: hhvm
-    - php: hhvm-nightly
 
 before_install:
   - composer self-update
@@ -20,11 +14,8 @@ before_install:
 install:
   - composer install --no-interaction --prefer-source --dev
 
-before_script:
-  - echo "extension = memcached.so" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini
-
 script:
   - phpunit --coverage-clover tests/coverage-clover.xml
 
 after_script:
-  - '[ "5.5" = "$(phpenv version-name)" ] && composer require satooshi/php-coveralls:dev-master && vendor/bin/coveralls -v'
+  - '[ "7.0" = "$(phpenv version-name)" ] && composer require satooshi/php-coveralls:dev-master && vendor/bin/coveralls -v'

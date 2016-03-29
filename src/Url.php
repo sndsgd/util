@@ -2,9 +2,6 @@
 
 namespace sndsgd;
 
-use \InvalidArgumentException;
-
-
 /**
  * A class for manipulating URLs
  */
@@ -26,7 +23,7 @@ class Url
             case self::RFC_3986:
                 return "rawurlencode";
             default:
-                throw new InvalidArgumentException(
+                throw new \InvalidArgumentException(
                     "invalid value provided for 'rfc'; ".
                     "expecting a query string related RFC as an integer"
                 );
@@ -46,7 +43,7 @@ class Url
             case self::RFC_3986:
                 return "rawurldecode";
             default:
-                throw new InvalidArgumentException(
+                throw new \InvalidArgumentException(
                     "invalid value provided for 'rfc'; ".
                     "expecting a query string related RFC as an integer"
                 );
@@ -111,7 +108,7 @@ class Url
     public static function createFromString($url)
     {
         if (!is_string($url)) {
-            throw new InvalidArgumentException(
+            throw new \InvalidArgumentException(
                 "invalid value provided for 'url'; expecting a string"
             );
         }
@@ -122,7 +119,7 @@ class Url
         }
 
         if (($url = parse_url($url)) === false) {
-            throw new InvalidArgumentException(
+            throw new \InvalidArgumentException(
                 "invalid value provided for 'url'; ".
                 "url parsing failed"
             );
@@ -290,7 +287,7 @@ class Url
             $this->port = Str::toNumber($port);
         }
         else {
-            throw new InvalidArgumentException(
+            throw new \InvalidArgumentException(
                 "invalid value provided for 'port'; ".
                 " expecting an integer, string of integers, or null"
             );
@@ -321,7 +318,7 @@ class Url
             }
         }
         else if (!is_null($path)) {
-            throw new InvalidArgumentException(
+            throw new \InvalidArgumentException(
                 "invalid value provided for 'path'; ".
                 " expecting a string or null"
             );
@@ -368,7 +365,7 @@ class Url
             $data = (array) $data;
         }
         else if (!is_array($data)) {
-            throw new InvalidArgumentException(
+            throw new \InvalidArgumentException(
                 "invalid value provided for 'query'; ".
                 "expecting a string, array, or object"
             );
@@ -404,7 +401,7 @@ class Url
             }
         }
         else if (!is_null($fragment)) {
-            throw new InvalidArgumentException(
+            throw new \InvalidArgumentException(
                 "invalid value provided for 'fragment'; ".
                 "expecting a string or null"
             );
@@ -480,7 +477,7 @@ class Url
             $to = self::createFromString($to);
         }
         else if (($to instanceof Url) === false) {
-            throw new InvalidArgumentException(
+            throw new \InvalidArgumentException(
                 "invalid value provided for 'to'; expecting a url as string, ".
                 "an instance of sndsgd\\Url, or an array of url properties"
             );

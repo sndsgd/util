@@ -2,6 +2,9 @@
 
 namespace sndsgd;
 
+/**
+ * An encryption helper
+ */
 class Crypt
 {
     /**
@@ -26,12 +29,14 @@ class Crypt
     protected $ivSize;
 
     /**
+     * @todo add cipher and mode checks
+     *
      * @param string $cipher
      * @param string $mode
      */
     public function __construct(
-        $cipher = MCRYPT_RIJNDAEL_128, 
-        $mode = MCRYPT_MODE_CBC
+        string $cipher = MCRYPT_RIJNDAEL_128, 
+        string $mode = MCRYPT_MODE_CBC
     ) {
         $this->cipher = $cipher;
         $this->mode = $mode;
@@ -42,7 +47,7 @@ class Crypt
      * Call `mcrypt_encrypt`
      * Stubbable for testing failures
      */
-    protected function mencrypt($key, $value, $iv)
+    protected function mencrypt(string $key, string $value, string $iv)
     {
         return mcrypt_encrypt($this->cipher, $key, $value, $this->mode, $iv);
     }
@@ -51,7 +56,7 @@ class Crypt
      * Call `mcrypt_decrypt`
      * Stubbable for testing failures
      */
-    protected function mdecrypt($key, $value, $iv)
+    protected function mdecrypt(string $key, string $value, string $iv)
     {
         return mcrypt_decrypt($this->cipher, $key, $value, $this->mode, $iv);
     }
@@ -61,10 +66,10 @@ class Crypt
      *
      * @param string $value The value top encrypt
      * @param string $key The key 
-     * @return string|null On success returns a string, otherwise null
+     * @return string The encrypted value
      * @throws \Exception If the encryption fails
      */
-    public function encryptBinary($value, $key)
+    public function encryptBinary(string $value, string $key): string
     {
         $iv = mcrypt_create_iv($this->ivSize, MCRYPT_DEV_URANDOM);
         $ret = $this->mencrypt($this->packKey($key), $value, $iv);
@@ -78,12 +83,12 @@ class Crypt
      * Decrypt a value
      * Note: this will trim null bytes from the end of the decrypted result
      *
-     * @param string $value The decrypted value
+     * @param string $value The encrypted value
      * @param string $key The encryption key
-     * @return string|null On success returns a string, otherwise null
+     * @return string|null The decrypted value
      * @throws \Exception If the decryption fails
      */
-    public function decryptBinary($value, $key)
+    public function decryptBinary(string $value, string $key): string
     {
         $iv = substr($value, 0, $this->ivSize);
         $value = substr($value, $this->ivSize);
@@ -102,7 +107,7 @@ class Crypt
      * @param boolean $base64 Whether to base64 encode the result
      * @return string|null
      */
-    public function encrypt($value, $key, $base64 = false)
+    public function encrypt($value, string $key, bool $base64 = false): string
     {
         $ret = $this->encryptBinary(serialize($value), $key);
         return ($base64) ? base64_encode($ret) : $ret;
@@ -116,7 +121,7 @@ class Crypt
      * @param boolean $base64 Whether to base64 decode the value before decrypting
      * @return mixed
      */
-    public function decrypt($value, $key, $base64 = false)
+    public function decrypt(string $value, string $key, bool $base64 = false)
     {
         if ($base64) {
             $value = base64_decode($value);
@@ -132,7 +137,7 @@ class Crypt
      * @param int $length The desired key length
      * @return string
      */
-    private function packKey($key, $length = 32)
+    private function packKey(string $key, int $length = 32): string
     {
         $hash = sha1($key);
         $hash .= strrev($hash);

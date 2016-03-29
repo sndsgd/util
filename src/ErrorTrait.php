@@ -2,7 +2,6 @@
 
 namespace sndsgd;
 
-
 trait ErrorTrait
 {
     /**
@@ -24,7 +23,7 @@ trait ErrorTrait
      *
      * @param string $msg
      */
-    protected function setError($msg)
+    protected function setError(string $msg)
     {
         $this->error = $msg;
         if (($err = error_get_last()) !== null) {

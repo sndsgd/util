@@ -2,7 +2,6 @@
 
 namespace sndsgd;
 
-
 /**
  * A base class for singletons
  *

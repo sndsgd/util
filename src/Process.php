@@ -2,10 +2,6 @@
 
 namespace sndsgd;
 
-use \InvalidArgumentException;
-use \sndsgd\File;
-
-
 /**
  * A class for executing shell commands
  */
@@ -80,7 +76,7 @@ class Process
      * @param array<string>|string $command The command to execute
      * @param string|null $cwd The current working directory for the command
      */
-    public function __construct($command, $cwd = null)
+    public function __construct($command, string $cwd = null)
     {
         if (is_array($command)) {
             $command = implode(" ", $command);
@@ -94,7 +90,7 @@ class Process
      *
      * @param string $str The stdin value
      */
-    public function setStdin($str)
+    public function setStdin(string $str)
     {
         $this->spec[self::STDIN] = ["pipe", "r"];
         $this->stdin = $str;
@@ -106,11 +102,12 @@ class Process
      * @param string $path An absolute file path
      * @throws InvalidArgumentException If $path is not a readable file
      */
-    public function setStdinFile($path)
+    public function setStdinFile(string $path)
     {
-        if (($test = File::isReadable($path)) !== true) {
-            throw new InvalidArgumentException(
-                "invalid value provided for 'path'; $test"
+        if (!is_readable($path)) {
+            throw new \InvalidArgumentException(
+                "invalid value provided for 'path'; ".
+                "'$path' is not a readable file"
             );
         }
         $this->spec[self::STDIN] = ["file", $path, "r"];
@@ -124,14 +121,14 @@ class Process
      * @param string $path An absolute file path
      * @param boolean $append Whether or not to append to the file
      */
-    private function setOutputFile($stream, $path, $append)
+    private function setOutputFile(int $stream, string $path, bool $append)
     {
-        if (($test = File::isWritable($path)) !== true) {
-            throw new InvalidArgumentException(
-                "invalid value provided for 'path'; $test"
+        if (!is_writable($path)) {
+            throw new \InvalidArgumentException(
+                "invalid value provided for 'path'; ".
+                "'$path' is not a writable file"
             );
         }
-
         $this->spec[$stream] = ["file", $path, $append === true ? "a" : "w"];
     }
 
@@ -141,7 +138,7 @@ class Process
      * @param string $path An absolute file path
      * @param boolean $append Whether or not to append to the file
      */
-    public function setStdoutFile($path, $append = false)
+    public function setStdoutFile(string $path, bool $append = false)
     {
         $this->setOutputFile(self::STDOUT, $path, $append);
     }
@@ -152,7 +149,7 @@ class Process
      * @param string $path An absolute file path
      * @param boolean $append Whether or not to append to the file
      */
-    public function setStderrFile($path, $append = false)
+    public function setStderrFile(string $path, bool $append = false)
     {
         $this->setOutputFile(self::STDERR, $path, $append);
     }
@@ -160,7 +157,7 @@ class Process
     /**
      * @return string
      */
-    public function getStdout()
+    public function getStdout(): string
     {
         return $this->stdout;
     }
@@ -168,15 +165,15 @@ class Process
     /**
      * @return string
      */
-    public function getStderr()
+    public function getStderr(): string
     {
         return $this->stderr;
     }
 
     /**
-     * @return string
+     * @return int
      */
-    public function getExitcode()
+    public function getExitcode(): int
     {
         return $this->exitcode;
     }
@@ -184,7 +181,7 @@ class Process
     /**
      * @return string
      */
-    public function getCommand()
+    public function getCommand(): string
     {
         return $this->command;
     }
@@ -192,9 +189,9 @@ class Process
     /**
      * Execute the command
      *
-     * @return integer The exit code from the process
+     * @return bool Whether or not the process returned a successful exit code
      */
-    public function exec()
+    public function exec(): bool
     {
         $process = proc_open(
             $this->command,
@@ -219,7 +216,7 @@ class Process
             }
             $this->exitcode = proc_close($process);
         }
-        return $this->exitcode;
+        return ($this->exitcode === 0);
     }
 
     /**
@@ -227,7 +224,7 @@ class Process
      *
      * @return array<string,mixed>
      */
-    public function export()
+    public function export(): array
     {
         return [
             "command" => $this->command,

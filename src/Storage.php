@@ -2,9 +2,6 @@
 
 namespace sndsgd;
 
-use \Exception;
-
-
 /**
  * Storage for various values
  */
@@ -24,7 +21,7 @@ class Storage extends Singleton
      * @param array $args The arguments provided to the method
      * @return mixed
      */
-    public static function __callStatic($name, $args)
+    public static function __callStatic(string $name, array $args)
     {
         $instance = static::getInstance();
         return $instance->get($name);
@@ -45,7 +42,7 @@ class Storage extends Singleton
      *
      * @return array<string,mixed>
      */
-    public function export()
+    public function export(): array
     {
         return $this->values;
     }
@@ -56,7 +53,7 @@ class Storage extends Singleton
      * @param string $name A key to used for retrieving the value later
      * @param mixed $value The value to add
      */
-    public function set($name, $value)
+    public function set(string $name, $value)
     {
         $this->values[$name] = $value;
     }
@@ -68,10 +65,10 @@ class Storage extends Singleton
      * @return mixed
      * @throws \Exception If the provided name doesn't exist
      */
-    public function get($name)
+    public function get(string $name)
     {
         if (!array_key_exists($name, $this->values)) {
-            throw new Exception("no value exists for '$name'");
+            throw new \Exception("no value exists for '$name'");
         }
         return $this->values[$name];
     }

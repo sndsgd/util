@@ -2,9 +2,6 @@
 
 namespace sndsgd;
 
-use \InvalidArgumentException;
-
-
 /**
  * A trait for adding data storage to an object
  */
@@ -22,7 +19,7 @@ trait DataTrait
      *
      * @return boolean
      */
-    public function hasData()
+    public function hasData(): bool
     {
         return !empty($this->data);
     }
@@ -57,9 +54,9 @@ trait DataTrait
             $this->data[$key] = $value;
         }
         else {
-            throw new InvalidArgumentException(
-                "invalid value provided for 'key'; expecting a key as a string ".
-                "or an associative array"
+            throw new \InvalidArgumentException(
+                "invalid value provided for 'key'; expecting a key as a ".
+                "string or an associative array"
             );
         }
         return $this;
@@ -71,7 +68,7 @@ trait DataTrait
      * @param string $key The key of the data to remove
      * @return boolean Whether or not the data was removed
      */
-    public function removeData($key = null)
+    public function removeData(string $key = null): bool
     {
         if ($key === null) {
             $this->data = [];
@@ -91,7 +88,7 @@ trait DataTrait
      * @param mixed $default A value to return if the key doesn't exist
      * @return void
      */
-    public function getData($key = null, $default = null)
+    public function getData(string $key = null, $default = null)
     {
         if ($key === null) {
             return $this->data;
