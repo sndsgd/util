@@ -2,8 +2,6 @@
 
 namespace sndsgd;
 
-use \InvalidArgumentException;
-
 /**
  * String utility methods
  */
@@ -14,14 +12,19 @@ class Str
      *
      * @param string $haystack
      * @param string $needle
-     * @param boolean $caseSensitive
-     * @return boolean
+     * @param bool $caseSensitive
+     * @return bool
      */
-    public static function beginsWith($haystack, $needle, $caseSensitive = false)
+    public static function beginsWith(
+        string $haystack,
+        string $needle,
+        bool $caseSensitive = false
+    ): bool
     {
+        $length = strlen($needle);
         return ($caseSensitive === false)
-            ? strncasecmp($haystack, $needle, strlen($needle)) === 0
-            : strncmp($haystack, $needle, strlen($needle)) === 0;
+            ? strncasecmp($haystack, $needle, $length) === 0
+            : strncmp($haystack, $needle, $length) === 0;
     }
 
     /**
@@ -29,10 +32,14 @@ class Str
      *
      * @param string $haystack
      * @param string $needle
-     * @param boolean $caseSensitive
-     * @return boolean
+     * @param bool $caseSensitive
+     * @return bool
      */
-    public static function endsWith($haystack, $needle, $caseSensitive = false)
+    public static function endsWith(
+        string $haystack,
+        string $needle,
+        bool $caseSensitive = false
+    ): bool
     {
         $test = substr($haystack, -strlen($needle));
         return ($caseSensitive === false)
@@ -47,7 +54,7 @@ class Str
      * @param string $needle The end of the string to return
      * @return string
      */
-    public static function before($haystack, $needle)
+    public static function before(string $haystack, string $needle): string
     {
         $pos = strpos($haystack, $needle);
         return ($pos !== false)
@@ -62,7 +69,7 @@ class Str
      * @param string $needle The string immediately before the desired result
      * @return string
      */
-    public static function after($haystack, $needle)
+    public static function after(string $haystack, string $needle): string
     {
         $pos = strpos($haystack, $needle);
         return ($pos !== false)
@@ -73,16 +80,11 @@ class Str
     /**
      * Get a random string
      *
-     * @param integer $length The length of the resulting string
+     * @param int $length The length of the resulting string
      * @return string
      */
-    public static function random($length)
+    public static function random(int $length): string
     {
-        if (!is_int($length)) {
-            throw new InvalidArgumentException(
-                "invalid value provided for 'length'; expecting an integer"
-            );
-        }
         $chars = base64_encode(openssl_random_pseudo_bytes($length * 2));
         $chars = preg_replace("~[^A-Za-z0-9]~", "", $chars);
         return substr($chars, 0, $length);
@@ -92,7 +94,7 @@ class Str
      * Convert a string to a number
      *
      * @param string $str
-     * @return integer|float
+     * @return int|float
      */
     public static function toNumber($str)
     {
@@ -108,7 +110,7 @@ class Str
      * Convert boolean strings to real booleans
      *
      * @param string|number $str
-     * @return boolean|null
+     * @return bool|null
      */
     public static function toBoolean($str)
     {
@@ -137,7 +139,7 @@ class Str
      * @param string $str
      * @return string
      */
-    public static function toCamelCase($str)
+    public static function toCamelCase(string $str): string
     {
         $str = trim($str);
         $fn = function($arg) {
@@ -152,10 +154,13 @@ class Str
      * Convert a string to snake_case
      *
      * @param string $str
-     * @param boolean $uppercase
+     * @param bool $uppercase
      * @return string
      */
-    public static function toSnakeCase($str, $uppercase = false)
+    public static function toSnakeCase(
+        string $str,
+        bool $uppercase = false
+    ): string
     {
         $str = trim($str);
         $str = preg_replace("~[^a-z0-9]+~i", "_", $str);
@@ -170,9 +175,7 @@ class Str
             return $match[0]."_".$match[1];
         };
         $ret = preg_replace_callback("~([a-z])[A-Z]~", $fn, $str);
-        return ($uppercase)
-            ? strtoupper($ret)
-            : strtolower($ret);
+        return ($uppercase) ? strtoupper($ret) : strtolower($ret);
     }
 
     /**
@@ -181,7 +184,7 @@ class Str
      * @param string $str
      * @return string
      */
-    public static function stripPostNewlineTabs($str)
+    public static function stripPostNewlineTabs(string $str): string
     {
         $regex = "~".PHP_EOL."[\t]+~";
         return preg_replace($regex, PHP_EOL, $str);
@@ -193,7 +196,7 @@ class Str
      * @param string $str
      * @return string
      */
-    public static function stripEmptyLines($str)
+    public static function stripEmptyLines(string $str): string
     {
         $regex = "~(^[\r\n]*|[\r\n]+)[\s\t]*[\r\n]+~";
         return preg_replace($regex, PHP_EOL, $str);
@@ -205,15 +208,14 @@ class Str
      * @param string $str The value to summarize
      * @param int $maxLength The max number of characters to return
      * @param string $ellipsis A string to append to the result
-     * @param string $split 
-     * @throws \InvalidArgumentException If an invalid `method` is provided
+     * @param string $needle If provided, attempt to split on this string
      */
     public static function summarize(
         string $str,
         int $maxLength,
         string $ellipsis = "...",
-        string $split = ""
-    ):string
+        string $needle = ""
+    ): string
     {
         $length = mb_strlen($str);
         if ($length <= $maxLength) {
@@ -221,9 +223,9 @@ class Str
         }
 
         $endPos = $maxPos = $maxLength - mb_strlen($ellipsis);
-        if ($split !== "") {
+        if ($needle !== "") {
             $offset = $maxPos - $length;
-            $endPos = mb_strrpos($str, $split, $offset);
+            $endPos = mb_strrpos($str, $needle, $offset);
             if ($endPos === false) {
                 $endPos = $maxPos;
             }
@@ -240,7 +242,7 @@ class Str
      * @param array<string,string> $values
      * @return string
      */
-    public static function replace($str, array $values)
+    public static function replace(string $str, array $values): string
     {
         return str_replace(array_keys($values), array_values($values), $str);
     }

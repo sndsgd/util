@@ -65,17 +65,9 @@ class StrTest extends PHPUnit_Framework_TestCase
 
     public function testRandom()
     {
-        # just check the length
-        $result = Str::random(100);
-        $this->assertEquals(100, strlen($result));
-    }
-
-    /**
-     * @expectedException InvalidArgumentException
-     */
-    public function testRandomException()
-    {
-        $result = Str::random([]);
+        $length = mt_rand(100, 1000);
+        $result = Str::random($length);
+        $this->assertEquals($length, strlen($result));
     }
 
     public function testToNumber()
@@ -181,9 +173,9 @@ class StrTest extends PHPUnit_Framework_TestCase
     /**
      * @dataProvider providerSummarize
      */
-    public function testSummarize($str, $maxLength, $ellipsis, $split, $expect)
+    public function testSummarize($str, $maxLength, $ellipsis, $needle, $expect)
     {
-        $result = Str::summarize($str, $maxLength, $ellipsis, $split);
+        $result = Str::summarize($str, $maxLength, $ellipsis, $needle);
         $this->assertSame($expect, $result);
     }
 
