@@ -29,7 +29,7 @@ class Func
      * @return \ReflectionFunctionAbstract
      * @throws \ReflectionException If `$func` does not exist
      */
-    public static function getReflection(callable $func)
+    public static function getReflection(callable $func): \ReflectionFunctionAbstract
     {
         if (is_string($func) && strpos($func, "::") !== false) {
             list($classname, $method) = explode("::", $func, 2);
