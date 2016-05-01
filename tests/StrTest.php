@@ -178,6 +178,36 @@ class StrTest extends PHPUnit_Framework_TestCase
         }
     }
 
+    /**
+     * @dataProvider providerSummarize
+     */
+    public function testSummarize($str, $maxLength, $ellipsis, $split, $expect)
+    {
+        $result = Str::summarize($str, $maxLength, $ellipsis, $split);
+        $this->assertSame($expect, $result);
+    }
+
+    public function providerSummarize()
+    {
+        # 45 chars long
+        $test = "one two three. four fix six seven eight nine.";
+        return [
+            # max length is >= length
+            [$test, 45, "...", "", $test],
+            [$test, 46, "...", "", $test],
+
+            # working as expected
+            [$test, 25, "...", "", "one two three. four fi..."],
+            [$test, 25, "...", " ", "one two three. four..."],
+            [$test, 25, "...", ". ", "one two three..."],
+
+            # no spaces; fallback to exact
+            ["abcdefghijklmno", 10, "...", " ", "abcdefg..."],
+            # no period in substring; fallback to exact
+            [$test, 15, "...", ".", "one two thre..."],
+        ];
+    }
+
     public function testReplace()
     {
         $values = ["1" => "one", "2" => "two", "3" => "three"];

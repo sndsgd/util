@@ -4,7 +4,6 @@ namespace sndsgd;
 
 use \InvalidArgumentException;
 
-
 /**
  * String utility methods
  */
@@ -198,6 +197,39 @@ class Str
     {
         $regex = "~(^[\r\n]*|[\r\n]+)[\s\t]*[\r\n]+~";
         return preg_replace($regex, PHP_EOL, $str);
+    }
+
+    /**
+     * Summarize a string to a given max length
+     *
+     * @param string $str The value to summarize
+     * @param int $maxLength The max number of characters to return
+     * @param string $ellipsis A string to append to the result
+     * @param string $split 
+     * @throws \InvalidArgumentException If an invalid `method` is provided
+     */
+    public static function summarize(
+        string $str,
+        int $maxLength,
+        string $ellipsis = "...",
+        string $split = ""
+    ):string
+    {
+        $length = mb_strlen($str);
+        if ($length <= $maxLength) {
+            return $str;
+        }
+
+        $endPos = $maxPos = $maxLength - mb_strlen($ellipsis);
+        if ($split !== "") {
+            $offset = $maxPos - $length;
+            $endPos = mb_strrpos($str, $split, $offset);
+            if ($endPos === false) {
+                $endPos = $maxPos;
+            }
+        }
+
+        return mb_substr($str, 0, $endPos).$ellipsis;
     }
 
     /**
