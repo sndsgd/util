@@ -89,20 +89,23 @@ class Process
      * Set the stdin contents
      *
      * @param string $str The stdin value
+     * @return \sndsgd\Process
      */
-    public function setStdin(string $str)
+    public function setStdin(string $str): Process
     {
         $this->spec[self::STDIN] = ["pipe", "r"];
         $this->stdin = $str;
+        return $this;
     }
 
     /**
      * Set the path to a file to read into stdin
      *
      * @param string $path An absolute file path
+     * @return \sndsgd\Process
      * @throws InvalidArgumentException If $path is not a readable file
      */
-    public function setStdinFile(string $path)
+    public function setStdinFile(string $path): Process
     {
         if (!is_readable($path)) {
             throw new \InvalidArgumentException(
@@ -112,6 +115,7 @@ class Process
         }
         $this->spec[self::STDIN] = ["file", $path, "r"];
         $this->stdin = "";
+        return $this;
     }
 
     /**
@@ -119,7 +123,7 @@ class Process
      *
      * @param integer $stream The index of the relevant stream
      * @param string $path An absolute file path
-     * @param boolean $append Whether or not to append to the file
+     * @param bool $append Whether or not to append to the file
      */
     private function setOutputFile(int $stream, string $path, bool $append)
     {
@@ -137,10 +141,12 @@ class Process
      *
      * @param string $path An absolute file path
      * @param boolean $append Whether or not to append to the file
+     * @return \sndsgd\Process
      */
-    public function setStdoutFile(string $path, bool $append = false)
+    public function setStdoutFile(string $path, bool $append = false): Process
     {
         $this->setOutputFile(self::STDOUT, $path, $append);
+        return $this;
     }
 
     /**
@@ -148,10 +154,12 @@ class Process
      *
      * @param string $path An absolute file path
      * @param boolean $append Whether or not to append to the file
+     * @return \sndsgd\Process
      */
-    public function setStderrFile(string $path, bool $append = false)
+    public function setStderrFile(string $path, bool $append = false): Process
     {
         $this->setOutputFile(self::STDERR, $path, $append);
+        return $this;
     }
 
     /**
@@ -220,11 +228,9 @@ class Process
     }
 
     /**
-     * Export data for logging of debugging
-     *
      * @return array<string,mixed>
      */
-    public function export(): array
+    public function toArray(): array
     {
         return [
             "command" => $this->command,
@@ -233,5 +239,14 @@ class Process
             "stdout" => $this->stdout,
             "stderr" => $this->stderr
         ];
+    }
+
+    /**
+     * @deprecated Use Process::toArray()
+     * @return array<string,mixed>
+     */
+    public function export(): array
+    {
+        return $this->toArray();
     }
 }

@@ -149,6 +149,19 @@ class ProcessTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(0, $p->getExitcode());
     }
 
+    public function testToArray()
+    {
+        $p = new Process("pwd");
+        $p->exec();
+
+        $result = $p->toArray();
+        $this->assertArrayHasKey("command", $result);
+        $this->assertArrayHasKey("cwd", $result);
+        $this->assertArrayHasKey("exit code", $result);
+        $this->assertArrayHasKey("stdout", $result);
+        $this->assertArrayHasKey("stderr", $result);
+    }
+
     public function testExport()
     {
         $p = new Process("pwd");
