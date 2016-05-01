@@ -85,8 +85,9 @@ class Str
      */
     public static function random(int $length): string
     {
-        $chars = base64_encode(openssl_random_pseudo_bytes($length * 2));
-        $chars = preg_replace("~[^A-Za-z0-9]~", "", $chars);
+        $byteLength = ($length < 10) ? 10 : $length;
+        $chars = base64_encode(random_bytes($byteLength));
+        $chars = str_replace(["+", "/", "="], "", $chars);
         return substr($chars, 0, $length);
     }
 

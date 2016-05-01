@@ -63,11 +63,26 @@ class StrTest extends PHPUnit_Framework_TestCase
         ];
     }
 
-    public function testRandom()
+    /**
+     * @dataProvider providerRandom
+     */
+    public function testRandom($length)
     {
-        $length = mt_rand(100, 1000);
         $result = Str::random($length);
         $this->assertEquals($length, strlen($result));
+    }
+
+    public function providerRandom()
+    {
+        return [
+            [1],
+            [2],
+            [3],
+            [4],
+            [5],
+            [100],
+            [1000],
+        ];
     }
 
     public function testToNumber()
