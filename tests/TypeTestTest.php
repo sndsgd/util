@@ -27,7 +27,7 @@ class TypeTestTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers ::nullableInt
+     * @covers ::nullableString
      * @expectedException InvalidArgumentException
      */
     public function testNullableStringException()
@@ -37,7 +37,7 @@ class TypeTestTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @covers ::nullableInt
-     * @dataProvider providernullableInt
+     * @dataProvider providerNullableInt
      */
     public function testNullableInt($test)
     {
@@ -58,8 +58,42 @@ class TypeTestTest extends \PHPUnit_Framework_TestCase
      * @covers ::nullableInt
      * @expectedException InvalidArgumentException
      */
-    public function testnullableIntException()
+    public function testNullableIntException()
     {
         TypeTest::nullableInt("string", "name");
+    }
+
+    /**
+     * @covers ::TypedArray
+     * @covers ::instanceArray
+     * @covers ::scalarArray
+     * @dataProvider providerTypedArray
+     */
+    public function testTypedArray($values, $type, $exception = "")
+    {
+        if ($exception) {
+            $this->setExpectedException($exception);
+        }
+        $result = TypeTest::typedArray($values, $type);
+        $this->assertTrue(is_array($result));
+    }
+
+    public function providerTypedArray()
+    {
+        $ex = \InvalidArgumentException::class;
+        return [
+            [[true, false, true, false], "bool"],
+            [[true, false, true, false, "1"], "bool", $ex],
+            [[true, false, true, false, 1], "bool", $ex],
+            [[true, false, true, false, 1.0], "bool", $ex],
+            [[1.0, 2.0, 3.0], "float"],
+            [[1.0, 2.0, 3.0, true], "float", $ex],
+            [[1.0, 2.0, 3.0, 1], "float", $ex],
+            [[1.0, 2.0, 3.0, "abc"], "float", $ex],
+            [[1, 2, 3], "int"],
+            [["a", "b", "c"], "string"],
+            [[new \stdClass(), new \stdClass()], \stdClass::class],
+            [[new \stdClass(), new \SplStack()], \stdClass::class, $ex],
+        ];
     }
 }
