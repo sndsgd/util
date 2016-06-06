@@ -59,16 +59,18 @@ class Classname
      * Get a namespaced classname from a string of php
      *
      * @param string $contents
-     * @return string|null
+     * @return string
      */
-    public static function fromContents(string $contents)
+    public static function fromContents(string $contents): string
     {
-        $class = null;
-        $namespace = null;
+        $class = "";
+        $namespace = "";
         $tokens = token_get_all($contents);
-        for ($i=0, $len=count($tokens); $i<$len; $i++) {
+        $len = count($tokens);
+
+        for ($i = 0; $i < $len; $i++) {
             if ($tokens[$i][0] === T_NAMESPACE) {
-                for ($j=$i+1, $jlen=count($tokens); $j<$jlen; $j++) {
+                for ($j = $i + 1; $j < $len; $j++) {
                     if ($tokens[$j][0] === T_STRING) {
                         $namespace .= "\\".$tokens[$j][1];
                     }
@@ -78,18 +80,19 @@ class Classname
                 }
             }
             else if ($tokens[$i][0] === T_CLASS) {
-                for ($j=$i+1; $j<$len; $j++) {
-                    if ($tokens[$j] === "{") {
-                        $class = $tokens[$i+2][1];
+                for ($j = $i+1; $j < $len; $j++) {
+                    if ($tokens[$j][0] === T_STRING) {
+                        $class = $tokens[$j][1];
+                        break 2;
                     }
                 }
             }
         }
 
-        if ($class === null) {
-            return null;
+        if ($class === "") {
+            return "";
         }
-        return ($namespace === null)
+        return ($namespace === "")
             ? $class
             : trim($namespace."\\".$class, "\\");
     }

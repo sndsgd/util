@@ -32,20 +32,34 @@ class ClassnameTest extends PHPUnit_Framework_TestCase
         $this->assertEquals("some\\namespace::method", $res);      
     }
 
-    public function testFromContents()
+    /**
+     * @dataProvider providerFromContents
+     */
+    public function testFromContents($contents, $expect)
     {
-        $contents = file_get_contents(__FILE__);
+        $this->assertSame($expect, Classname::fromContents($contents));
+    }
 
-        $this->assertEquals("some\\ns\\Classname", Classname::fromContents(
-            "<?php\nnamespace some\\ns;\n\nclass Classname {\n\n}\n"
-        ));
+    public function providerFromContents()
+    {
+        return [
+            [
+                "<?php\nclass TestClass {\n\n}\n\n?>",
+                "TestClass",
+            ],
+            [
+                "<?php\nclass TestClass extends AnotherClass\n{\n\n}\n\n?>",
+                "TestClass",
+            ],
+            [
+                "<?php\nnamespace ns;\n\nclass Classname {\n\n}\n",
+                "ns\\Classname"
+            ],
+            [
+                "<?php\nnamespace test\\this;\n\n?>",
+                "",
+            ],
 
-        $this->assertEquals("TestClass", Classname::fromContents(
-            "<?php\nclass TestClass{\n\n}\n\n?>"
-        ));
-
-        $this->assertNull(Classname::fromContents(
-            "<?php\nnamespace test\\this;\n\n?>"
-        ));
+        ];
     }
 }
