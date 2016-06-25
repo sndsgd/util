@@ -64,4 +64,18 @@ class Date
         $date = static::format($timestamp);
         return new \DateTime($date);
     }
+
+    /**
+     * Create a DateTimeImmutable instance with microsecond precision
+     *
+     * @param float|null $timestamp
+     * @return \DateTime
+     */
+    public static function createImmutable(
+        float $timestamp = null
+    ): \DateTimeImmutable
+    {
+        $date = static::format($timestamp);
+        return new \DateTimeImmutable($date);
+    }
 }

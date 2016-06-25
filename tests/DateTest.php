@@ -56,7 +56,7 @@ class DateTest extends \PHPUnit_Framework_TestCase
      */
     public function testCreate($test)
     {
-        $this->assertInstanceOf("\\DateTime", Date::create($test));
+        $this->assertInstanceOf(\DateTime::class, Date::create($test));
     }
 
     public function providerCreate()
@@ -66,5 +66,16 @@ class DateTest extends \PHPUnit_Framework_TestCase
             [time()],
             [microtime(true)],
         ];
+    }
+
+    /**
+     * @dataProvider providerCreate
+     */
+    public function testCreateImmutable($test)
+    {
+        $this->assertInstanceOf(
+            \DateTimeImmutable::class,
+            Date::createImmutable($test)
+        );
     }
 }
