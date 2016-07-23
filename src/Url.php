@@ -192,7 +192,6 @@ class Url
      */
     protected $fragment;
 
-
     /**
      * Set the scheme portion of the url
      *
@@ -284,12 +283,12 @@ class Url
             $this->port = $port;
         }
         else if (is_string($port) && preg_match('/^[0-9]+$/', $port) !== 0) {
-            $this->port = Str::toNumber($port);
+            $this->port = (int) $port;
         }
         else {
             throw new \InvalidArgumentException(
                 "invalid value provided for 'port'; ".
-                " expecting an integer, string of integers, or null"
+                "expecting an integer, string of integers, or null"
             );
         }
         return $this;
@@ -428,11 +427,7 @@ class Url
      */
     public function __toArray()
     {
-        $ret = [];
-        foreach ($this as $property => $value) {
-            $ret[$property] = $value;
-        }
-        return $ret;
+        return get_object_vars($this);
     }
 
     /**

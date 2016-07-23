@@ -41,7 +41,8 @@ class StrTest extends PHPUnit_Framework_TestCase
     {
         return [
             ["application/json; charset=utf8", ";", "application/json"],
-            ["some string", "string", "some "]
+            ["some string", "string", "some "],
+            ["original string", "not in string", "original string"],
         ];
     }
 
@@ -59,7 +60,8 @@ class StrTest extends PHPUnit_Framework_TestCase
     {
         return [
             ["application/json; charset=utf8", ";", " charset=utf8"],
-            ["some string", "some", " string"]
+            ["some string", "some", " string"],
+            ["original string", "not in string", "original string"],
         ];
     }
 
