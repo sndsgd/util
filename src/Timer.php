@@ -69,7 +69,7 @@ class Timer
 
     /**
      * @param string|null $name A handle to give the timer instance
-     * @param bool $wait Whether to start the timer
+     * @param float $startTime An optional time to start the timer
      */
     public function __construct(string $name = null, float $startTime = 0.0)
     {

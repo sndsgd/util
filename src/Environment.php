@@ -41,7 +41,7 @@ class Environment extends \sndsgd\ArrayAbstract
     /**
      * A list of the valid node types
      *
-     * @var string
+     * @var array<string>
      */
     protected static $validNodeTypes = [
         self::DEV,
@@ -73,7 +73,7 @@ class Environment extends \sndsgd\ArrayAbstract
 
     /**
      * @param array<string,mixed> $values
-     * @param string $emulate The environment to emulate
+     * @param string $emulateNodeType The environment to emulate
      * @throws \LogicException If the actual and emulated node types match
      */
     public function __construct(

@@ -57,9 +57,10 @@ class Str
     public static function before(string $haystack, string $needle): string
     {
         $pos = strpos($haystack, $needle);
-        return ($pos !== false)
-            ? substr($haystack, 0, $pos)
-            : $haystack;
+        if ($pos === false) {
+            return $haystack;
+        }
+        return substr($haystack, 0, $pos);
     }
 
     /**
@@ -72,9 +73,10 @@ class Str
     public static function after(string $haystack, string $needle): string
     {
         $pos = strpos($haystack, $needle);
-        return ($pos !== false)
-            ? substr($haystack, $pos + strlen($needle))
-            : $haystack;
+        if ($pos === false) {
+            return $haystack;
+        }
+        return substr($haystack, $pos + strlen($needle));
     }
 
     /**
