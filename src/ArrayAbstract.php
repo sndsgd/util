@@ -2,10 +2,6 @@
 
 namespace sndsgd;
 
-/**
- * An object powered array implemention
- * Note: this class exists solely for creating typed arrays
- */
 abstract class ArrayAbstract implements \ArrayAccess, \Countable, \IteratorAggregate
 {
     /**
