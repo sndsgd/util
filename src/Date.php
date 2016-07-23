@@ -36,7 +36,8 @@ class Date
     public static function format(
         float $timestamp = null,
         string $format = "Y-m-d H:i:s.u"
-    ): string {
+    ): string
+    {
         if ($timestamp === null) {
             $timestamp = microtime(true);
         }

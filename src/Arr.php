@@ -147,7 +147,7 @@ class Arr
      * Selectively remove values from an array based on their keys
      *
      * @param array $arr The array to operate on
-     * @param string $key A key to remove from the array
+     * @param string ...$keys The key(s) to remove from the array
      * @return array
      */
     public static function without(array $arr, string ...$keys): array
@@ -202,7 +202,8 @@ class Arr
         array $arr,
         $match = false,
         bool $strict = false
-    ): array {
+    ): array
+    {
         $func = Compare::getMethod($strict);
         $len = count($arr);
         while ($len > 0 && call_user_func($func, end($arr), $match)) {
@@ -224,7 +225,8 @@ class Arr
         array $arr,
         $match = false,
         bool $strict = false
-    ): array {
+    ): array
+    {
         $func = Compare::getMethod($strict);
         $len = count($arr);
         while ($len > 0 && call_user_func($func, reset($arr), $match)) {
@@ -263,7 +265,8 @@ class Arr
         array $arr, 
         string $key, 
         callable $test
-    ): bool {
+    ): bool
+    {
         return (array_key_exists($key, $arr) && $test($arr[$key]));
     }
 
