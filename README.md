@@ -1,9 +1,9 @@
 # sndsgd/util
 
-[![Latest Version](https://img.shields.io/github/release/sndsgd/sndsgd-util.svg?style=flat-square)](https://github.com/sndsgd/sndsgd-util/releases)
-[![Software License](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square)](https://github.com/sndsgd/sndsgd-util/LICENSE)
-[![Build Status](https://img.shields.io/travis/sndsgd/sndsgd-util/master.svg?style=flat-square)](https://travis-ci.org/sndsgd/sndsgd-util)
-[![Coverage Status](https://img.shields.io/coveralls/sndsgd/sndsgd-util.svg?style=flat-square)](https://coveralls.io/r/sndsgd/sndsgd-util?branch=master)
+[![Latest Version](https://img.shields.io/github/release/sndsgd/util.svg?style=flat-square)](https://github.com/sndsgd/util/releases)
+[![Software License](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square)](https://github.com/sndsgd/util/LICENSE)
+[![Build Status](https://img.shields.io/travis/sndsgd/util/master.svg?style=flat-square)](https://travis-ci.org/sndsgd/util)
+[![Coverage Status](https://img.shields.io/coveralls/sndsgd/util.svg?style=flat-square)](https://coveralls.io/r/sndsgd/util?branch=master)
 [![Total Downloads](https://img.shields.io/packagist/dt/sndsgd/util.svg?style=flat-square)](https://packagist.org/packages/sndsgd/util)
 
 A utility toolkit for PHP.
