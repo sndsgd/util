@@ -42,13 +42,14 @@ class EnvironmentTest extends \PHPUnit_Framework_TestCase
         $stage = Environment::STAGE;
         $prod = Environment::PROD;
 
+        $emptyValues = [Environment::SYSTEM_ENVVAR_NAME => "", "test" => 42];
         $devValues = [Environment::SYSTEM_ENVVAR_NAME => $dev, "test" => 42];
         $stageValues = [Environment::SYSTEM_ENVVAR_NAME => $stage, "test" => 42];
         $prodValues = [Environment::SYSTEM_ENVVAR_NAME => $prod, "test" => 42];
 
         return [
             # missing system environment variable
-            [[], "", \InvalidArgumentException::class],
+            [$emptyValues, "", \InvalidArgumentException::class],
             [$prodValues, ""],
             [$prodValues, $dev],
             [$devValues, ""],

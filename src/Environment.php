@@ -85,8 +85,8 @@ class Environment extends \sndsgd\ArrayAbstract
         parent::__construct($values, true);
 
         # set the node type using the system environment variable
-        # default to 'undefined' to make the exception message easy to grasp 
-        $nodeType = $values[self::SYSTEM_ENVVAR_NAME] ?? "undefined";
+        # if the envvar is missing, just default to a dev environment
+        $nodeType = $values[self::SYSTEM_ENVVAR_NAME] ?? self::DEV;
         $this->nodeType = $this->validateNodeType($nodeType);
 
         # if the node type should be emulated, we'll set it as another property
