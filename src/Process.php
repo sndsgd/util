@@ -167,7 +167,7 @@ class Process
      */
     public function getStdout(): string
     {
-        return $this->stdout;
+        return $this->stdout ?? "";
     }
 
     /**
@@ -175,7 +175,7 @@ class Process
      */
     public function getStderr(): string
     {
-        return $this->stderr;
+        return $this->stderr ?? "";
     }
 
     /**
