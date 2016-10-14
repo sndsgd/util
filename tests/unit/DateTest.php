@@ -23,7 +23,7 @@ class DateTest extends \PHPUnit_Framework_TestCase
     public function testFormat($test, $format, $expect = null)
     {
         if ($expect !== null) {
-            $this->assertEquals($expect, Date::format($test, $format));    
+            $this->assertEquals($expect, Date::format($test, $format));
         } else {
             $this->assertTrue(is_string(Date::format($test, $format)));
         }
@@ -77,5 +77,60 @@ class DateTest extends \PHPUnit_Framework_TestCase
             \DateTimeImmutable::class,
             Date::createImmutable($test)
         );
+    }
+
+    public function providerConvertTimezone()
+    {
+        $utc = new \DateTimeZone("UTC");
+
+        return [
+            [
+                new \DateTime("2016-10-13 23:30:00", $utc),
+                "America/New_York",
+                "UTC",
+                false,
+                "",
+                new \DateTime("2016-10-13 19:30:00"),
+            ],
+            [
+                new \DateTime("2016-10-13 23:30:00", $utc),
+                "America/New_York",
+                "UTC",
+                true,
+                "",
+                new \DateTime("2016-10-13 19:30:00"),
+            ],
+            [
+                new \stdClass(),
+                "America/New_York",
+                "UTC",
+                true,
+                \InvalidArgumentException::class,
+                null,
+            ],
+        ];
+    }
+
+    /**
+     * @dataProvider providerConvertTimezone
+     */
+    public function testConvertTimezone(
+        $date,
+        $to,
+        $from,
+        $immutable,
+        $expectedException,
+        \DateTime $expect = null
+    )
+    {
+        if ($expectedException) {
+            $this->setExpectedException($expectedException);
+        }
+
+        $fmt = "Y-m-d H:i:s";
+        $result = Date::convertTimezone($date, $to, $from, $immutable);
+        $class = ($immutable) ? \DateTimeImmutable::class : \DateTime::class;
+        $this->assertInstanceOf($class, $result);
+        $this->assertSame($expect->format($fmt), $result->format($fmt));
     }
 }
