@@ -26,9 +26,14 @@ trait ErrorTrait
     protected function setError(string $msg)
     {
         $this->error = $msg;
-        if (($err = error_get_last()) !== null) {
-            $this->errorDetail =
-                "'{$err['message']}' in {$err['file']} on line {$err['line']}";
+        $lastError = error_get_last();
+        if ($lastError !== null) {
+            $this->errorDetail = sprintf(
+                "'%s' in %s on line %s",
+                $lastError['message'],
+                $lastError['file'],
+                $lastError['line']
+            );
         }
     }
 
