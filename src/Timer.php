@@ -74,7 +74,7 @@ class Timer
     public function __construct(string $name = null, float $startTime = 0.0)
     {
         if ($name !== null) {
-            self::$timers[] = $this; 
+            self::$timers[] = $this;
         }
         $this->name = $name;
         $this->startTime = ($startTime !== 0.0) ? $startTime : microtime(true);
@@ -167,7 +167,7 @@ class Timer
      */
     private function fmtDuration(float $duration, int $precision)
     {
-        return ($precision < 0) 
+        return ($precision < 0)
             ? $duration
             : number_format($duration, $precision);
     }

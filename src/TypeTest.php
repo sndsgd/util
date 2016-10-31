@@ -56,7 +56,7 @@ class TypeTest
      * Ensure all elements in an array are of a given type
      *
      * @param array $values The value to test
-     * @param string $type A scalar type or class name 
+     * @param string $type A scalar type or class name
      * @return array
      * @throws \InvalidArgumentException
      */

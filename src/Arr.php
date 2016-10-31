@@ -262,8 +262,8 @@ class Arr
      * @return boolean
      */
     public static function testValueByKey(
-        array $arr, 
-        string $key, 
+        array $arr,
+        string $key,
         callable $test
     ): bool
     {
