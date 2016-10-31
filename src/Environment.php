@@ -24,7 +24,7 @@ class Environment extends \sndsgd\ArrayAbstract
     /**
      * The value for staging environments
      * Note: staging environments are treated as production environments; the
-     * staging value exists so staging nodes can be differentiated from 
+     * staging value exists so staging nodes can be differentiated from
      * production nodes using the system wide environment variable
      *
      * @var string
@@ -77,7 +77,7 @@ class Environment extends \sndsgd\ArrayAbstract
      * @throws \LogicException If the actual and emulated node types match
      */
     public function __construct(
-        array $values = [], 
+        array $values = [],
         string $emulateNodeType = ""
     )
     {
@@ -132,31 +132,45 @@ class Environment extends \sndsgd\ArrayAbstract
         return ($this->emulatedNodeType !== "");
     }
 
+    /**
+     * Determine whether the current environment is production
+     *
+     * @return bool
+     */
     public function isProd(): bool
     {
-        if ($this->isEmulated()) {
-            return (
-                $this->emulatedNodeType === self::PROD || 
-                $this->emulatedNodeType === self::STAGE    
-            );
-        }
+        $nodeType = $this->isEmulated()
+            ? $this->emulatedNodeType
+            : $this->nodeType;
 
-        return (
-            $this->nodeType === self::PROD || 
-            $this->nodeType === self::STAGE
-        );
+        return ($nodeType === self::PROD || $nodeType === self::STAGE);
     }
 
+    /**
+     * Determine whether the current environment is development
+     *
+     * @return bool
+     */
     public function isDev(): bool
     {
         return !$this->isProd();
     }
 
+    /**
+     * Retrieve the node type
+     *
+     * @return string
+     */
     public function getNodeType(): string
     {
         return $this->nodeType;
     }
 
+    /**
+     * Retrieve the emulated node type
+     *
+     * @return string
+     */
     public function getEmulatedNodeType(): string
     {
         return $this->emulatedNodeType;
