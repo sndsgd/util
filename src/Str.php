@@ -249,4 +249,24 @@ class Str
     {
         return str_replace(array_keys($values), array_values($values), $str);
     }
+
+    /**
+     * Create a singular/plural appropriate message
+     *
+     * @param string $template A template with two %s placeholders
+     * @param int $count The number of whatever the message is about
+     * @param string $singularNoun The singular version of the noun
+     * @param string $pluralNoun The plural version of the noun
+     * @return string
+     */
+    public static function countMessage(
+        string $template,
+        int $count,
+        string $singularNoun,
+        string $pluralNoun
+    ): string
+    {
+        $noun = ($count === 1) ? $singularNoun : $pluralNoun;
+        return sprintf($template, $count, $noun);
+    }
 }
