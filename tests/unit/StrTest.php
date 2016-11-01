@@ -120,7 +120,7 @@ class StrTest extends PHPUnit_Framework_TestCase
         foreach ($tests as $test) {
             list($test, $method) = $test;
             $result = Str::toBoolean($test);
-            $err = 
+            $err =
                 "test: ".var_export($test, true).
                 " result: ".var_export($result, true);
             $this->$method($result, $err);
@@ -138,7 +138,7 @@ class StrTest extends PHPUnit_Framework_TestCase
 
         foreach ($tests as $test) {
             list($test, $expect) = $test;
-            $this->assertEquals($expect, Str::toCamelCase($test)); 
+            $this->assertEquals($expect, Str::toCamelCase($test));
         }
     }
 
@@ -152,10 +152,10 @@ class StrTest extends PHPUnit_Framework_TestCase
             ["snakeCase", "snake_case"],
             ["snakeCaseLong", "snake_case_long"]
         ];
-        
+
         foreach ($tests as $test) {
             list($test, $expect) = $test;
-            $this->assertEquals($expect, Str::toSnakeCase($test));   
+            $this->assertEquals($expect, Str::toSnakeCase($test));
         }
 
         $this->assertEquals("SNAKE_CASE", Str::toSnakeCase("snakeCase", true));
@@ -221,5 +221,47 @@ class StrTest extends PHPUnit_Framework_TestCase
     {
         $values = ["1" => "one", "2" => "two", "3" => "three"];
         $this->assertEquals("one two three", Str::replace("1 2 3", $values));
+    }
+
+    /**
+     * @dataProvider provideCountMessage
+     */
+    public function testCountMessage(
+        string $template,
+        int $count,
+        string $singular,
+        string $plural,
+        string $expect
+    )
+    {
+        $result = Str::countMessage($template, $count, $singular, $plural);
+        $this->assertSame($expect, $result);
+    }
+
+    public function provideCountMessage()
+    {
+        return [
+            [
+                "found %s %s",
+                0,
+                "record",
+                "records",
+                "found 0 records",
+            ],
+            [
+                "found %s %s",
+                1,
+                "record",
+                "records",
+                "found 1 record",
+            ],
+            [
+                "found %s %s",
+                2,
+                "record",
+                "records",
+                "found 2 records",
+            ],
+        ];
     }
 }
