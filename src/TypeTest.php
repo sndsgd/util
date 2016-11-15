@@ -9,7 +9,7 @@ class TypeTest
      *
      * @var array<string,string>
      */
-    protected static $scalarTypeTests = [
+    const SCALAR_TYPE_TESTS = [
         "bool" => "is_bool",
         "float" => "is_float",
         "int" => "is_int",
@@ -62,7 +62,7 @@ class TypeTest
      */
     public static function typedArray(array $values, string $type)
     {
-        if (!isset(static::$scalarTypeTests[$type])) {
+        if (!isset(static::SCALAR_TYPE_TESTS[$type])) {
             return self::instanceArray($values, $type);
         }
         return self::scalarArray($values, $type);
@@ -99,7 +99,7 @@ class TypeTest
      */
     private static function scalarArray(array $values, string $type)
     {
-        $func = static::$scalarTypeTests[$type];
+        $func = static::SCALAR_TYPE_TESTS[$type];
         foreach ($values as $index => $value) {
             if (!call_user_func($func, $value)) {
                 $article = ($type === "int") ? "an" : "a";
