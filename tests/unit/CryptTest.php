@@ -3,10 +3,31 @@
 namespace sndsgd;
 
 /**
- * @requires extension mcrypt
+ * @requires extension openssl
  */
 class CryptTest extends \PHPUnit_Framework_TestCase
 {
+    use \phpmock\phpunit\PHPMock;
+
+    /**
+     * @dataProvider provideConstructorException
+     */
+    public function testConstructorException($cipher, $keyHash, $exceptionMessage)
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage($exceptionMessage);
+
+        new Crypt($cipher, $keyHash);
+    }
+
+    public function provideConstructorException(): array
+    {
+        return [
+            ["invalid", "sha256", "invalid value provided for cipher"],
+            ["aes-256-ctr", "invalid", "invalid value provided for digestMethod"],
+        ];
+    }
+
     /**
      * @dataProvider providerBinary
      */
@@ -20,70 +41,13 @@ class CryptTest extends \PHPUnit_Framework_TestCase
 
     public function providerBinary()
     {
-        $key = 'test key';
+        $key = "test key";
         return [
-            ["home-hackintosh", $key],
-            [Str::random(100000), $key],
-            ["test 😂 emoji", $key],
+            ["home-hackintosh", Str::random(10)],
+            [Str::random(1000), Str::random(100)],
+            [file_get_contents(__FILE__), Str::random(1000)],
+            ["test 😂 emoji", Str::random(10000)],
         ];
-    }
-
-    /**
-     * @expectedException \PHPUnit_Framework_Error_Warning
-     */
-    public function testEncryptFailure()
-    {
-        $crypt = new Crypt();
-
-        # tweak the cipher so the `mcrypt_encrypt` call fails
-        $rc = new \ReflectionClass($crypt);
-        $cipher = $rc->getProperty('cipher');
-        $cipher->setAccessible(true);
-        $cipher->setValue($crypt, 'asd');
-
-        $crypt->encryptBinary('test', 'test');
-    }
-
-    /**
-     * @expectedException \Exception
-     */
-    public function testEncryptException()
-    {
-        $stub = $this->getMockBuilder("sndsgd\\Crypt")
-            ->setMethods(['mencrypt'])
-            ->getMock();
-
-        $stub->method('mencrypt')->willReturn(false);
-        $stub->encryptBinary('test', 'test');
-    }
-
-    /**
-     * @expectedException \PHPUnit_Framework_Error_Warning
-     */
-    public function testDecryptFailure()
-    {
-        $crypt = new Crypt();
-
-        # tweak the cipher so the `mcrypt_encrypt` call fails
-        $rc = new \ReflectionClass($crypt);
-        $cipher = $rc->getProperty('cipher');
-        $cipher->setAccessible(true);
-        $cipher->setValue($crypt, 'asd');
-
-        $crypt->decryptBinary('test', 'test');
-    }
-
-    /**
-     * @expectedException \Exception
-     */
-    public function testDecryptException()
-    {
-        $stub = $this->getMockBuilder("sndsgd\\Crypt")
-            ->setMethods(['mdecrypt'])
-            ->getMock();
-
-        $stub->method('mdecrypt')->willReturn(false);
-        $stub->decryptBinary('test', 'test');
     }
 
     /**
@@ -104,11 +68,47 @@ class CryptTest extends \PHPUnit_Framework_TestCase
 
     public function providerEncryptDecrypt()
     {
-        $key = 'test key';
+        $key = "test key";
         return [
             [42, $key],
             [4.2, $key],
             [[1, 2, 3], $key],
         ];
+    }
+
+    /**
+     * @expectedException \Exception
+     */
+    public function testEncryptFailure()
+    {
+        $encryptMock = $this->getFunctionMock(__NAMESPACE__, "openssl_encrypt");
+        $encryptMock->expects($this->any())->willReturn(false);
+
+        $crypt = new Crypt();
+        $crypt->encrypt("test", "test");
+    }
+
+    /**
+     * @expectedException \Exception
+     */
+    public function testDecryptFailure()
+    {
+        $encryptMock = $this->getFunctionMock(__NAMESPACE__, "openssl_decrypt");
+        $encryptMock->expects($this->any())->willReturn(false);
+
+        $crypt = new Crypt();
+        $crypt->decrypt("test", "test");
+    }
+
+    /**
+     * @expectedException \Exception
+     */
+    public function testKeyDigestFailure()
+    {
+        $encryptMock = $this->getFunctionMock(__NAMESPACE__, "openssl_digest");
+        $encryptMock->expects($this->any())->willReturn(false);
+
+        $crypt = new Crypt();
+        $crypt->encrypt("test", "test");
     }
 }

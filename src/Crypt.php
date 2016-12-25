@@ -8,95 +8,92 @@ namespace sndsgd;
 class Crypt
 {
     /**
-     * An mcrypt cipher
+     * An openssl cipher
      *
      * @var string
      */
     protected $cipher;
 
     /**
-     * An mcrypt mode
+     * The digest method for hashing keys
      *
      * @var string
      */
-    protected $mode;
+    protected $digestMethod;
 
     /**
      * The initialization vector size
      *
      * @var int
      */
-    protected $ivSize;
+    protected $ivLength;
 
     /**
-     * @todo add cipher and mode checks
-     *
-     * @param string $cipher
-     * @param string $mode
+     * @param string $cipher The encryption cipher to use
+     * @param string $digestMethod The digest method to use when hashing keys
+     * @throws \InvalidArgumentException If either argument is invalid
      */
     public function __construct(
-        string $cipher = MCRYPT_RIJNDAEL_128, 
-        string $mode = MCRYPT_MODE_CBC
-    ) {
+        string $cipher = "aes-256-ctr",
+        string $digestMethod = "sha256"
+    )
+    {
+        if (!in_array($cipher, openssl_get_cipher_methods(true))) {
+            throw new \InvalidArgumentException(
+                "invalid value provided for cipher"
+            );
+        }
+
+        if (!in_array($digestMethod, openssl_get_md_methods(true))) {
+            throw new \InvalidArgumentException(
+                "invalid value provided for digestMethod"
+            );
+        }
+
         $this->cipher = $cipher;
-        $this->mode = $mode;
-        $this->ivSize = mcrypt_get_iv_size($cipher, $mode);
-    }
-
-    /**
-     * Call `mcrypt_encrypt`
-     * Stubbable for testing failures
-     */
-    protected function mencrypt(string $key, string $value, string $iv)
-    {
-        return mcrypt_encrypt($this->cipher, $key, $value, $this->mode, $iv);
-    }
-
-    /**
-     * Call `mcrypt_decrypt`
-     * Stubbable for testing failures
-     */
-    protected function mdecrypt(string $key, string $value, string $iv)
-    {
-        return mcrypt_decrypt($this->cipher, $key, $value, $this->mode, $iv);
+        $this->digestMethod = $digestMethod;
+        $this->ivLength = openssl_cipher_iv_length($cipher);
     }
 
     /**
      * Encrypt a value
      *
-     * @param string $value The value top encrypt
-     * @param string $key The key 
+     * @param string $value The value to encrypt
+     * @param string $key The key
      * @return string The encrypted value
      * @throws \Exception If the encryption fails
      */
     public function encryptBinary(string $value, string $key): string
     {
-        $iv = mcrypt_create_iv($this->ivSize, MCRYPT_DEV_URANDOM);
-        $ret = $this->mencrypt($this->packKey($key), $value, $iv);
-        if ($ret === false) {
-            throw new \Exception("decryption failure");
+        $key = $this->hashKey($key);
+        $opts = OPENSSL_RAW_DATA | OPENSSL_ZERO_PADDING;
+        $iv = random_bytes($this->ivLength);
+        $encrypted = openssl_encrypt($value, $this->cipher, $key, $opts, $iv);
+        if ($encrypted === false) {
+            throw new \Exception("encryption failed; ".openssl_error_string());
         }
-        return $iv.$ret;
+        return $iv.$encrypted;
     }
 
     /**
      * Decrypt a value
-     * Note: this will trim null bytes from the end of the decrypted result
      *
      * @param string $value The encrypted value
      * @param string $key The encryption key
-     * @return string|null The decrypted value
+     * @return string The decrypted value
      * @throws \Exception If the decryption fails
      */
     public function decryptBinary(string $value, string $key): string
     {
-        $iv = substr($value, 0, $this->ivSize);
-        $value = substr($value, $this->ivSize);
-        $ret = $this->mdecrypt($this->packKey($key), $value, $iv);
+        $iv = substr($value, 0, $this->ivLength);
+        $encrypted = substr($value, $this->ivLength);
+        $key = $this->hashKey($key);
+        $opts = OPENSSL_RAW_DATA | OPENSSL_ZERO_PADDING;
+        $ret = openssl_decrypt($encrypted, $this->cipher, $key, $opts, $iv);
         if ($ret === false) {
-            throw new \Exception("encryption failure");
+            throw new \Exception("decryption failed; ".openssl_error_string());
         }
-        return rtrim($ret, "\0");
+        return $ret;
     }
 
     /**
@@ -131,16 +128,18 @@ class Crypt
     }
 
     /**
-     * Used to ensure a key is the appropriate length
+     * Compute a digest hash for a value
      *
-     * @param string $key
-     * @param int $length The desired key length
+     * @param string $value The value to hash
      * @return string
+     * @throws \Exception If `openssl_digest` fails
      */
-    private function packKey(string $key, int $length = 32): string
+    private function hashKey(string $value): string
     {
-        $hash = sha1($key);
-        $hash .= strrev($hash);
-        return pack("H*", substr($hash, 0, $length * 2));
+        $ret = openssl_digest($value, $this->digestMethod, true);
+        if ($ret === false) {
+            throw new \Exception("digest failed; ".openssl_error_string());
+        }
+        return $ret;
     }
 }
