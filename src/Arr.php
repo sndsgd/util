@@ -40,7 +40,7 @@ class Arr
      *
      * @param array $arr The array to add values to
      * @param string|number $key The index/key to add the value under
-     * @param string|number $value The value to add
+     * @param mixed $value The value to add
      */
     public static function addValue(array &$arr, $key, $value)
     {
