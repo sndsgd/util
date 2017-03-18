@@ -8,7 +8,7 @@ install:
   - composer install --no-interaction --prefer-source --dev
 
 script:
-  - phpunit --coverage-clover build/coverage/clover.xml
+  - vendor/bin/phpunit --coverage-clover build/coverage/clover.xml
 
 after_script:
   - vendor/bin/coveralls -v
