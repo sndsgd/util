@@ -7,6 +7,7 @@ require __DIR__."/mock/ContainerMock.php";
 # this way we don't have to worry about them being called first
 # see https://github.com/php-mock/php-mock#requirements-and-restrictions
 $mockFunctions = [
+    ["sndsgd", "ini_get"],
     ["sndsgd", "openssl_encrypt"],
     ["sndsgd", "openssl_decrypt"],
     ["sndsgd", "openssl_digest"],
