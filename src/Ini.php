@@ -4,45 +4,26 @@ namespace sndsgd;
 
 /**
  * Class for normalizing the results of calls to `ini_get()`
+ * No plans to update this for custom ini files
  */
 class Ini
 {
-    /**
-     * Once values are retrieved they are cached here
-     *
-     * @var array<string,mixed>
-     */
-    protected $values = [];
+    const CONVERT_TO_BOOL = 1;
+    const CONVERT_TO_INT = 2;
+    const CONVERT_TO_BYTES = 3;
 
     /**
-     * Retrieve the `upload_max_filesize` ini setting
+     * A map of values and how they should be converted
      *
-     * @return int The max upload filesize in bytes
+     * @var array<string,int>
      */
-    public function getMaxUploadFileSize(): int
-    {
-	if (!isset($this->values["upload_max_filesize"])) {
-	    $value = ini_get("upload_max_filesize");
-	    $this->values["upload_max_filesize"] = $this->convertToBytes($value);
-	}
-
-	return $this->values["upload_max_filesize"];
-    }
-
-    /**
-     * Retrieve the `memory_limit` ini setting
-     *
-     * @return int The memory limit in bytes
-     */
-    public function getMemoryLimit(): int
-    {
-	if (!isset($this->values["memory_limit"])) {
-	    $value = ini_get("memory_limit");
-	    $this->values["memory_limit"] = $this->convertToBytes($value);
-	}
-
-	return $this->values["memory_limit"];
-    }
+    const CONVERSIONS = [
+	"enable_post_data_reading" => self::CONVERT_TO_BOOL,
+	"max_input_nesting_level" => self::CONVERT_TO_INT,
+	"max_input_vars" => self::CONVERT_TO_INT,
+	"memory_limit" => self::CONVERT_TO_BYTES,
+	"upload_max_filesize" => self::CONVERT_TO_BYTES,
+    ];
 
     /**
      * Convert a size string into a bytes integer
@@ -60,5 +41,42 @@ class Ini
 	}
 
 	return (int) $value;
+    }
+
+    /**
+     * Once values are retrieved they are cached here
+     *
+     * @var array<string,mixed>
+     */
+    protected $values = [];
+
+    /**
+     * Retrieve an ini value
+     * Using invoke so this
+     *
+     * @param string $key The value to retrieve
+     * @return mixed The normalized result
+     */
+    public function get(string $key)
+    {
+	if (!isset($this->values[$key])) {
+	    $value = ini_get($key);
+
+	    switch (self::CONVERSIONS[$key] ?? 0) {
+		case self::CONVERT_TO_BOOL:
+		    $value = Str::toBoolean($value);
+		    break;
+		case self::CONVERT_TO_INT:
+		    $value = (int) $value;
+		    break;
+		case self::CONVERT_TO_BYTES:
+		    $value = self::convertToBytes($value);
+		    break;
+	    }
+
+	    $this->values[$key] = $value;
+	}
+
+	return $this->values[$key];
     }
 }
