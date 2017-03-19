@@ -5,11 +5,11 @@ namespace sndsgd;
 class Container
 {
     /**
-     * Storage for singleton instances
+     * Storage for the results of `get()` calls
      *
      * @var <string,mixed>
      */
-    protected $singletons = [];
+    protected $cache = [];
 
     /**
      * Retrieve a value that should not be created more than once
@@ -18,31 +18,31 @@ class Container
      * @param callable $callback A function to created the value if needed
      * @return mixed
      */
-    protected function getSingleton(string $name, callable $callback)
+    protected function get(string $name, callable $callback)
     {
-        if (isset($this->singletons[$name])) {
-            return $this->singletons[$name];
+        if (isset($this->cache[$name])) {
+            return $this->cache[$name];
         }
 
-        return $this->singletons[$name] = call_user_func($callback, $name);
+        return $this->cache[$name] = call_user_func($callback, $name);
     }
 
     /**
-     * Gracefully remove a value from the singleton map
+     * Gracefully remove a value from the cache map
      *
      * @param string $name The key of the value to remove
      * @param callable $callback An optional callback to handle the existing value
      */
-    protected function resetSingleton(string $name, callable $callback = null)
+    protected function reset(string $name, callable $callback = null)
     {
-        if (!isset($this->singletons[$name])) {
+        if (!isset($this->cache[$name])) {
             return;
         }
 
         if ($callback !== null) {
-            call_user_func($callback, $name, $this->singletons[$name]);
+            call_user_func($callback, $name, $this->cache[$name]);
         }
 
-        unset($this->singletons[$name]);
+        unset($this->cache[$name]);
     }
 }
