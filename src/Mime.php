@@ -20,10 +20,7 @@ class Mime
     ): string
     {
         $ext = strtolower($ext);
-        if (array_key_exists($ext, self::$extensions)) {
-            return self::$extensions[$ext];
-        }
-        return $default;
+        return self::$extensions[$ext] ?? $default;
     }
 
     /**
