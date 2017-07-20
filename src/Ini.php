@@ -18,11 +18,11 @@ class Ini
      * @var array<string,int>
      */
     const CONVERSIONS = [
-	"enable_post_data_reading" => self::CONVERT_TO_BOOL,
-	"max_input_nesting_level" => self::CONVERT_TO_INT,
-	"max_input_vars" => self::CONVERT_TO_INT,
-	"memory_limit" => self::CONVERT_TO_BYTES,
-	"upload_max_filesize" => self::CONVERT_TO_BYTES,
+        "enable_post_data_reading" => self::CONVERT_TO_BOOL,
+        "max_input_nesting_level" => self::CONVERT_TO_INT,
+        "max_input_vars" => self::CONVERT_TO_INT,
+        "memory_limit" => self::CONVERT_TO_BYTES,
+        "upload_max_filesize" => self::CONVERT_TO_BYTES,
     ];
 
     /**
@@ -33,14 +33,14 @@ class Ini
      */
     public static function convertToBytes(string $value): int
     {
-	$units = "BKMGT";
-	$unit = preg_replace("/[^$units]/i", "", $value);
-	$value = floatval($value);
-	if ($unit) {
-	    $value *= pow(1024, stripos($units, $unit[0]));
-	}
+        $units = "BKMGT";
+        $unit = preg_replace("/[^$units]/i", "", $value);
+        $value = floatval($value);
+        if ($unit) {
+            $value *= pow(1024, stripos($units, $unit[0]));
+        }
 
-	return (int) $value;
+        return (int) $value;
     }
 
     /**
@@ -52,31 +52,30 @@ class Ini
 
     /**
      * Retrieve an ini value
-     * Using invoke so this
      *
      * @param string $key The value to retrieve
      * @return mixed The normalized result
      */
     public function get(string $key)
     {
-	if (!isset($this->values[$key])) {
-	    $value = ini_get($key);
+        if (!isset($this->values[$key])) {
+            $value = ini_get($key);
 
-	    switch (self::CONVERSIONS[$key] ?? 0) {
-		case self::CONVERT_TO_BOOL:
-		    $value = Str::toBoolean($value);
-		    break;
-		case self::CONVERT_TO_INT:
-		    $value = (int) $value;
-		    break;
-		case self::CONVERT_TO_BYTES:
-		    $value = self::convertToBytes($value);
-		    break;
-	    }
+            switch (self::CONVERSIONS[$key] ?? 0) {
+                case self::CONVERT_TO_BOOL:
+                    $value = Str::toBoolean($value);
+                    break;
+                case self::CONVERT_TO_INT:
+                    $value = (int) $value;
+                    break;
+                case self::CONVERT_TO_BYTES:
+                    $value = self::convertToBytes($value);
+                    break;
+            }
 
-	    $this->values[$key] = $value;
-	}
+            $this->values[$key] = $value;
+        }
 
-	return $this->values[$key];
+        return $this->values[$key];
     }
 }
