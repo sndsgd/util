@@ -8,22 +8,27 @@ namespace sndsgd;
 class Date
 {
     /**
-     * @var integer The number of seconds in a minute
+     * @var int A single second; useful when trying to improve code readability
+     */
+    const SECOND = 1;
+
+    /**
+     * @var int The number of seconds in a minute
      */
     const MINUTE = 60;
 
     /**
-     * @var integer The number of seconds in an hour
+     * @var int The number of seconds in an hour
      */
     const HOUR = 3600;
 
     /**
-     * @var integer The number of seconds in a day
+     * @var int The number of seconds in a day
      */
     const DAY = 86400;
 
     /**
-     * @var integer The number of seconds in a week
+     * @var int The number of seconds in a week
      */
     const WEEK = 604800;
 
