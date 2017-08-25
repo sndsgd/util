@@ -74,11 +74,13 @@ class Environment extends \sndsgd\ArrayAbstract
     /**
      * @param array<string,mixed> $values
      * @param string $emulateNodeType The environment to emulate
+     * @param string $sapi The value of the `PHP_SAPI` constant
      * @throws \LogicException If the actual and emulated node types match
      */
     public function __construct(
         array $values = [],
-        string $emulateNodeType = ""
+        string $emulateNodeType = "",
+        string $sapi = null
     )
     {
         # allow array access, but force read only
@@ -102,6 +104,8 @@ class Environment extends \sndsgd\ArrayAbstract
             }
             $this->emulatedNodeType = $this->validateNodeType($emulateNodeType);
         }
+
+        $this->sapi = $sapi ?? PHP_SAPI;
     }
 
     /**
@@ -130,6 +134,16 @@ class Environment extends \sndsgd\ArrayAbstract
     public function isEmulated(): bool
     {
         return ($this->emulatedNodeType !== "");
+    }
+
+    /**
+     * Determine whether the current environment is "cli"
+     *
+     * @return bool
+     */
+    public function isCli(): bool
+    {
+        return ($this->sapi === "cli");
     }
 
     /**
