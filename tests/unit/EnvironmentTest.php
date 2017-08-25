@@ -112,6 +112,25 @@ class EnvironmentTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @dataProvider provideIsCli
+     * @covers ::isCli
+     */
+    public function testIsCli(string $sapi, bool $expect)
+    {
+        $environment = new Environment([], Environment::PROD, $sapi);
+        $this->assertSame($expect, $environment->isCli());
+    }
+
+    public function provideIsCli(): array
+    {
+        return [
+            ["cli", true],
+            ["cgi", false],
+            ["cgi-fcgi", false],
+        ];
+    }
+
+    /**
      * @covers ::isDev
      * @dataProvider providerIsDev
      */
