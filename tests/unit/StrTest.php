@@ -29,39 +29,50 @@ class StrTest extends PHPUnit_Framework_TestCase
 
     /**
      * @covers ::before
+     * @covers ::getNeedlePosition
      * @dataProvider beforeProvider
      */
-    public function testBefore($haystack, $needle, $expect)
+    public function testBefore($haystack, $needle, $useLastNeedle, $expect)
     {
-        $result = Str::before($haystack, $needle);
+        $result = Str::before($haystack, $needle, $useLastNeedle);
         $this->assertEquals($result, $expect);
     }
 
     public function beforeProvider()
     {
         return [
-            ["application/json; charset=utf8", ";", "application/json"],
-            ["some string", "string", "some "],
-            ["original string", "not in string", "original string"],
+            ["one two three", " ", false, "one"],
+            ["one two three", " ", true, "one two"],
+            ["Some\\Namespace\\Classname", "\\", false, "Some"],
+            ["Some\\Namespace\\Classname", "\\", true, "Some\\Namespace"],
+            ["application/json; charset=utf8", ";", false, "application/json"],
+            ["some string", "string", false, "some "],
+            ["original string", "not in string", false, "original string"],
+
         ];
     }
 
     /**
      * @covers ::after
+     * @covers ::getNeedlePosition
      * @dataProvider afterProvider
      */
-    public function testAfter($haystack, $needle, $expect)
+    public function testAfter($haystack, $needle, $useLastNeedle, $expect)
     {
-        $result = Str::after($haystack, $needle);
+        $result = Str::after($haystack, $needle, $useLastNeedle);
         $this->assertEquals($result, $expect);
     }
 
     public function afterProvider()
     {
         return [
-            ["application/json; charset=utf8", ";", " charset=utf8"],
-            ["some string", "some", " string"],
-            ["original string", "not in string", "original string"],
+            ["one two three", " ", false, "two three"],
+            ["one two three", " ", true, "three"],
+            ["Some\\Namespace\\Classname", "\\", false, "Namespace\\Classname"],
+            ["Some\\Namespace\\Classname", "\\", true, "Classname"],
+            ["application/json; charset=utf8", ";", false, " charset=utf8"],
+            ["some string", "some", false, " string"],
+            ["original string", "not in string", false, "original string"],
         ];
     }
 

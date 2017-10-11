@@ -54,9 +54,13 @@ class Str
      * @param string $needle The end of the string to return
      * @return string
      */
-    public static function before(string $haystack, string $needle): string
+    public static function before(
+        string $haystack,
+        string $needle,
+        bool $useLastNeedle = false
+    ): string
     {
-        $pos = strpos($haystack, $needle);
+        $pos = static::getNeedlePosition($haystack, $needle, $useLastNeedle);
         if ($pos === false) {
             return $haystack;
         }
@@ -70,13 +74,28 @@ class Str
      * @param string $needle The string immediately before the desired result
      * @return string
      */
-    public static function after(string $haystack, string $needle): string
+    public static function after(
+        string $haystack,
+        string $needle,
+        bool $useLastNeedle = false
+    ): string
     {
-        $pos = strpos($haystack, $needle);
+        $pos = static::getNeedlePosition($haystack, $needle, $useLastNeedle);
         if ($pos === false) {
             return $haystack;
         }
         return substr($haystack, $pos + strlen($needle));
+    }
+
+    private static function getNeedlePosition(
+        string &$haystack,
+        string &$needle,
+        bool &$useLastNeedle
+    )
+    {
+        return $useLastNeedle
+            ? strrpos($haystack, $needle)
+            : strpos($haystack, $needle);
     }
 
     /**
