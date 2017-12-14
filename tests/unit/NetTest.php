@@ -98,16 +98,16 @@ class NetTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @dataProvider provideIsIpInRangeIpException
+     * @dataProvider provideIsIpInCidrIpException
      * @expectedException UnexpectedValueException
      * @expectedExceptionMessage invalid value for ip; expecting an IPv4 address
      */
-    public function testIsIpInRangeIpException($ip)
+    public function testIsIpInCidrIpException($ip)
     {
-       Net::isIpInRange($ip, "");
+       Net::isIpInCidr($ip, "");
     }
 
-    public function provideIsIpInRangeIpException()
+    public function provideIsIpInCidrIpException()
     {
         return [
             ["nope"],
@@ -116,14 +116,14 @@ class NetTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @dataProvider provideIsIpInRange
+     * @dataProvider provideIsIpInCidr
      */
-    public function testIsIpInRange($ip, $range, $expect)
+    public function testIsIpInCidr($ip, $range, $expect)
     {
-       $this->assertSame($expect, Net::isIpInRange($ip, $range));
+       $this->assertSame($expect, Net::isIpInCidr($ip, $range));
     }
 
-    public function provideIsIpInRange(): array
+    public function provideIsIpInCidr(): array
     {
         return [
             ["111.222.111.222", "111.222.111.222/32", true],

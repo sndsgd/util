@@ -69,13 +69,13 @@ class Net
     }
 
     /**
-     * Determine whether an ip address is within a given range
+     * Determine whether an ip address is within a given CIDR
      *
      * @param string $ip The ip to test
      * @param string $cidr The range to evaluate
      * @return bool
      */
-    public static function isIpInRange(string $ip, string $cidr): bool
+    public static function isIpInCidr(string $ip, string $cidr): bool
     {
         if (!filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4)) {
             throw new \UnexpectedValueException(
@@ -97,7 +97,7 @@ class Net
     public static function isPrivateIp(string $ip): bool
     {
         foreach (self::PRIVATE_IPV4_RANGES as $range) {
-            if (self::isIpInRange($ip, $range)) {
+            if (self::isIpInCidr($ip, $range)) {
                 return true;
             }
         }
