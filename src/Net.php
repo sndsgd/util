@@ -83,7 +83,7 @@ class Net
             );
         }
 
-        [$range, $netmask] = static::parseCidr($cidr);
+        list($range, $netmask) = static::parseCidr($cidr);
         $netmask = ~((1 << (32 - $netmask)) - 1);
         return ((ip2long($ip) & $netmask) === ip2long($range));
     }
