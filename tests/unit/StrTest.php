@@ -1,13 +1,39 @@
 <?php
 
-use \sndsgd\Str;
-
+namespace sndsgd;
 
 /**
  * @coversDefaultClass \sndsgd\Str
  */
-class StrTest extends PHPUnit_Framework_TestCase
+class StrTest extends \PHPUnit_Framework_TestCase
 {
+    /**
+     * @dataProvider provideContains
+     */
+    public function testContains($haystack, $needle, $caseSensitive, $expect)
+    {
+        $this->assertSame(
+            $expect,
+            Str::contains($haystack, $needle, $caseSensitive)
+        );
+    }
+
+    public function provideContains(): array
+    {
+        return [
+            ["all lowercase", "all", true, true],
+            ["all lowercase", "all", false, true],
+            ["all lowercase", "case", true, true],
+            ["all lowercase", "case", false, true],
+            ["all lowercase", " ", true, true],
+            ["all lowercase", " ", false, true],
+            ["all lowercase", "l l", true, true],
+            ["all lowercase", "l l", false, true],
+            ["all lowercase", "AlL", true, false],
+            ["all lowercase", "casE", true, false],
+        ];
+    }
+
     public function testBeginsWith()
     {
         $this->assertTrue(Str::beginsWith("hello there", "he"));
