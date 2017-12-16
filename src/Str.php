@@ -8,6 +8,25 @@ namespace sndsgd;
 class Str
 {
     /**
+     * Determine if a string contains another
+     *
+     * @param string $haystack
+     * @param string $needle
+     * @param bool $caseSensitive
+     * @return bool
+     */
+    public static function contains(
+        string $haystack,
+        string $needle,
+        bool $caseSensitive = false
+    ): bool
+    {
+        return ($caseSensitive === false)
+            ? stripos($haystack, $needle) !== false
+            : strpos($haystack, $needle) !== false;
+    }
+
+    /**
      * Determine if a string begins with another
      *
      * @param string $haystack
