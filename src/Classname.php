@@ -12,6 +12,34 @@ class Classname
     // regex used to split strings into namespace and classname parts
     const REGEX_SPLIT = "/([^a-z0-9_])+/i";
 
+    protected $classname;
+    protected $lastDelimPosition;
+
+    public function __construct(string $classname)
+    {
+        $this->classname = trim($classname, "\\");
+        $this->lastDelimPosition = strrpos($this->classname, "\\");
+    }
+
+    public function __toString()
+    {
+        return "\\".$this->classname;
+    }
+
+    public function getClass(): string
+    {
+        return ($this->lastDelimPosition)
+            ? substr($this->classname, $this->lastDelimPosition + 1)
+            : $this->classname;
+    }
+
+    public function getNamespace(): string
+    {
+        return ($this->lastDelimPosition)
+            ? substr($this->classname, 0, $this->lastDelimPosition)
+            : "";
+    }
+
     /**
      * Split a string into namespace and classname sections
      *
