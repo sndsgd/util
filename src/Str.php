@@ -7,6 +7,17 @@ namespace sndsgd;
  */
 class Str
 {
+    const STRING_TO_BOOL_MAP = [
+        "true" => true,
+        "false" => false,
+        "1" => true,
+        "0" => false,
+        "t" => true,
+        "f" => true,
+        "on" => true,
+        "off" => false,
+    ];
+
     /**
      * Determine if a string contains another
      *
@@ -160,18 +171,7 @@ class Str
         }
 
         $str = strtolower($str);
-        $values = [
-            "true" => true,
-            "false" => false,
-            "1" => true,
-            "0" => false,
-            "on" => true,
-            "off" => false,
-            "" => false
-        ];
-        return (array_key_exists($str, $values))
-            ? $values[$str]
-            : null;
+        return self::STRING_TO_BOOL_MAP[$str] ?? null;
     }
 
     /**
@@ -189,6 +189,12 @@ class Str
             return strtoupper($ret);
         };
         return preg_replace_callback("~( |_|-){1,}[A-Za-z]~", $fn, $str);
+    }
+
+    # Convert a string to `PascalCase`
+    public static function toPascalCase(string $str): string
+    {
+        return ucfirst(self::toCamelCase($str));
     }
 
     /**

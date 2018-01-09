@@ -133,69 +133,94 @@ class StrTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(1420, Str::toNumber("1,420.00"));
     }
 
-    public function testToBoolean()
+    /**
+     * @dataProvider provideToBoolean
+     */
+    public function testToBoolean($test, $expect)
     {
-        $tests = [
-            ["TRUE", "assertTrue"],
-            ["true", "assertTrue"],
-            ["1", "assertTrue"],
-            [1, "assertTrue"],
-            [true, "assertTrue"],
-
-            ["FALSE", "assertFalse"],
-            ["false", "assertFalse"],
-            ["0", "assertFalse"],
-            [0, "assertFalse"],
-            [false, "assertFalse"],
-            ["", "assertFalse"],
-
-            ["jimbo", "assertNull"],
-            [100, "assertNull"],
-            [-100, "assertNull"]
-        ];
-
-        foreach ($tests as $test) {
-            list($test, $method) = $test;
-            $result = Str::toBoolean($test);
-            $err =
-                "test: ".var_export($test, true).
-                " result: ".var_export($result, true);
-            $this->$method($result, $err);
-        }
+        $this->assertSame($expect, Str::toBoolean($test));
     }
 
-    public function testToCamelCase()
+    public function provideToBoolean(): array
     {
-        $tests = [
+        return [
+            ["true", true],
+            ["TRUE", true],
+            ["false", false],
+            ["FALSE", false],
+            ["t", true],
+            ["T", true],
+            ["f", true],
+            ["F", true],
+            ["on", true],
+            ["ON", true],
+            ["off", false],
+            ["OFF", false],
+            ["1", true],
+            ["0", false],
+
+            ["jimbo", null],
+            [100, null],
+            [-100, null],
+            ["", null],
+        ];
+    }
+
+    /**
+     * @dataProvider provideToCamelCase
+     */
+    public function testToCamelCase($test, $expect)
+    {
+        $this->assertEquals($expect, Str::toCamelCase($test));
+    }
+
+    public function provideToCamelCase(): array
+    {
+        return [
             ["camel-case", "camelCase"],
             ["camel_case", "camelCase"],
             ["camel case", "camelCase"],
             [" camel case_long", "camelCaseLong"],
         ];
-
-        foreach ($tests as $test) {
-            list($test, $expect) = $test;
-            $this->assertEquals($expect, Str::toCamelCase($test));
-        }
     }
 
-    public function testToSnakeCase()
+    /**
+     * @dataProvider provideToPascalCase
+     */
+    public function testToPascalCase($test, $expect)
     {
-        $tests = [
+        $this->assertEquals($expect, Str::toPascalCase($test));
+    }
+
+    public function provideToPascalCase(): array
+    {
+        return [
+            ["foo-bar", "FooBar"],
+            ["foo_bar", "FooBar"],
+            ["foo bar", "FooBar"],
+            [" foo bar_baz", "FooBarBaz"],
+        ];
+    }
+
+    /**
+     * @dataProvider provideToSnakeCase
+     */
+    public function testToSnakeCase($test, $expect)
+    {
+        $this->assertEquals($expect, Str::toSnakeCase($test));
+        $this->assertEquals(strtoupper($expect), Str::toSnakeCase($test, true));
+    }
+
+    public function provideToSnakeCase(): array
+    {
+        return [
             [" snake-case", "snake_case"],
             ["snake--case", "snake_case"],
             ["snake- -case", "snake_case"],
             ["snake case", "snake_case"],
             ["snakeCase", "snake_case"],
-            ["snakeCaseLong", "snake_case_long"]
+            ["snakeCaseLong", "snake_case_long"],
         ];
-
-        foreach ($tests as $test) {
-            list($test, $expect) = $test;
-            $this->assertEquals($expect, Str::toSnakeCase($test));
-        }
-
-        $this->assertEquals("SNAKE_CASE", Str::toSnakeCase("snakeCase", true));
     }
 
     public function testStripPostNewlineTabs()
