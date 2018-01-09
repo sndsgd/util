@@ -68,6 +68,7 @@ class ArrayCache
      *
      * @param string $group The group to remove
      * @param string $key The identifier of the value to remove
+     * @return \sndsgd\ArrayCache
      */
     public function remove(string $group = "", string $key = ""): ArrayCache
     {
@@ -87,6 +88,17 @@ class ArrayCache
             unset($this->values[$group][$key]);
         }
 
+        return $this;
+    }
+
+    /**
+     * Clear all values
+     *
+     * @return \sndsgd\ArrayCache
+     */
+    public function flush(): ArrayCache
+    {
+        $this->values = [];
         return $this;
     }
 }
