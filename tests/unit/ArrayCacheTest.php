@@ -68,9 +68,7 @@ class ArrayCacheTest extends \PHPUnit_Framework_TestCase
     public function testRemove(array $values, $group, $key, array $expectValues)
     {
         $cache = new ArrayCache();
-        $reflection = new \ReflectionClass($cache);
-        $property = $reflection->getProperty("values");
-        $property->setAccessible(true);
+        $property = $this->getValuesProperty();
         $property->setValue($cache, $values);
 
         $cache->remove($group, $key);
@@ -102,5 +100,27 @@ class ArrayCacheTest extends \PHPUnit_Framework_TestCase
     public function testRemoveEmptyGroupException()
     {
         $this->cache->remove("", "key");
+    }
+
+    /**
+     * @covers ::flush
+     */
+    public function testFlush()
+    {
+        $cache = new ArrayCache();
+        $cache->set("group", "key", "value");
+
+        $property = $this->getValuesProperty();
+        $this->assertNotEmpty($property->getValue($cache));
+        $cache->flush();
+        $this->assertEmpty($property->getValue($cache));
+    }
+
+    private function getValuesProperty()
+    {
+        $reflection = new \ReflectionClass(ArrayCache::class);
+        $property = $reflection->getProperty("values");
+        $property->setAccessible(true);
+        return $property;
     }
 }
