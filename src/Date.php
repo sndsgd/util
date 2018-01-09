@@ -8,6 +8,11 @@ namespace sndsgd;
 class Date
 {
     /**
+     * @var string A format without a timezone and with microseconds
+     */
+    const FORMAT = "Y-m-d H:i:s.u";
+
+    /**
      * @var int A single second; useful when trying to improve code readability
      */
     const SECOND = 1;
@@ -40,7 +45,7 @@ class Date
      */
     public static function format(
         float $timestamp = null,
-        string $format = "Y-m-d H:i:s.u"
+        string $format = self::FORMAT
     ): string
     {
         if ($timestamp === null) {
@@ -102,7 +107,7 @@ class Date
     ): \DateTimeInterface
     {
         if ($date instanceof \DateTimeInterface) {
-            $date = $date->format("Y-m-d H:i:s.u");
+            $date = $date->format(self::FORMAT);
         } elseif (!is_string($date)) {
             throw new \InvalidArgumentException(
                 "invalid value provided for 'date'; expecting an instance of ".
