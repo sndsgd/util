@@ -6,7 +6,7 @@ php:
   - 7.3
 
 install:
-  - composer install --no-interaction --prefer-source --dev
+  - composer install --no-interaction --prefer-source
 
 script:
   - vendor/bin/phpunit --coverage-clover build/coverage/clover.xml
