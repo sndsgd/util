@@ -2,7 +2,7 @@
 
 namespace sndsgd;
 
-class DateTest extends \PHPUnit_Framework_TestCase
+class DateTest extends \PHPUnit\Framework\TestCase
 {
     public function testConstants()
     {
@@ -119,12 +119,12 @@ class DateTest extends \PHPUnit_Framework_TestCase
         $to,
         $from,
         $immutable,
-        $expectedException,
+        $expectException,
         \DateTime $expect = null
     )
     {
-        if ($expectedException) {
-            $this->setExpectedException($expectedException);
+        if ($expectException) {
+            $this->expectException($expectException);
         }
 
         $fmt = "Y-m-d H:i:s";

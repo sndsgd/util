@@ -2,7 +2,7 @@
 
 namespace sndsgd;
 
-class PriorityQueueTest extends \PHPUnit_Framework_TestCase
+class PriorityQueueTest extends \PHPUnit\Framework\TestCase
 {
     public function setUp()
     {

@@ -2,7 +2,7 @@
 
 namespace sndsgd;
 
-class MimeTest extends \PHPUnit_Framework_TestCase
+class MimeTest extends \PHPUnit\Framework\TestCase
 {
     protected static $imageFile;
     protected static $binaryFile;

@@ -9,7 +9,7 @@ class DataTraitExample
 }
 
 
-class DataTraitTest extends \PHPUnit_Framework_TestCase
+class DataTraitTest extends \PHPUnit\Framework\TestCase
 {
     protected $m;
     protected $data = [

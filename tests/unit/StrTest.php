@@ -5,7 +5,7 @@ namespace sndsgd;
 /**
  * @coversDefaultClass \sndsgd\Str
  */
-class StrTest extends \PHPUnit_Framework_TestCase
+class StrTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @dataProvider provideContains

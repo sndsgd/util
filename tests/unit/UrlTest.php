@@ -4,9 +4,9 @@ use \sndsgd\Arr;
 use \sndsgd\Url;
 
 
-class UrlTest extends PHPUnit_Framework_TestCase
+class UrlTest extends PHPUnit\Framework\TestCase
 {
-    private static $urlString = 
+    private static $urlString =
         'http://user:pass@example.com:1234/some/path?one=1&two=2#frag';
 
     private static $urlArray = [
@@ -40,7 +40,7 @@ class UrlTest extends PHPUnit_Framework_TestCase
             $encoded = Url::encodeQueryString($test, Url::RFC_1866);
             $decoded = Url::decodeQueryString($encoded, Url::RFC_1866);
             $this->assertEquals($test, $decoded);
-        }      
+        }
     }
 
     /**
@@ -249,7 +249,7 @@ class UrlTest extends PHPUnit_Framework_TestCase
     {
         $test = 'http://example.com/some/path?one=1&two=2';
         $expect = 'http://user:pass@example.com:1234/some/path?one=1&two=2#test';
-        
+
         $url = Url::createFromString($test);
         $url->merge([
             'user' => 'user',

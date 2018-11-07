@@ -2,7 +2,7 @@
 
 namespace sndsgd;
 
-class SometimesTest extends \PHPUnit_Framework_TestCase
+class SometimesTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @dataProvider provideIsEnabledBounds

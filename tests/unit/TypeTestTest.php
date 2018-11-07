@@ -6,7 +6,7 @@ namespace sndsgd;
 /**
  * @coversDefaultClass \sndsgd\TypeTest
  */
-class TypeTestTest extends \PHPUnit_Framework_TestCase
+class TypeTestTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @covers ::nullableString
@@ -72,7 +72,7 @@ class TypeTestTest extends \PHPUnit_Framework_TestCase
     public function testTypedArray($values, $type, $exception = "")
     {
         if ($exception) {
-            $this->setExpectedException($exception);
+            $this->expectException($exception);
         }
         $result = TypeTest::typedArray($values, $type);
         $this->assertTrue(is_array($result));

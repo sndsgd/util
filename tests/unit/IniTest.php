@@ -2,7 +2,7 @@
 
 namespace sndsgd;
 
-class IniTest extends \PHPUnit_Framework_TestCase
+class IniTest extends \PHPUnit\Framework\TestCase
 {
     use \phpmock\phpunit\PHPMock;
 

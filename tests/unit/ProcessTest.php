@@ -5,7 +5,7 @@ namespace sndsgd;
 use \org\bovigo\vfs\vfsStream;
 
 
-class ProcessTest extends \PHPUnit_Framework_TestCase
+class ProcessTest extends \PHPUnit\Framework\TestCase
 {
     private function createInaccessibleFile()
     {

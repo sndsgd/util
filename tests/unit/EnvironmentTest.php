@@ -5,7 +5,7 @@ namespace sndsgd;
 /**
  * @coversDefaultClass \sndsgd\Environment
  */
-class EnvironmentTest extends \PHPUnit_Framework_TestCase
+class EnvironmentTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @covers ::__construct
@@ -17,11 +17,11 @@ class EnvironmentTest extends \PHPUnit_Framework_TestCase
     public function testConstructor(
         $values,
         $emulateNodeType,
-        $expectedException = ""
+        $expectException = ""
     )
     {
-        if ($expectedException) {
-            $this->setExpectedException($expectedException);
+        if ($expectException) {
+            $this->expectException($expectException);
         }
 
         $env = new Environment($values, $emulateNodeType);

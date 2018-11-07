@@ -2,7 +2,7 @@
 
 namespace sndsgd;
 
-class ArrayAbstractTest extends \PHPUnit_Framework_TestCase
+class ArrayAbstractTest extends \PHPUnit\Framework\TestCase
 {
     private function createAnonymousClass(array $values, $isReadOnly = false)
     {
