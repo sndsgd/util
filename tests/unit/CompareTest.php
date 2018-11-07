@@ -6,7 +6,7 @@ use \sndsgd\Compare;
 /**
  * @coversDefaultClass \sndsgd\Compare
  */
-class CompareTest extends PHPUnit_Framework_TestCase
+class CompareTest extends PHPUnit\Framework\TestCase
 {
     /**
      * @covers ::equal

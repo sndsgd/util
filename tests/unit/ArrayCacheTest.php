@@ -5,7 +5,7 @@ namespace sndsgd;
 /**
  * @coversDefaultClass \sndsgd\ArrayCache
  */
-class ArrayCacheTest extends \PHPUnit_Framework_TestCase
+class ArrayCacheTest extends \PHPUnit\Framework\TestCase
 {
     protected $cache;
 

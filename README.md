@@ -13,7 +13,7 @@ A utility toolkit for PHP.
 
 This project is unstable and subject to changes from release to release. If you intend to depend on this project, be sure to make note of and specify the version in your project's `composer.json`. Doing so will ensure any breaking changes do not break your project.
 
-You need **PHP >= 7.0** to use this library, however, the latest stable version of PHP is recommended.
+You need **PHP >= 7.1** to use this library, however, the latest stable version of PHP is recommended.
 
 
 ## Install

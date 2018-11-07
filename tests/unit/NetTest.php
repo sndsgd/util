@@ -2,7 +2,7 @@
 
 namespace sndsgd;
 
-class NetTest extends \PHPUnit_Framework_TestCase
+class NetTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @dataProvider providePing

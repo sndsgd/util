@@ -3,7 +3,7 @@
 use \sndsgd\Arr;
 
 
-class ArrTest extends PHPUnit_Framework_TestCase
+class ArrTest extends PHPUnit\Framework\TestCase
 {
     public function testIsIndexed()
     {
@@ -231,7 +231,7 @@ class ArrTest extends PHPUnit_Framework_TestCase
         // array (
         //   0 => 'no-index',
         //   'one' => 1,
-        //   'two' => 
+        //   'two' =>
         //   array (
         //     0 => 'first',
         //     1 => 'second',

@@ -3,7 +3,7 @@
 use \sndsgd\Classname;
 
 
-class ClassnameTest extends PHPUnit_Framework_TestCase
+class ClassnameTest extends PHPUnit\Framework\TestCase
 {
     /**
      * @dataProvider provideMagicToString

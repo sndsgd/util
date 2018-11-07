@@ -20,7 +20,7 @@ class TestErrorTrait
 }
 
 
-class ErrorTraitTest extends PHPUnit_Framework_TestCase
+class ErrorTraitTest extends PHPUnit\Framework\TestCase
 {
     public function test()
     {

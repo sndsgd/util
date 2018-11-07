@@ -5,7 +5,7 @@ namespace sndsgd;
 /**
  * @coversDefaultClass \sndsgd\Config
  */
-class ConfigTest extends \PHPUnit_Framework_TestCase
+class ConfigTest extends \PHPUnit\Framework\TestCase
 {
     protected static $values = [
         "string" => "testing",
@@ -60,7 +60,7 @@ class ConfigTest extends \PHPUnit_Framework_TestCase
     public function testGetRequired($key, $expect, $expectException = false)
     {
         if ($expectException) {
-            $this->setExpectedException(\RuntimeException::class);
+            $this->expectException(\RuntimeException::class);
         }
         $this->assertSame($expect, $this->config->getRequired($key));
     }

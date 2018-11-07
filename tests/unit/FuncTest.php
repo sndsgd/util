@@ -2,7 +2,7 @@
 
 namespace sndsgd;
 
-class FuncTest extends \PHPUnit_Framework_TestCase
+class FuncTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @dataProvider providerExists
