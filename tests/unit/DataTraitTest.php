@@ -17,7 +17,7 @@ class DataTraitTest extends \PHPUnit\Framework\TestCase
         "two" => 2,
         "three" => [1,2,3]
     ];
-    public function setUp()
+    public function setUp(): void
     {
         $this->m = new DataTraitExample;
         $this->m->setData($this->data);
@@ -47,11 +47,9 @@ class DataTraitTest extends \PHPUnit\Framework\TestCase
         $this->assertEquals(5, $this->m->getData("five"));
     }
 
-    /**
-     * @expectedException InvalidArgumentException
-     */
     public function testAddDataException()
     {
+        $this->expectException(\InvalidArgumentException::class);
         $this->m->addData(42, "<- the key must be a string");
     }
 

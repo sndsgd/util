@@ -19,7 +19,7 @@ class ConfigTest extends \PHPUnit\Framework\TestCase
 
     protected $config;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->config = new Config(static::$values);
     }

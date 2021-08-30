@@ -89,12 +89,11 @@ class ArrayAbstractTest extends \PHPUnit\Framework\TestCase
         ];
     }
 
-    /**
-     * @expectedException \RuntimeException
-     */
     public function testOffsetSetReadOnly()
     {
         $test = $this->createAnonymousClass([], true);
+
+        $this->expectException(\RuntimeException::class);
         $test["test"] = "value";
     }
 
@@ -124,12 +123,11 @@ class ArrayAbstractTest extends \PHPUnit\Framework\TestCase
         ];
     }
 
-    /**
-     * @expectedException \RuntimeException
-     */
     public function testOffsetUnsetReadOnly()
     {
         $test = $this->createAnonymousClass(["test" => 1], true);
+
+        $this->expectException(\RuntimeException::class);
         unset($test["test"]);
     }
 

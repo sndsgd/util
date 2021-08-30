@@ -15,13 +15,13 @@
         "source": "https://github.com/sndsgd/sndsgd-util/tree/master"
     },
     "require": {
-        "php": ">=7.0.0"
+        "php": ">=7.4.0"
     },
     "require-dev": {
         "mikey179/vfsstream": "~1.6.4",
-        "satooshi/php-coveralls": "~1.0",
-        "phpunit/phpunit": "~7",
-        "php-mock/php-mock-phpunit": "^2.1"
+        "php-mock/php-mock-phpunit": "^2.1",
+        "php-parallel-lint/php-parallel-lint": "~1",
+        "phpunit/phpunit": "~9"
     },
     "autoload": {
         "psr-4": {

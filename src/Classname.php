@@ -101,7 +101,7 @@ class Classname
                 for ($j = $i + 1; $j < $len; $j++) {
                     if (
                         $tokens[$j][0] === T_STRING
-                        || $tokens[$j][0] === T_NAME_QUALIFIED
+                        || (defined("T_NAME_QUALIFIED") && $tokens[$j][0] === T_NAME_QUALIFIED)
                     ) {
                         $namespace .= "\\".$tokens[$j][1];
                     }

@@ -9,7 +9,7 @@ class ArrayCacheTest extends \PHPUnit\Framework\TestCase
 {
     protected $cache;
 
-    public function setup()
+    public function setUp(): void
     {
         $this->cache = new ArrayCache();
     }
@@ -36,28 +36,28 @@ class ArrayCacheTest extends \PHPUnit\Framework\TestCase
 
     /**
      * @covers ::set
-     * @expectedException \InvalidArgumentException
      */
     public function testSetGroupException()
     {
+        $this->expectException(\InvalidArgumentException::class);
         $this->cache->set("", "", null);
     }
 
     /**
      * @covers ::set
-     * @expectedException \InvalidArgumentException
      */
     public function testSetKeyException()
     {
+        $this->expectException(\InvalidArgumentException::class);
         $this->cache->set("group", "", null);
     }
 
     /**
      * @covers ::set
-     * @expectedException \InvalidArgumentException
      */
     public function testSetValueException()
     {
+        $this->expectException(\InvalidArgumentException::class);
         $this->cache->set("group", "key", null);
     }
 
@@ -95,10 +95,10 @@ class ArrayCacheTest extends \PHPUnit\Framework\TestCase
 
     /**
      * @covers ::remove
-     * @expectedException \LogicException
      */
     public function testRemoveEmptyGroupException()
     {
+        $this->expectException(\LogicException::class);
         $this->cache->remove("", "key");
     }
 

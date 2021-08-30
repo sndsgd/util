@@ -7,7 +7,7 @@ class MimeTest extends \PHPUnit\Framework\TestCase
     protected static $imageFile;
     protected static $binaryFile;
 
-    public static function tearDownAfterClass()
+    public static function tearDownAfterClass(): void
     {
         foreach ([static::$imageFile, static::$binaryFile] as $path) {
             if (file_exists($path)) {
@@ -73,12 +73,10 @@ class MimeTest extends \PHPUnit\Framework\TestCase
         ];
     }
 
-    /**
-     * @expectedException \InvalidArgumentException
-     */
     public function testGetTypeFromFileException()
     {
         $path = __FILE__."/nothing/to/see/here.txt";
+        $this->expectException(\InvalidArgumentException::class);
         Mime::getTypeFromFile($path);
     }
 

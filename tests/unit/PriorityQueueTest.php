@@ -4,7 +4,7 @@ namespace sndsgd;
 
 class PriorityQueueTest extends \PHPUnit\Framework\TestCase
 {
-    public function setUp()
+    public function setUp(): void
     {
         $values = [
             ["three", 1],
