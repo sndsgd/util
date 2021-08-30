@@ -15,7 +15,7 @@
         "source": "https://github.com/sndsgd/sndsgd-util/tree/master"
     },
     "require": {
-        "php": ">=7.4.0"
+        "php": ">=7.3.0"
     },
     "require-dev": {
         "mikey179/vfsstream": "~1.6.4",
