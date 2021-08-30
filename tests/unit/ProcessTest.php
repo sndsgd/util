@@ -52,12 +52,10 @@ class ProcessTest extends \PHPUnit\Framework\TestCase
         unlink($tmpfile);
     }
 
-    /**
-     * @expectedException InvalidArgumentException
-     */
     public function testSetStdinFileException()
     {
         $p = new Process("pwd");
+        $this->expectException(\InvalidArgumentException::class);
         $p->setStdinFile($this->createInaccessibleFile());
     }
 
@@ -72,12 +70,10 @@ class ProcessTest extends \PHPUnit\Framework\TestCase
         $this->assertEquals("", $p->getStderr());
     }
 
-    /**
-     * @expectedException InvalidArgumentException
-     */
     public function testSetOutputFileException()
     {
         $p = new Process("pwd");
+        $this->expectException(\InvalidArgumentException::class);
         $p->setStdoutFile($this->createInaccessibleFile());
     }
 

@@ -76,39 +76,33 @@ class CryptTest extends \PHPUnit\Framework\TestCase
         ];
     }
 
-    /**
-     * @expectedException \Exception
-     */
     public function testEncryptFailure()
     {
         $encryptMock = $this->getFunctionMock(__NAMESPACE__, "openssl_encrypt");
         $encryptMock->expects($this->any())->willReturn(false);
 
         $crypt = new Crypt();
+        $this->expectException(\Exception::class);
         $crypt->encrypt("test", "test");
     }
 
-    /**
-     * @expectedException \Exception
-     */
     public function testDecryptFailure()
     {
         $encryptMock = $this->getFunctionMock(__NAMESPACE__, "openssl_decrypt");
         $encryptMock->expects($this->any())->willReturn(false);
 
         $crypt = new Crypt();
+        $this->expectException(\Exception::class);
         $crypt->decrypt("test", "test");
     }
 
-    /**
-     * @expectedException \Exception
-     */
     public function testKeyDigestFailure()
     {
         $encryptMock = $this->getFunctionMock(__NAMESPACE__, "openssl_digest");
         $encryptMock->expects($this->any())->willReturn(false);
 
         $crypt = new Crypt();
+        $this->expectException(\Exception::class);
         $crypt->encrypt("test", "test");
     }
 }

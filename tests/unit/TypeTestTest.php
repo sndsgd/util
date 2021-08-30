@@ -28,10 +28,10 @@ class TypeTestTest extends \PHPUnit\Framework\TestCase
 
     /**
      * @covers ::nullableString
-     * @expectedException InvalidArgumentException
      */
     public function testNullableStringException()
     {
+        $this->expectException(\InvalidArgumentException::class);
         TypeTest::nullableString(42, "name");
     }
 
@@ -56,10 +56,10 @@ class TypeTestTest extends \PHPUnit\Framework\TestCase
 
     /**
      * @covers ::nullableInt
-     * @expectedException InvalidArgumentException
      */
     public function testNullableIntException()
     {
+        $this->expectException(\InvalidArgumentException::class);
         TypeTest::nullableInt("string", "name");
     }
 

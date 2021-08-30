@@ -4,7 +4,7 @@ namespace sndsgd;
 
 class TimerTest extends \PHPUnit\Framework\TestCase
 {
-    public function setUp()
+    public function setUp(): void
     {
         Timer::reset();
     }
@@ -78,6 +78,7 @@ class TimerTest extends \PHPUnit\Framework\TestCase
     {
         $timer = new Timer("test");
         $time = $timer->getStartTime();
+        usleep(1);
         $this->assertTrue($time < microtime(true));
         $this->assertTrue(is_float($time));
     }

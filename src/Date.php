@@ -55,7 +55,7 @@ class Date
         $pos = strpos($format, "u");
         if ($pos !== false) {
             $escpos = $pos - 1;
-            if ($escpos < 0 || $format{$escpos} !== "\\") {
+            if ($escpos < 0 || $format[$escpos] !== "\\") {
                 $ms = sprintf("%06d", ($timestamp - floor($timestamp)) * 1000000);
                 $format = substr_replace($format, $ms, $pos, 1);
             }

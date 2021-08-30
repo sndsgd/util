@@ -22,11 +22,11 @@ class NetTest extends \PHPUnit\Framework\TestCase
 
     /**
      * @dataProvider provideParseCidrMissingDelimeterException
-     * @expectedException UnexpectedValueException
-     * @expectedExceptionMessage invalid CIDR; missing expected '/' delimeter
      */
     public function testParseCidrMissingDelimeterException($cidr)
     {
+       $this->expectException(\UnexpectedValueException::class);
+       $this->expectExceptionMessage("invalid CIDR; missing expected '/' delimeter");
        Net::parseCidr($cidr);
     }
 
@@ -42,11 +42,11 @@ class NetTest extends \PHPUnit\Framework\TestCase
 
     /**
      * @dataProvider provideParseCidrMissingIpException
-     * @expectedException UnexpectedValueException
-     * @expectedExceptionMessage invalid CIDR; missing expected ip
      */
     public function testParseCidrMissingIpException($cidr)
     {
+       $this->expectException(\UnexpectedValueException::class);
+       $this->expectExceptionMessage("invalid CIDR; missing expected ip");
        Net::parseCidr($cidr);
     }
 
@@ -61,11 +61,11 @@ class NetTest extends \PHPUnit\Framework\TestCase
 
     /**
      * @dataProvider provideParseCidrInvalidIpException
-     * @expectedException UnexpectedValueException
-     * @expectedExceptionMessage is not a valid IPv4 address
      */
     public function testParseCidrInvalidIpException($cidr)
     {
+       $this->expectException(\UnexpectedValueException::class);
+       $this->expectExceptionMessage("is not a valid IPv4 address");
        Net::parseCidr($cidr);
     }
 
@@ -80,11 +80,11 @@ class NetTest extends \PHPUnit\Framework\TestCase
 
     /**
      * @dataProvider provideParseCidrInvalidNetmaskException
-     * @expectedException UnexpectedValueException
-     * @expectedExceptionMessage network mask; expecting a value between 0 and 32
      */
     public function testParseCidrInvalidNetmaskException($cidr)
     {
+       $this->expectException(\UnexpectedValueException::class);
+       $this->expectExceptionMessage("network mask; expecting a value between 0 and 32");
        Net::parseCidr($cidr);
     }
 
@@ -99,11 +99,11 @@ class NetTest extends \PHPUnit\Framework\TestCase
 
     /**
      * @dataProvider provideIsIpInCidrIpException
-     * @expectedException UnexpectedValueException
-     * @expectedExceptionMessage invalid value for ip; expecting an IPv4 address
      */
     public function testIsIpInCidrIpException($ip)
     {
+       $this->expectException(\UnexpectedValueException::class);
+       $this->expectExceptionMessage("invalid value for ip; expecting an IPv4 address");
        Net::isIpInCidr($ip, "");
     }
 

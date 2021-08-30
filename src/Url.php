@@ -312,7 +312,7 @@ class Url
     public function setPath($path = null)
     {
         if (is_string($path)) {
-            if ($path{0} !== '/') {
+            if ($path[0] !== '/') {
                 $path = "/$path";
             }
         }
@@ -395,7 +395,7 @@ class Url
     public function setFragment($fragment = null)
     {
         if (is_string($fragment)) {
-            if ($fragment{0} === '#') {
+            if ($fragment[0] === '#') {
                 $fragment = substr($fragment, 1);
             }
         }

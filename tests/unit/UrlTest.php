@@ -43,19 +43,15 @@ class UrlTest extends PHPUnit\Framework\TestCase
         }
     }
 
-    /**
-     * @expectedException InvalidArgumentException
-     */
     public function testEncodeQueryStringException()
     {
+        $this->expectException(\InvalidArgumentException::class);
         Url::encodeQueryString([ "forty-two" => 42 ], null);
     }
 
-    /**
-     * @expectedException InvalidArgumentException
-     */
     public function testDecodeQueryStringException()
     {
+        $this->expectException(\InvalidArgumentException::class);
         Url::decodeQueryString("forty-two=42", null);
     }
 
@@ -82,19 +78,15 @@ class UrlTest extends PHPUnit\Framework\TestCase
         }
     }
 
-    /**
-     * @expectedException InvalidArgumentException
-     */
     public function testCreateFromStringException()
     {
+        $this->expectException(\InvalidArgumentException::class);
         Url::createFromString(123);
     }
 
-    /**
-     * @expectedException InvalidArgumentException
-     */
     public function testCreateFromStringParseFailException()
     {
+        $this->expectException(\InvalidArgumentException::class);
         Url::createFromString("nope:///");
     }
 
@@ -104,21 +96,17 @@ class UrlTest extends PHPUnit\Framework\TestCase
         $this->assertEquals(self::$urlString, $url->__toString());
     }
 
-    /**
-     * @expectedException InvalidArgumentException
-     */
     public function testSetPassException()
     {
-        $url = new Url;
+        $url = new Url();
+        $this->expectException(\InvalidArgumentException::class);
         $url->setPass(123);
     }
 
-    /**
-     * @expectedException InvalidArgumentException
-     */
     public function testSetHostException()
     {
-        $url = new Url;
+        $url = new Url();
+        $this->expectException(\InvalidArgumentException::class);
         $url->setHost([]);
     }
 
@@ -137,12 +125,10 @@ class UrlTest extends PHPUnit\Framework\TestCase
         }
     }
 
-    /**
-     * @expectedException InvalidArgumentException
-     */
     public function testSetPortException()
     {
-        $url = new Url;
+        $url = new Url();
+        $this->expectException(\InvalidArgumentException::class);
         $url->setPort('123.4');
     }
 
@@ -163,12 +149,10 @@ class UrlTest extends PHPUnit\Framework\TestCase
         }
     }
 
-    /**
-     * @expectedException InvalidArgumentException
-     */
     public function testSetPathException()
     {
-        $url = new Url;
+        $url = new Url();
+        $this->expectException(\InvalidArgumentException::class);
         $url->setPath([]);
     }
 
@@ -184,12 +168,10 @@ class UrlTest extends PHPUnit\Framework\TestCase
         $this->assertEquals($data, $url->getQuery());
     }
 
-    /**
-     * @expectedException InvalidArgumentException
-     */
     public function testAddQueryDataException()
     {
-        $url = new Url;
+        $url = new Url();
+        $this->expectException(\InvalidArgumentException::class);
         $url->addQueryData(123);
     }
 
@@ -210,12 +192,10 @@ class UrlTest extends PHPUnit\Framework\TestCase
         }
     }
 
-    /**
-     * @expectedException InvalidArgumentException
-     */
     public function testSetFragmentException()
     {
         $url = new Url;
+        $this->expectException(\InvalidArgumentException::class);
         $url->setFragment([]);
     }
 
@@ -280,12 +260,10 @@ class UrlTest extends PHPUnit\Framework\TestCase
 
     }
 
-    /**
-     * @expectedException InvalidArgumentException
-     */
     public function testUpdateException()
     {
         $url = Url::createFromString(self::$urlString);
+        $this->expectException(\InvalidArgumentException::class);
         $url->merge(123);
     }
 }
