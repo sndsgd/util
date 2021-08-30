@@ -99,7 +99,10 @@ class Classname
         for ($i = 0; $i < $len; $i++) {
             if ($tokens[$i][0] === T_NAMESPACE) {
                 for ($j = $i + 1; $j < $len; $j++) {
-                    if ($tokens[$j][0] === T_STRING) {
+                    if (
+                        $tokens[$j][0] === T_STRING
+                        || $tokens[$j][0] === T_NAME_QUALIFIED
+                    ) {
                         $namespace .= "\\".$tokens[$j][1];
                     }
                     else if ($tokens[$j] === "{" || $tokens[$j] === ";") {
