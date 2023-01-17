@@ -111,4 +111,11 @@ test-coverage: ## Run unit tests with code coverage
 test-coverage: override PHPUNIT_ARGS = --do-not-cache-result
 test-coverage: prepare-build-directory phpunit
 
+.PHONY: test-coverage-submit
+test-coverage-submit:
+test-coverage-submit:
+	wget https://github.com/php-coveralls/php-coveralls/releases/download/v2.2.0/php-coveralls.phar
+	chmod +x php-coveralls.phar
+	./php-coveralls.phar --coverage_clover=build/coverage/clover.xml -v
+
 .DEFAULT_GOAL := help
