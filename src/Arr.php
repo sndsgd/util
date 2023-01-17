@@ -18,6 +18,17 @@ class Arr
         return (array_values($test) === $test);
     }
 
+    public static function isAssociative(array $test): bool
+    {
+        for ($i = 0, $len = count($test); $i < $len; $i++) {
+            if (!isset($test[$i])) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
     /**
      * Convert a variable into the first element of an array
      *

@@ -1,4 +1,5 @@
-build
-vendor
-composer.lock
-bin/dev.php
+/.phpunit.result.cache
+/bin/dev.php
+/build
+/composer.lock
+/vendor

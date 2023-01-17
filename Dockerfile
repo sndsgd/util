@@ -25,6 +25,7 @@ RUN apt-get update \
     php${PHP_VERSION}-mbstring \
     php${PHP_VERSION}-memcached \
     php${PHP_VERSION}-mysqli \
+    php${PHP_VERSION}-pcov \
     php${PHP_VERSION}-yaml \
     php${PHP_VERSION}-zip \
   && rm -rf /var/lib/apt/lists/* \

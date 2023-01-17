@@ -14,14 +14,12 @@ else
 	DOCKER_RUN_USER :=
 endif
 
-PHP_VERSION ?= 8.0
-
-COMPOSER_VERSION ?= 2.0.13
+PHP_VERSION ?= 8.1
+COMPOSER_VERSION ?= 2.5.1
 COMPOSER_PHAR_URL ?= https://github.com/composer/composer/releases/download/$(COMPOSER_VERSION)/composer.phar
 
-IMAGE_NAME ?= sndsgd/util
-IMAGE_TAG ?= latest
-IMAGE ?= $(IMAGE_NAME):$(IMAGE_TAG)
+IMAGE_NAME ?= ghcr.io/sndsgd/php
+IMAGE ?= $(IMAGE_NAME):$(PHP_VERSION)
 DOCKER_RUN ?= $(DOCKER_BIN) run \
 	$(DOCKER_DEFAULT_OPTIONS) \
 	$(DOCKER_RUN_USER) \
@@ -39,13 +37,7 @@ IMAGE_ARGS ?= --quiet
 
 .PHONY: image
 image:
-	$(info building php $(PHP_VERSION) image...)
-	@docker build \
-	  $(IMAGE_ARGS) \
-		--build-arg PHP_VERSION=$(PHP_VERSION) \
-		--build-arg COMPOSER_PHAR_URL=$(COMPOSER_PHAR_URL) \
-		--tag $(IMAGE) \
-		$(CWD)
+	@docker pull $(IMAGE)
 
 .PHONY: prepare-build-directory
 prepare-build-directory:
@@ -113,5 +105,10 @@ phpunit: image lint prepare-build-directory
 test: ## Run unit tests
 test: override PHPUNIT_ARGS = --do-not-cache-result --no-coverage
 test: phpunit
+
+.PHONY: test-coverage
+test-coverage: ## Run unit tests with code coverage
+test-coverage: override PHPUNIT_ARGS = --do-not-cache-result
+test-coverage: prepare-build-directory phpunit
 
 .DEFAULT_GOAL := help
