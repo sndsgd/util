@@ -3,6 +3,7 @@
 [![Latest Version](https://img.shields.io/github/release/sndsgd/util.svg?style=flat-square)](https://github.com/sndsgd/util/releases)
 [![Software License](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square)](https://github.com/sndsgd/util/LICENSE)
 [![Build Status](https://img.shields.io/github/actions/workflow/status/sndsgd/util/build.yml?style=flat-square)](https://github.com/sndsgd/util/actions/workflows/build.yml)
+[![Coverage Status](https://img.shields.io/coverallsCoverage/github/sndsgd/util?style=flat-square)](https://coveralls.io/github/sndsgd/util?branch=master)
 [![Total Downloads](https://img.shields.io/packagist/dt/sndsgd/util.svg?style=flat-square)](https://packagist.org/packages/sndsgd/util)
 
 A utility toolkit for PHP.
