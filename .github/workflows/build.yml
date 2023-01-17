@@ -24,8 +24,8 @@ jobs:
     - name: install dependencies
       run: make composer-install
     - name: unit tests (php8.2)
-      run: make test PHP_VERSION=8.2
-    - name: Coveralls
-      uses: coverallsapp/github-action@master
-      with:
-        github-token: ${{ secrets.GITHUB_TOKEN }}
+      run: make test-coverage PHP_VERSION=8.2
+    - name: submit coverage report
+      run: make test-coverage-submit
+      env:
+        COVERALLS_REPO_TOKEN: foo
