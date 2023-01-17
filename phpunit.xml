@@ -17,6 +17,7 @@
     </include>
     <report>
       <html outputDirectory="build/coverage"/>
+      <clover outputFile="build/coverage/clover.xml"/>
     </report>
   </coverage>
   <testsuites>
