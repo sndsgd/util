@@ -14,6 +14,32 @@ class ArrTest extends PHPUnit\Framework\TestCase
         $this->assertFalse(Arr::isIndexed($test));
     }
 
+    /**
+     * @dataProvider provideIsAssociative
+     */
+    public function testIsAssociative(array $test, bool $expect): void
+    {
+        $this->assertSame($expect, Arr::isAssociative($test));
+    }
+
+    public function provideIsAssociative(): iterable
+    {
+        yield [
+            ["one", "two", "three"],
+            true,
+        ];
+
+        yield [
+            ["one", "two", 4 => "three"],
+            false,
+        ];
+
+        yield [
+            ["one", "two", "nope" => "three"],
+            false,
+        ];
+    }
+
     public function testCast()
     {
         $this->assertTrue(is_array(Arr::cast(null)));

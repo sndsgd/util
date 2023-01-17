@@ -1,0 +1,27 @@
+name: build
+
+on:
+  push:
+    branches: ["*"]
+
+jobs:
+  php81:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@main
+      with:
+        fetch-depth: 1
+    - name: install dependencies
+      run: make composer-install
+    - name: unit tests (php8.1)
+      run: make test PHP_VERSION=8.1
+  php82:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@main
+      with:
+        fetch-depth: 1
+    - name: install dependencies
+      run: make composer-install
+    - name: unit tests (php8.2)
+      run: make test PHP_VERSION=8.2
