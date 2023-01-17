@@ -116,6 +116,6 @@ test-coverage-submit:
 test-coverage-submit:
 	wget https://github.com/php-coveralls/php-coveralls/releases/download/v2.2.0/php-coveralls.phar
 	chmod +x php-coveralls.phar
-	./php-coveralls.phar --coverage_clover=build/coverage/clover.xml -v
+	./php-coveralls.phar --coverage_clover=build/coverage/clover.xml --json_path=build/coverage/coveralls.json -v
 
 .DEFAULT_GOAL := help
