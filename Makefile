@@ -15,7 +15,7 @@ else
 endif
 
 PHP_VERSION ?= 8.1
-COMPOSER_VERSION ?= 2.5.1
+COMPOSER_VERSION ?= 2.8.6
 COMPOSER_PHAR_URL ?= https://github.com/composer/composer/releases/download/$(COMPOSER_VERSION)/composer.phar
 
 IMAGE_NAME ?= ghcr.io/sndsgd/php
